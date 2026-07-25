@@ -346,6 +346,15 @@ def estimate_profile(
     device: str = "cpu",
     verbose: bool = True,
     run_exploratory: bool = True,
+    seed: Optional[int] = None,
+    stress_weights=None,
+    stress_include_worstcase: bool = True,
+    eta: float = 1e-12,
+    atau_projection_dim: int = 10,
+    atau_quantize_width: Optional[float] = None,
+    atau_n_samples: Optional[int] = None,
+    u_tau: float = 0.0,
+    u_smooth_mode: str = "width",
 ) -> DifficultyProfile:
     """Estimate the generic Difficulty Profile for an ONNX + VNNLIB pair.
 
@@ -353,6 +362,15 @@ def estimate_profile(
     arguments are retained for callers/CLIs but are not central to the new
     generic profile; n_pgd_steps is used only as a soft cap for curvature-style
     finite-difference probes if future extensions need it.
+
+    Sensitivity-study knobs (all default to prior behavior so existing artifacts
+    reproduce exactly): ``seed`` (reproducible sampling + A_tau projection),
+    ``stress_weights`` / ``stress_include_worstcase`` (sampling-mixture control for
+    M_hat_min and d_eff), ``eta`` (numerical constant in the G_IBP and d_eff
+    denominators), ``atau_projection_dim`` / ``atau_quantize_width`` /
+    ``atau_n_samples`` (A_tau grid width tau and projection), and ``u_tau`` /
+    ``u_smooth_mode`` (the paper's omega_j>tau unstable test for smooth
+    activations; ReLU stays exact-0-crossing).
     """
     import signal
     from .instance_loader import load_instance
@@ -425,6 +443,10 @@ def estimate_profile(
             n_samples=n_gradient_samples,
             n_pairs=n_beta_pairs,
             verbose=verbose,
+            seed=seed,
+            eta=eta,
+            stress_weights=stress_weights,
+            stress_include_worstcase=stress_include_worstcase,
         ),
         "generic_components",
     )
@@ -449,6 +471,9 @@ def estimate_profile(
         lambda: components.estimate_ibp_components(
             inst,
             sample_min_margin=profile.margin_sample_min,
+            eta=eta,
+            tau=u_tau,
+            smooth_unstable_mode=u_smooth_mode,
             verbose=verbose,
         ),
         "ibp_components",
@@ -473,7 +498,11 @@ def estimate_profile(
     atau_result = _run_with_timeout(
         lambda: components.estimate_local_region_count(
             inst,
-            n_samples=min(1024, n_gradient_samples * 2),
+            n_samples=(atau_n_samples if atau_n_samples is not None
+                       else min(1024, n_gradient_samples * 2)),
+            projection_dim=atau_projection_dim,
+            quantize_width=atau_quantize_width,
+            seed=seed,
             verbose=verbose,
         ),
         "A_tau_proxies",

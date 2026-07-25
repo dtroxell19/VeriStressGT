@@ -1,0 +1,59 @@
+{
+  "description": "Difficulty-Profile sensitivity study: sweep the estimator knobs one axis at a time around a production center-point, on a stratified subset; analyze dependence + a unified Difficulty Index on the frozen 345 table.",
+  "horizon_note": "Recompute runs on ~48 stratified instances; correlation matrix and Difficulty Index use the frozen 1725-row predictive-modeling table (345 instances).",
+  "center_point": {
+    "n_samples": 200,
+    "dist_preset": "current_mixture",
+    "atau_width": 0.1,
+    "atau_proj": 10,
+    "eta": 1e-12,
+    "u_mode": "width",
+    "u_tau": 0.0
+  },
+  "component_timeout_s": 300,
+  "axes": {
+    "N": {
+      "grid": [50, 100, 200, 400, 800, 1600],
+      "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+      "estimators": ["generic", "ibp", "atau"],
+      "report": ["margin_hat_min", "d_eff", "a_tau", "g_ibp"]
+    },
+    "dist": {
+      "grid": ["uniform_only", "boundary_only", "current_mixture", "pgd_heavy"],
+      "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+      "estimators": ["generic", "ibp"],
+      "report": ["margin_hat_min", "d_eff", "g_ibp"]
+    },
+    "atau": {
+      "widths": [0.05, 0.1, 0.2, 0.5],
+      "projs": [5, 10, 20],
+      "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+      "estimators": ["atau"],
+      "report": ["a_tau"]
+    },
+    "eta": {
+      "grid": [1e-12, 1e-9, 1e-6, 1e-3],
+      "seeds": [0, 1, 2, 3, 4, 5, 6, 7],
+      "estimators": ["generic", "ibp"],
+      "report": ["d_eff", "g_ibp"]
+    },
+    "U": {
+      "modes": ["width", "omega"],
+      "taus": [0.0, 0.001, 0.01, 0.05, 0.1, 0.25],
+      "seeds": [0, 1],
+      "estimators": ["ibp"],
+      "report": ["unstable_fraction"]
+    },
+    "seed": {
+      "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      "estimators": ["generic", "ibp", "atau"],
+      "report": ["margin_hat_min", "g_ibp", "unstable_fraction", "a_tau", "d_eff"]
+    }
+  },
+  "smoke": {
+    "n_instances": 8,
+    "N_grid": [50, 200, 800],
+    "seeds": [0, 1],
+    "axes": ["N", "seed"]
+  }
+}

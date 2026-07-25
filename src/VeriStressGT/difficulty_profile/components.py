@@ -223,6 +223,8 @@ def _sample_stress_points(
     n: int,
     *,
     n_pgd_steps: int = 20,
+    weights=None,
+    include_linear_worstcase: bool = True,
 ):
     """Mixed sampler for boundary-proximity margin statistics.
 
@@ -230,6 +232,20 @@ def _sample_stress_points(
     L_inf box: uniform interior points, random faces, random corners,
     local-gradient faces/sign directions, and a small PGD search.  For non-L_inf
     norms it falls back to uniform plus PGD/projection.
+
+    Parameters
+    ----------
+    weights : optional 5-tuple ``(w_uniform, w_faces, w_corners, w_grad, w_pgd)``.
+        Controls the mixture proportions of the ``n`` budget.  ``None`` (default)
+        reproduces the production mixture ``(0.25, 0.25, 0.15, 0.20, remainder)``
+        exactly.  Weights are normalized to sum to 1; ``n_pgd`` absorbs any
+        rounding remainder so the chunks total ``n``.
+    include_linear_worstcase : bool, default True.
+        When True, always append the exact first-order worst-case corner
+        ``x0 + eps * (-sign(grad))``.  Set False for a "pure" uniform/boundary
+        sampler (used by the ``uniform_only`` / ``boundary_only`` presets in the
+        sensitivity study), so the returned set contains no gradient-informed
+        point.
     """
     import torch
 
@@ -238,13 +254,33 @@ def _sample_stress_points(
         return x0.unsqueeze(0)
 
     chunks = []
-    n_uniform = max(1, int(round(0.25 * n)))
-    n_faces = max(0, int(round(0.25 * n)))
-    n_corners = max(0, int(round(0.15 * n)))
-    n_grad = max(0, int(round(0.20 * n)))
+    if weights is None:
+        n_uniform = max(1, int(round(0.25 * n)))
+        n_faces = max(0, int(round(0.25 * n)))
+        n_corners = max(0, int(round(0.15 * n)))
+        n_grad = max(0, int(round(0.20 * n)))
+    else:
+        w = [max(0.0, float(x)) for x in weights]
+        if len(w) != 5:
+            raise ValueError("weights must be a 5-tuple (uniform,faces,corners,grad,pgd)")
+        s = sum(w)
+        if s <= 0:
+            raise ValueError("weights must sum to a positive value")
+        w = [x / s for x in w]
+        # uniform chunk keeps the historical >=1 floor only when it carries weight
+        n_uniform = max(1, int(round(w[0] * n))) if w[0] > 0 else 0
+        n_faces = max(0, int(round(w[1] * n)))
+        n_corners = max(0, int(round(w[2] * n)))
+        n_grad = max(0, int(round(w[3] * n)))
     n_pgd = max(0, n - n_uniform - n_faces - n_corners - n_grad)
+    if weights is not None and w[4] <= 0:
+        # no PGD weight requested: redistribute the remainder to uniform so the
+        # total still sums to ~n without injecting an unrequested chunk type.
+        n_uniform += n_pgd
+        n_pgd = 0
 
-    chunks.append(_sample_uniform(inst, n_uniform))
+    if n_uniform > 0:
+        chunks.append(_sample_uniform(inst, n_uniform))
 
     norm_p = getattr(inst, "norm_p", "inf")
     if norm_p == "inf":
@@ -276,8 +312,9 @@ def _sample_stress_points(
         except Exception:
             chunks.append(_sample_uniform(inst, n_pgd))
 
-    # Always include the exact local first-order worst-case point when possible.
-    if g0 is not None and norm_p == "inf":
+    # Include the exact local first-order worst-case point when possible (unless
+    # a pure uniform/boundary sampler was requested).
+    if include_linear_worstcase and g0 is not None and norm_p == "inf":
         g = g0.detach().reshape(-1)
         if g.numel() == int(inst.input_dim):
             sign = -torch.sign(g)
@@ -415,6 +452,10 @@ def estimate_generic_components(
     n_pairs: int = 450,
     n_second_diff: Optional[int] = None,
     verbose: bool = True,
+    seed: Optional[int] = None,
+    eta: float = _EPS,
+    stress_weights=None,
+    stress_include_worstcase: bool = True,
 ) -> Dict[str, Any]:
     """Compute architecture-agnostic margin/gradient/nonlinearity components.
 
@@ -430,6 +471,10 @@ def estimate_generic_components(
     """
     import torch
 
+    if seed is not None:
+        torch.manual_seed(int(seed))
+        np.random.seed(int(seed) % (2 ** 32))
+
     result: Dict[str, Any] = {"warnings": []}
     eps = float(inst.epsilon)
     d = int(inst.input_dim)
@@ -442,7 +487,9 @@ def estimate_generic_components(
     # name margin_sample_min backward-compatible, but the semantics are now:
     #   min over {uniform, random faces, random corners, gradient faces, PGD}.
     try:
-        X_stress = _sample_stress_points(inst, n_samples, n_pgd_steps=min(30, max(8, n_samples // 10)))
+        X_stress = _sample_stress_points(
+            inst, n_samples, n_pgd_steps=min(30, max(8, n_samples // 10)),
+            weights=stress_weights, include_linear_worstcase=stress_include_worstcase)
         X = torch.cat([inst.x0.detach().unsqueeze(0), X_stress], dim=0)
         m_t = _margin_values(inst, X)
         m = m_t.detach().cpu().numpy().astype(np.float64).reshape(-1)
@@ -585,7 +632,7 @@ def estimate_generic_components(
         result["first_order_margin_ratio"] = float(margin_nominal / (eps * grad_l1_x0 + _EPS))
         result["sampled_first_order_margin_ratio"] = float((margin_q01 or 0.0) / (eps * grad_l1_p95 + _EPS))
 
-        eff_dim = (l1 ** 2) / (l2 ** 2 + _EPS)
+        eff_dim = (l1 ** 2) / (l2 ** 2 + eta)
         result["effective_grad_dim_mean"] = float(np.mean(eff_dim))
         result["effective_grad_dim_p95"] = float(np.quantile(eff_dim, 0.95))
         result["grad_sensitivity_concentration"] = float(np.mean(linf / (l1 + _EPS)))
@@ -879,9 +926,17 @@ def estimate_local_region_count(
     n_samples: int = 2048,
     projection_dim: int = 10,
     quantize_decimals: int = 1,
+    quantize_width: Optional[float] = None,
+    seed: Optional[int] = None,
     verbose: bool = True,
 ) -> Dict[str, Any]:
     """Estimate saturation-resistant A_tau proxies from local gradient fingerprints.
+
+    ``quantize_width`` (tau) sets the fingerprint grid width directly, enabling any
+    positive tau; when ``None`` (default) the historical power-of-ten path
+    ``round(F, decimals=quantize_decimals)`` is used unchanged.  ``seed`` makes the
+    uniform sampling and the random projection reproducible; when ``None`` the
+    projection keeps its historical fixed seed (1) and sampling stays unseeded.
 
     Outputs:
       - A_tau_effective_log   : Shannon log-effective support over fingerprints
@@ -897,6 +952,10 @@ def estimate_local_region_count(
     """
     import torch
     from collections import Counter
+
+    if seed is not None:
+        torch.manual_seed(int(seed))
+        np.random.seed(int(seed) % (2 ** 32))
 
     result: Dict[str, Any] = {"warnings": []}
 
@@ -914,13 +973,19 @@ def estimate_local_region_count(
         G = grads / np.maximum(norms, 1e-12)
 
         if d > projection_dim:
-            rng = np.random.default_rng(1)
+            rng = np.random.default_rng(int(seed) if seed is not None else 1)
             R = rng.normal(size=(d, projection_dim)).astype(np.float64) / math.sqrt(projection_dim)
             F = G @ R
         else:
             F = G
 
-        Q = np.round(F, decimals=quantize_decimals)
+        if quantize_width is not None:
+            w = float(quantize_width)
+            if w <= 0:
+                raise ValueError("quantize_width (tau) must be positive")
+            Q = np.round(F / w) * w
+        else:
+            Q = np.round(F, decimals=quantize_decimals)
         keys = [row.tobytes() for row in Q]
 
         # ------------------------------------------------------------------
@@ -995,7 +1060,9 @@ def estimate_local_region_count(
             "A_tau_collision_effective_regions": float(math.exp(collision)),
             "A_tau_growth_curve_sizes": ladder_sorted,
             "A_tau_growth_curve_distinct": distinct_curve,
-            "A_tau_fingerprint_method": f"gradient_projection_q{quantize_decimals}",
+            "A_tau_fingerprint_method": (
+                f"gradient_projection_w{quantize_width:g}" if quantize_width is not None
+                else f"gradient_projection_q{quantize_decimals}"),
 
             # Backward compatibility: keep old name, but make it explicit that
             # it is only the sampled lower bound.
@@ -1035,16 +1102,28 @@ def estimate_ibp_components(
     inst: "VerificationInstance",
     *,
     sample_min_margin: Optional[float] = None,
+    eta: float = _EPS,
+    tau: float = 0.0,
+    smooth_unstable_mode: str = "width",
     verbose: bool = True,
 ) -> Dict[str, Any]:
-    """Compute IBP-based generic components plus generalized unstable_frac."""
+    """Compute IBP-based generic components plus generalized unstable_frac.
+
+    ``eta`` is the numerical-stability constant in the G_IBP denominator
+    ``|M_hat_min| + eta``.  ``tau`` and ``smooth_unstable_mode`` control the
+    unstable-fraction test for smooth activations: mode ``"width"`` (default)
+    keeps the historical non-degenerate-interval test; mode ``"omega"`` uses the
+    paper's slope-variation criterion ``omega_j = sup|phi'(s)-phi'(t)| > tau``.
+    ReLU always uses the exact 0-crossing test and is tau-independent.
+    """
     import onnx
 
     result: Dict[str, Any] = {"warnings": []}
     try:
         model = onnx.load(inst.onnx_path)
         initializers = {init.name: numpy_helper_to_array(init) for init in model.graph.initializer}
-        prop = _interval_propagate(model.graph, initializers, inst, verbose=verbose)
+        prop = _interval_propagate(model.graph, initializers, inst, verbose=verbose,
+                                   tau=tau, smooth_unstable_mode=smooth_unstable_mode)
     except Exception as e:
         msg = f"IBP failed: {e}"
         result["warnings"].append(msg)
@@ -1089,7 +1168,7 @@ def estimate_ibp_components(
     if lb is not None and sample_min_margin is not None:
         gap = float(sample_min_margin - lb)
         result["ibp_sample_gap"] = gap
-        result["ibp_relative_gap"] = float(gap / (abs(sample_min_margin) + _EPS))
+        result["ibp_relative_gap"] = float(gap / (abs(sample_min_margin) + eta))
     else:
         _set_metric(result, "ibp_sample_gap", None, reason="math_degenerate", detail="sample_min_margin or IBP lower bound unavailable")
         _set_metric(result, "ibp_relative_gap", None, reason="math_degenerate", detail="sample_min_margin or IBP lower bound unavailable")
@@ -1250,11 +1329,44 @@ def _softmax_interval_simple(in_lo: np.ndarray, in_hi: np.ndarray, axis: int = -
     return out_lo.astype(np.float32), np.minimum(out_hi, 1.0).astype(np.float32)
 
 
+def _omega_range(op_type: str, pre_lo: np.ndarray, pre_hi: np.ndarray,
+                 leaky_alpha: float = 0.01) -> np.ndarray:
+    """Per-neuron slope-variation omega_j = max phi'(z) - min phi'(z) over [lo, hi].
+
+    Implements the range of the derivative for the activations whose derivative is
+    either unimodal (Sigmoid, Tanh: peak at 0) or piecewise-constant (LeakyRelu).
+    Returns 0 for degenerate intervals.
+    """
+    lo = np.asarray(pre_lo, dtype=np.float64)
+    hi = np.asarray(pre_hi, dtype=np.float64)
+    if op_type in ("Sigmoid", "Tanh"):
+        if op_type == "Sigmoid":
+            def dphi(z):
+                s = 1.0 / (1.0 + np.exp(-np.clip(z, -60, 60)))
+                return s * (1.0 - s)
+        else:  # Tanh
+            def dphi(z):
+                t = np.tanh(z)
+                return 1.0 - t * t
+        # derivative is unimodal with its maximum at z = 0
+        contains0 = (lo <= 0.0) & (hi >= 0.0)
+        dmax = np.where(contains0, dphi(np.zeros_like(lo)), np.maximum(dphi(lo), dphi(hi)))
+        dmin = np.minimum(dphi(lo), dphi(hi))
+        return np.maximum(dmax - dmin, 0.0)
+    if op_type in ("LeakyRelu", "PRelu"):
+        crosses = (lo < 0.0) & (hi > 0.0)
+        return np.where(crosses, abs(1.0 - float(leaky_alpha)), 0.0)
+    # Fallback: any non-degenerate interval counts (matches width test at tau=0).
+    return np.where(hi > lo, np.inf, 0.0)
+
+
 def _interval_propagate(
     graph,
     initializers: Dict[str, np.ndarray],
     inst: "VerificationInstance",
     verbose: bool = False,
+    tau: float = 0.0,
+    smooth_unstable_mode: str = "width",
 ) -> dict:
     """Best-effort IBP through common ONNX ops.
 
@@ -1434,13 +1546,18 @@ def _interval_propagate(
                         if a.name == "alpha":
                             alpha = float(a.f)
                 if op == "Relu":
+                    # ReLU: exact phase ambiguity (0-crossing); tau-independent.
                     out_lo = np.maximum(pre_lo, 0.0)
                     out_hi = np.maximum(pre_hi, 0.0)
                     unstable = (pre_lo < 0) & (pre_hi > 0)
                 else:
                     vals = np.stack([pre_lo, pre_hi, alpha * pre_lo, alpha * pre_hi])
                     out_lo, out_hi = vals.min(axis=0), vals.max(axis=0)
-                    unstable = (pre_hi - pre_lo) > 1e-12
+                    if smooth_unstable_mode == "omega":
+                        omega = _omega_range("LeakyRelu", pre_lo, pre_hi, leaky_alpha=alpha)
+                        unstable = omega.reshape(pre_lo.shape) > tau
+                    else:
+                        unstable = (pre_hi - pre_lo) > 1e-12
                 record_nonlinearity(pre_lo, pre_hi, out_lo, out_hi, unstable)
                 intervals[node.output[0]] = (out_lo.astype(np.float32), out_hi.astype(np.float32))
 
@@ -1448,7 +1565,10 @@ def _interval_propagate(
                 pre_lo, pre_hi = _get_interval(intervals, node.input[0])
                 out_lo = 1.0 / (1.0 + np.exp(-pre_lo.astype(np.float64)))
                 out_hi = 1.0 / (1.0 + np.exp(-pre_hi.astype(np.float64)))
-                unstable = (pre_hi - pre_lo) > 1e-12
+                if smooth_unstable_mode == "omega":
+                    unstable = _omega_range("Sigmoid", pre_lo, pre_hi).reshape(pre_lo.shape) > tau
+                else:
+                    unstable = (pre_hi - pre_lo) > 1e-12
                 record_nonlinearity(pre_lo, pre_hi, out_lo, out_hi, unstable)
                 intervals[node.output[0]] = (out_lo.astype(np.float32), out_hi.astype(np.float32))
 
@@ -1456,7 +1576,10 @@ def _interval_propagate(
                 pre_lo, pre_hi = _get_interval(intervals, node.input[0])
                 out_lo = np.tanh(pre_lo.astype(np.float64))
                 out_hi = np.tanh(pre_hi.astype(np.float64))
-                unstable = (pre_hi - pre_lo) > 1e-12
+                if smooth_unstable_mode == "omega":
+                    unstable = _omega_range("Tanh", pre_lo, pre_hi).reshape(pre_lo.shape) > tau
+                else:
+                    unstable = (pre_hi - pre_lo) > 1e-12
                 record_nonlinearity(pre_lo, pre_hi, out_lo, out_hi, unstable)
                 intervals[node.output[0]] = (out_lo.astype(np.float32), out_hi.astype(np.float32))
 

@@ -26,6 +26,25 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 
 
+# Sampling-distribution presets for the sensitivity study.  Each maps to a
+# (weights_5tuple_or_None, include_linear_worstcase) pair consumed by
+# estimate_profile -> _sample_stress_points.
+STRESS_PRESETS = {
+    "uniform_only":    ((1.0, 0.0, 0.0, 0.0, 0.0), False),
+    "boundary_only":   ((0.0, 0.5, 0.5, 0.0, 0.0), False),
+    "current_mixture": (None, True),
+    "pgd_heavy":       ((0.10, 0.10, 0.10, 0.10, 0.60), True),
+}
+
+
+def _resolve_stress_preset(name: Optional[str]):
+    if name is None:
+        return None, True
+    if name not in STRESS_PRESETS:
+        raise ValueError(f"unknown stress preset: {name}")
+    return STRESS_PRESETS[name]
+
+
 def _discover_instances(bench_dir: Path) -> List[Tuple[str, str, Optional[str]]]:
     """
     Discover (onnx_path, vnnlib_path, instance_id) pairs in a benchmark directory.
@@ -137,6 +156,23 @@ def main(argv: Optional[List[str]] = None) -> None:
     ap.add_argument("--skip-crown", action="store_true", help="Accepted for compatibility; currently ignored.")
     ap.add_argument("--skip-milp", action="store_true", help="Accepted for compatibility; currently ignored.")
 
+    # Sensitivity-study knobs (all default to production behavior).
+    ap.add_argument("--seed", type=int, default=None,
+                    help="Seed for reproducible sampling + A_tau projection.")
+    ap.add_argument("--stress-preset", type=str, default=None,
+                    choices=["uniform_only", "boundary_only", "current_mixture", "pgd_heavy"],
+                    help="Sampling-distribution preset for M_hat_min / d_eff.")
+    ap.add_argument("--eta", type=float, default=1e-12,
+                    help="Numerical constant in G_IBP and d_eff denominators.")
+    ap.add_argument("--atau-width", type=float, default=None,
+                    help="A_tau fingerprint grid width tau (overrides power-of-ten decimals).")
+    ap.add_argument("--atau-proj", type=int, default=10,
+                    help="A_tau random-projection dimension.")
+    ap.add_argument("--u-tau", type=float, default=0.0,
+                    help="tau threshold for the smooth-activation unstable test.")
+    ap.add_argument("--u-mode", type=str, default="width", choices=["width", "omega"],
+                    help="Smooth-activation unstable test: 'width' (legacy) or 'omega' (omega_j>tau).")
+
     ap.add_argument("--device", type=str, default="cpu", choices=["cpu", "cuda"])
     ap.add_argument("--quiet", action="store_true")
 
@@ -186,6 +222,7 @@ def main(argv: Optional[List[str]] = None) -> None:
             print(f"Instance {i+1}/{len(instances)}: {display_name}")
             print(f"{'='*60}")
 
+        stress_weights, stress_worstcase = _resolve_stress_preset(args.stress_preset)
         try:
             profile = estimate_profile(
                 onnx_path=onnx_path,
@@ -198,6 +235,14 @@ def main(argv: Optional[List[str]] = None) -> None:
                 component_timeout=args.component_timeout,
                 device=args.device,
                 verbose=verbose,
+                seed=args.seed,
+                stress_weights=stress_weights,
+                stress_include_worstcase=stress_worstcase,
+                eta=args.eta,
+                atau_projection_dim=args.atau_proj,
+                atau_quantize_width=args.atau_width,
+                u_tau=args.u_tau,
+                u_smooth_mode=args.u_mode,
             )
 
             pd = profile.to_dict()
