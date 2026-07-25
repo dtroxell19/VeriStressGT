@@ -1,5 +1,5 @@
-"""Figures for the actionable-feature analysis (analogs of prior-work
-Figs 2, 3, 7): bootstrap null vs observed, per-instance delta forest by family,
+"""Figures for the actionable-feature analysis (analogs of the prior excess-mortality
+study's Figs 2, 3, 7): bootstrap null vs observed, per-instance delta forest by family,
 profile-value density split by delta sign, partial-dependence, and permutation-
 importance stability. Consumes results/actionable/ and refits a GBM for PDP/importance.
 """

@@ -1,5 +1,5 @@
-"""Faithful adaptation of a prior cross-country study (Sci. Reports 2023),
-"Bootstrap hypothesis testing" + "Measuring the effect of actionable features",
+"""Faithful adaptation of a prior cross-country excess-mortality study (Sci. Reports
+2023): "Bootstrap hypothesis testing" + "Measuring the effect of actionable features",
 to the VeriStress timeout-prediction setting.
 
 Mapping: intrinsic features <- network size/type (S); actionable features <- the

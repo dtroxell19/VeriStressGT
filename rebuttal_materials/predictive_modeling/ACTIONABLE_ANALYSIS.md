@@ -1,8 +1,8 @@
 # Does the Difficulty Profile add predictive value beyond size/type? — bootstrap test
 
-We replicate the framework of **a prior cross-country study, *Scientific Reports* 2023**
-("Bootstrap hypothesis testing" + "Measuring the effect of actionable features"), adapted to the
-VeriStress timeout-prediction setting.
+We replicate the framework of a prior cross-country excess-mortality study
+(*Scientific Reports*, 2023): "Bootstrap hypothesis testing" + "Measuring the effect of actionable
+features", adapted to the VeriStress timeout-prediction setting.
 
 **Mapping.** intrinsic features → network **size/type (S)**; actionable features → the five
 **Difficulty-Profile** components (D); response → **timeout** (binary, uniform 240 s horizon).
