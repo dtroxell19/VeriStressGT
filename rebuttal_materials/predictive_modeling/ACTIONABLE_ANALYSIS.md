@@ -4,6 +4,20 @@ We replicate the framework of a prior cross-country excess-mortality study
 (*Scientific Reports*, 2023): "Bootstrap hypothesis testing" + "Measuring the effect of actionable
 features", adapted to the VeriStress timeout-prediction setting.
 
+## Headline (single overall test, analogous to the prior study's one result)
+Pooling **all instances × all five verifiers** into one gradient-boosting model (verifier identity
+included as an intrinsic covariate, like countries in the prior study) and testing whether the
+Difficulty Profile improves held-out timeout prediction beyond size/type + verifier identity:
+
+> **ΔAUC = +0.107, p = 0.001** (B = 1000 bootstrap; 0/1000 null shuffles reached it; null 95% band
+> only +0.020). Deviance gain +0.125, p = 0.001. N = 1525 (instance, verifier) rows, 231 networks.
+
+Sub-pools: **synthetic** ΔAUC +0.043 (p = 0.001); **established** ΔAUC +0.108 (p = 0.005, AUC;
+deviance n.s. on the underpowered 6-network slice). (`results/actionable/overall_htest_h240.csv`.)
+The per-verifier breakdown below shows where this overall gain concentrates.
+
+---
+
 **Mapping.** intrinsic features → network **size/type (S)**; actionable features → the five
 **Difficulty-Profile** components (D); response → **timeout** (binary, uniform 240 s horizon).
 Model → **gradient boosting** (HistGradientBoosting), matching the paper's GBM. All CV is

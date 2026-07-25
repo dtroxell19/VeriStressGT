@@ -1,0 +1,4 @@
+n,pos,obs_dAUC,obs_dDeviance,null_dAUC_mean,null_dAUC_p95,null_dDev_mean,null_dDev_p95,p_AUC,p_Deviance,n_null,pool,n_rows,n_networks,base_rate
+1525,501,0.1071,0.1246,-0.017,0.0196,-0.01,0.0194,0.001,0.001,1000,all,1525,231,0.329
+936,201,0.0435,0.0667,-0.012,0.0021,-0.0132,0.0009,0.001,0.001,1000,synthetic,936,225,0.215
+589,300,0.1084,-0.0536,-0.0149,0.0533,-0.0368,0.015,0.005,0.7063,1000,established,589,6,0.509
