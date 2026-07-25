@@ -147,7 +147,14 @@ def main_verify():
             "--device", args.device,   # NeuralSAT accepts --device cpu|cuda
         ]
 
-        print(f"[VeriStressGT] Running NeuralSAT on {args.device}")
+        # Optional NeuralSAT settings JSON (e.g. {"skip_initial_worst_bound": -1e30}). Passed as an
+        # ABSOLUTE path because the subprocess runs with cwd=neuralsat_repo.
+        setting_file = os.environ.get("NEURALSAT_SETTING_FILE")
+        if setting_file:
+            cmd += ["--setting_file", os.path.abspath(setting_file)]
+
+        print(f"[VeriStressGT] Running NeuralSAT on {args.device}"
+              + (f" (setting_file={os.path.abspath(setting_file)})" if setting_file else ""))
         result = subprocess.run(
             cmd,
             stdout=subprocess.PIPE,

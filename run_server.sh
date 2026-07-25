@@ -23,6 +23,8 @@ DEVICE="${DEVICE:-cuda}"
 TIMEOUT_225="${TIMEOUT_225:-300}"
 TIMEOUT_POLY="${TIMEOUT_POLY:-600}"
 CPU_JOBS="${CPU_JOBS:-4}"
+# NeuralSAT settings JSON (applied to every neuralsat run). Unset to disable.
+export NEURALSAT_SETTING_FILE="${NEURALSAT_SETTING_FILE:-$PWD/src/VeriStressGT/configs/neuralsat_settings.json}"
 mkdir -p runs
 
 tally () {  # $1 = results dir  (jq-free)
