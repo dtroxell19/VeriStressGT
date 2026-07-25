@@ -1,0 +1,39 @@
+{
+  "id": "milp_hi1",
+  "construction": "mlp_relu.milp.exact_radius",
+  "seed": 0,
+  "paths": {
+    "onnx": "instances/milp_hi1/model.onnx",
+    "vnnlib": "instances/milp_hi1/spec.vnnlib",
+    "meta": "instances/milp_hi1/meta.json"
+  },
+  "sha256": {
+    "onnx": "0854c29d9f84f856d6ce9a6678340712cb01d36edf18fe064aab64afec6ffbc9",
+    "vnnlib": "b6c57cc744648d4c41818fd0617c5e2280f2a62bda6c2ba44370f4a4c06a4dec"
+  },
+  "args": {
+    "seed": 0,
+    "input_dim": 50,
+    "h1": 20,
+    "h2": 20,
+    "num_outputs": 5,
+    "epsilon_frac": 0.99,
+    "rmax": 2.0,
+    "time_limit": 240.0,
+    "mip_gap": null,
+    "epsilon_mode": "safe",
+    "save_x0": false,
+    "save_json": false,
+    "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi1/model.onnx",
+    "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi1/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi1/model.onnx",
+    "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi1/spec.vnnlib",
+    "seed": 0,
+    "y": 0,
+    "r_star": 0.2964719223893034,
+    "epsilon": 0.2935072031654104,
+    "epsilon_mode": "safe"
+  }
+}

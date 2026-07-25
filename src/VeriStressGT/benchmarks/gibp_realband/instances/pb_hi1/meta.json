@@ -1,0 +1,50 @@
+{
+  "id": "pb_hi1",
+  "construction": "cnn.cnn_paired_bias",
+  "seed": 0,
+  "paths": {
+    "onnx": "instances/pb_hi1/model.onnx",
+    "vnnlib": "instances/pb_hi1/spec.vnnlib",
+    "meta": "instances/pb_hi1/meta.json"
+  },
+  "sha256": {
+    "onnx": "cd2905ed440f59ba930677df80e8182de4327c15a43ab946c69608aaada002ed",
+    "vnnlib": "a7ad0da70adeb5dc7411af7353e2cbf9a7b315bf227af03c20bffb43c561b270"
+  },
+  "args": {
+    "seed": 0,
+    "num_pairs": 32,
+    "margin": 0.001,
+    "delta": 0.025,
+    "num_backbone_layers": 4,
+    "in_channels": 3,
+    "height": 4,
+    "width": 4,
+    "backbone_channels": 2,
+    "kernel_size": 3,
+    "num_classes": 10,
+    "label": 0,
+    "epsilon": 0.05,
+    "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi1/model.onnx",
+    "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi1/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi1/model.onnx",
+    "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi1/spec.vnnlib",
+    "is_robust": true,
+    "label": 0,
+    "epsilon": 0.05,
+    "margin": 0.001,
+    "delta": 0.025,
+    "actual_margin_x0": 0.03088971972465515,
+    "ibp_worst_margin": -3.146796464920044,
+    "unstable_relus": {
+      "total": 1152,
+      "unstable": 1122,
+      "fraction": 0.9739583333333334
+    },
+    "num_pairs": 32,
+    "spatial_pairs": 512,
+    "seed": 0
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "rc_hi3",
+  "construction": "mlp_relu.corners",
+  "seed": 3,
+  "paths": {
+    "onnx": "instances/rc_hi3/model.onnx",
+    "vnnlib": "instances/rc_hi3/spec.vnnlib",
+    "meta": "instances/rc_hi3/meta.json"
+  },
+  "sha256": {
+    "onnx": "5a34557d9e05d70218e931868a3cd9d75545689cd30dbfff69848b97642bd9a3",
+    "vnnlib": "ec6c88447143f63f7105b96ec39008e97f33c3e65e6ff567e2eb498513cac399"
+  },
+  "args": {
+    "seed": 3,
+    "input_dim": 100,
+    "num_outputs": 10,
+    "hinge_l1": 100000,
+    "num_hinges": 16,
+    "epsilon": 0.2,
+    "label": 0,
+    "active_dim": 8,
+    "hinge_density": 1.0,
+    "pattern_density": 0.5,
+    "coeff_scale": 1.0,
+    "tau": 0.0001,
+    "big_m": 2.0,
+    "quiet": false,
+    "onnx_path": "rebuttal_materials/gibp_push/instances/rc_hi3/model.onnx",
+    "vnnlib_path": "rebuttal_materials/gibp_push/instances/rc_hi3/spec.vnnlib"
+  },
+  "gt": {
+    "label": 0,
+    "competitors": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "active_dim": 8,
+    "num_hinges": 16,
+    "tau": 0.0001,
+    "BIG_M": 2.0
+  }
+}
