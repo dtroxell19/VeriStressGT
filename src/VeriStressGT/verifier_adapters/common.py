@@ -64,6 +64,31 @@ def normalize_status_from_text(text: str) -> Optional[str]:
     return None
 
 
+def authoritative_status_from_text(text: str) -> Optional[str]:
+    """Only trust a verifier's explicit ``Result: <token>`` line (or a hard-timeout
+    marker). Unlike ``normalize_status_from_text`` this does NOT fall back to a loose
+    ``\\bsat\\b`` keyword search, which can match incidental text in a crashed/verbose
+    log and turn a crash into a false SAT (a spurious soundness failure)."""
+    t = (text or "").replace("\r\n", "\n").replace("\r", "\n")
+    matches = list(_RESULT_LINE_RE.finditer(t))
+    if matches:
+        token = matches[-1].group(1).strip().lower()
+        if token in {"unsat", "verified", "safe"}:
+            return "UNSAT"
+        if token in {"sat", "unsafe", "falsified", "violated", "counterexample"}:
+            return "SAT"
+        if token in {"timeout", "timed out"}:
+            return "TIMEOUT"
+        if token == "unknown":
+            return "UNKNOWN"
+    if _HARD_TIMEOUT_RE.search(t):
+        return "TIMEOUT"
+    return None
+
+
+_TRACEBACK_RE = re.compile(r"Traceback \(most recent call last\)|^\s*\w+Error:", re.M)
+
+
 def finalize_status(parsed: Optional[str], rc: int, timed_out: bool) -> str:
     # External wall-clock kill should still override everything.
     if timed_out:

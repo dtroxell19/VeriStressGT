@@ -4,7 +4,13 @@ import argparse
 from pathlib import Path
 from typing import List
 
-from .common import normalize_status_from_text
+import re
+
+from .common import (
+    normalize_status_from_text,
+    authoritative_status_from_text,
+    _TRACEBACK_RE,
+)
 
 VERIFIER_NAME = "abcrown"
 CONDA_ENV_VAR = "ABCROWN_CONDA_ENV"
@@ -41,10 +47,18 @@ def build_cmd(args: argparse.Namespace, onnx_path: str, vnnlib_path: str, workdi
 
 
 def parse_result(stdout: str, stderr: str, rc: int) -> str | None:
-    # ABCROWN's own final result line is in stdout and should beat conda stderr.
-    parsed = normalize_status_from_text(stdout)
-    if parsed is not None:
-        return parsed
+    # 1) Trust ABCROWN's authoritative "Result: <token>" line (stdout beats stderr).
+    #    This still beats a nonzero conda rc (abcrown prints "Result: timeout" then exits nonzero).
+    auth = authoritative_status_from_text(stdout) or authoritative_status_from_text(stderr)
+    if auth is not None:
+        return auth
 
-    # Only inspect stderr if stdout had no parseable result.
-    return normalize_status_from_text(stderr)
+    # 2) No authoritative verdict AND the run crashed (nonzero exit or a Python traceback)
+    #    -> report ERROR, never a loose keyword SAT. A crash is not a counterexample; treating
+    #    it as SAT would fabricate a soundness failure on a provably-robust instance.
+    combined = (stdout or "") + "\n" + (stderr or "")
+    if rc != 0 or _TRACEBACK_RE.search(combined):
+        return None  # finalize_status -> ERROR (rc != 0)
+
+    # 3) Clean exit but no explicit Result line -> conservative loose fallback (rarely needed).
+    return normalize_status_from_text(stdout) or normalize_status_from_text(stderr)
