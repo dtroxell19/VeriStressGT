@@ -33,3 +33,4 @@ results.json
 # stale external-data blobs the older exporter left behind.
 !src/VeriStressGT/benchmarks/**/*.onnx
 src/VeriStressGT/benchmarks/**/*.onnx.data
+.DS_Store

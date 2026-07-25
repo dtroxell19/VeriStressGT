@@ -194,20 +194,31 @@ def build_distance_milp(
     Rmax: float,
     time_limit_s: Optional[float] = None,
     mip_gap: Optional[float] = None,
+    domain: Optional[Tuple[float, float]] = None,
 ) -> Tuple[gp.Model, gp.MVar, gp.Var, gp.MVar]:
     """
     Build MILP minimizing t s.t. exists delta with ||delta||_inf <= t and f_k(x0+delta) >= f_y(x0+delta).
 
     The search is bounded by t <= Rmax to ensure IBP bounds remain valid.
 
+    If ``domain=(lo, hi)`` is given, the perturbed input is additionally constrained to
+    ``[lo, hi]`` per coordinate (e.g. (0.0, 1.0) for pixel-domain images). This yields the
+    true in-domain radius and tightens the IBP box (fewer unstable ReLUs -> faster solve).
+    When ``domain`` is None the behavior is identical to before (default for synthetic nets).
+
     Returns (model, delta_var, t_var, logits_var).
     """
     x0 = x0.reshape(-1).astype(np.float64)
     d = x0.shape[0]
 
-    # Compute IBP bounds on [x0 - Rmax, x0 + Rmax]
-    xL = x0 - Rmax
-    xU = x0 + Rmax
+    # Compute IBP bounds on the search box, intersected with the input domain if given.
+    if domain is not None:
+        dom_lo, dom_hi = float(domain[0]), float(domain[1])
+        xL = np.clip(x0 - Rmax, dom_lo, dom_hi)
+        xU = np.clip(x0 + Rmax, dom_lo, dom_hi)
+    else:
+        xL = x0 - Rmax
+        xU = x0 + Rmax
     hidden_preact_bounds = ibp_preact_bounds(layers, xL, xU)
 
     # Sanity check: number of IBP bounds should match number of hidden affines
@@ -238,6 +249,11 @@ def build_distance_milp(
     # Input x = x0 + delta
     x = m.addMVar(shape=d, lb=-GRB.INFINITY, name="x")
     m.addConstr(x == x0 + delta)
+
+    # Restrict the adversarial input to the valid data domain (e.g. pixels in [0,1]).
+    if domain is not None:
+        m.addConstr(x >= dom_lo)
+        m.addConstr(x <= dom_hi)
 
     # Build network layer by layer
     z_expr = x
@@ -312,6 +328,7 @@ def solve_exact_radius(
     time_limit_s: Optional[float] = None,
     mip_gap: Optional[float] = None,
     verbose: bool = True,
+    domain: Optional[Tuple[float, float]] = None,
 ) -> Dict[str, Any]:
     """
     Compute exact r* = min_{k!=y} t_k* by solving MILP per class.
@@ -365,6 +382,7 @@ def solve_exact_radius(
             Rmax=Rmax,
             time_limit_s=time_limit_s,
             mip_gap=mip_gap,
+            domain=domain,
         )
         m.optimize()
 
@@ -597,6 +615,7 @@ def solve_from_onnx(
     time_limit_s: Optional[float] = None,
     mip_gap: Optional[float] = None,
     verbose: bool = True,
+    domain: Optional[Tuple[float, float]] = None,
 ) -> Dict[str, Any]:
     model = onnx.load(onnx_path)
     layers = parse_mlp_gemm_relu(model)
@@ -607,6 +626,7 @@ def solve_from_onnx(
         time_limit_s=time_limit_s,
         mip_gap=mip_gap,
         verbose=verbose,
+        domain=domain,
     )
 
 

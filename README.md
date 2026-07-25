@@ -7,7 +7,7 @@ Benchmark framework for neural network verification. Generates provably robust (
 **Requires:** Python 3.9+, git. Optional: CUDA GPU, [Gurobi license](https://www.gurobi.com/academia/academic-program-and-licenses/) (for MILP construction), MATLAB (for NNV verifier).
 
 ```bash
-git clone --recursive https://github.com/<YOUR_ORG>/VeriStressGT.git
+git clone --recursive https://github.com/<NeurIPSAnon12345>/VeriStressGT.git
 cd VeriStressGT
 bash scripts/bootstrap.sh
 conda activate VeriStressGT
