@@ -28,3 +28,8 @@ results.json
 # Pre-built mini_sweep benchmark committed for reproducibility
 !mini_sweep_bench/
 !mini_sweep_bench/**
+
+# Track committed benchmark models (needed to actually run the benchmarks); never commit the
+# stale external-data blobs the older exporter left behind.
+!src/VeriStressGT/benchmarks/**/*.onnx
+src/VeriStressGT/benchmarks/**/*.onnx.data
