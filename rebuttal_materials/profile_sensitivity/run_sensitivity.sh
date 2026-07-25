@@ -20,6 +20,10 @@ SRC="$REPO/rebuttal_materials/profile_sensitivity/src"
 # module src first (common/driver/...), core src second (VeriStressGT); common.py also
 # self-registers the core src, so either ordering works.
 export PYTHONPATH="$SRC:$REPO/src"
+# CPU-only: the profiler runs on CPU; hiding the GPU silences the harmless
+# "NVIDIA driver too old" CUDA-init warning and avoids contending with GPU
+# verifier jobs. Override by exporting CUDA_VISIBLE_DEVICES before calling.
+export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES-}"
 NJOBS="${NJOBS:-100}"
 run() { ( cd "$SRC" && python run_all.py "$@" ); }
 
