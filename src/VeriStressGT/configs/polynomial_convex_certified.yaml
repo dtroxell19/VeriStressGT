@@ -1,0 +1,71 @@
+name: polynomial_convex_certified
+# MAIN analytically-certified polynomial benchmark (rebuttal): CONVEX margins only.
+# certified_convex=True enforces EVEN activation degree + coordinatewise-nonnegative margin
+# coefficients (W2[0]-W2[1] >= 0), so robustness follows analytically from the convex first-order
+# inequality (no L-BFGS-B / numerical global-separation check). Odd-degree rows (d=17,19,21) from the
+# original sweep are replaced by even-degree cases. Same sweeps over input_dim, hidden_dim, degree
+# (even), and delta_prime.
+defaults:
+  input_dim: 100
+  hidden_dim: 100
+  degree: 10
+  num_outputs: 2
+
+  certified_convex: true
+  norm: linf
+
+  init_mode: fanin
+  eps_normal: 0.02
+  delta_prime: 0.005
+
+  num_lines: 1400
+  center_scale: 2.0
+  line_t_min: -10.0
+  line_t_max: 10.0
+  line_grid_points: 240
+  boundary_tol: 1.0e-6
+  boundary_rel_tol: 1.0e-10
+  unique_tol: 1.0e-4
+
+  max_candidates: 5
+  candidate_margin_tol: 1.0e-8
+  grad_tol: 1.0e-12
+
+  weight_scale: 1.0
+  bias_scale: 1.0
+  output_weight_scale: 1.0
+  output_bias_scale: 1.0
+  bias_base_scale: 0.1
+  output_bias_base_scale: 0.1
+  opset: 13
+
+instances:
+  # Tier 0: easy sanity checks (even degree; input_dim / hidden_dim sweep).
+  - { id: cpoly01_N50_d10,   construction: polynomial.algebraic_boundary, seed: 101, args: { input_dim: 50, hidden_dim: 100, degree: 10, delta_prime: 0.005 } }
+  - { id: cpoly02_d2,        construction: polynomial.algebraic_boundary, seed: 102, args: { degree: 2,  delta_prime: 0.005 } }
+  - { id: cpoly03_d6,        construction: polynomial.algebraic_boundary, seed: 103, args: { degree: 6,  delta_prime: 0.005 } }
+  - { id: cpoly04_d10_h50,   construction: polynomial.algebraic_boundary, seed: 104, args: { hidden_dim: 50,  degree: 10, delta_prime: 0.005 } }
+  - { id: cpoly05_d10_h500,  construction: polynomial.algebraic_boundary, seed: 105, args: { hidden_dim: 500, degree: 10, delta_prime: 0.005 } }
+
+  # Tier 1-3: even-degree transition sweep (replaces odd d=17,19,21 with even cases).
+  - { id: cpoly06_d12,       construction: polynomial.algebraic_boundary, seed: 106, args: { degree: 12, delta_prime: 0.005 } }
+  - { id: cpoly07_d14,       construction: polynomial.algebraic_boundary, seed: 107, args: { degree: 14, delta_prime: 0.005 } }
+  - { id: cpoly08_d16,       construction: polynomial.algebraic_boundary, seed: 108, args: { degree: 16, delta_prime: 0.005 } }
+  - { id: cpoly09_d16_b,     construction: polynomial.algebraic_boundary, seed: 109, args: { degree: 16, delta_prime: 0.005 } }
+  - { id: cpoly10_d18_a,     construction: polynomial.algebraic_boundary, seed: 110, args: { degree: 18, delta_prime: 0.005 } }
+  - { id: cpoly11_d18_b,     construction: polynomial.algebraic_boundary, seed: 111, args: { degree: 18, delta_prime: 0.005 } }
+  - { id: cpoly12_d20_a,     construction: polynomial.algebraic_boundary, seed: 112, args: { degree: 20, delta_prime: 0.005 } }
+  - { id: cpoly13_d20_b,     construction: polynomial.algebraic_boundary, seed: 113, args: { degree: 20, delta_prime: 0.005 } }
+  - { id: cpoly14_d22_a,     construction: polynomial.algebraic_boundary, seed: 114, args: { degree: 22, delta_prime: 0.005, num_lines: 1800 } }
+  - { id: cpoly15_d22_b,     construction: polynomial.algebraic_boundary, seed: 115, args: { degree: 22, delta_prime: 0.005, num_lines: 1800 } }
+
+  # Tier 4: boundary-buffer (delta) sweep at fixed even d=10.
+  - { id: cpoly16_delta2e3,  construction: polynomial.algebraic_boundary, seed: 117, args: { degree: 10, delta_prime: 0.002 } }
+  - { id: cpoly17_delta1e3,  construction: polynomial.algebraic_boundary, seed: 118, args: { degree: 10, delta_prime: 0.001 } }
+  - { id: cpoly18_delta5e4,  construction: polynomial.algebraic_boundary, seed: 119, args: { degree: 10, delta_prime: 0.0005 } }
+  - { id: cpoly19_delta2e4,  construction: polynomial.algebraic_boundary, seed: 120, args: { degree: 10, delta_prime: 0.0002 } }
+  - { id: cpoly20_delta1e4,  construction: polynomial.algebraic_boundary, seed: 121, args: { degree: 10, delta_prime: 0.0001 } }
+
+  # Two more even-degree cases to keep the benchmark at 22 rows (matching the original table size).
+  - { id: cpoly21_d8,        construction: polynomial.algebraic_boundary, seed: 122, args: { degree: 8,  delta_prime: 0.005 } }
+  - { id: cpoly22_N50_d12,   construction: polynomial.algebraic_boundary, seed: 123, args: { input_dim: 50, degree: 12, delta_prime: 0.005 } }

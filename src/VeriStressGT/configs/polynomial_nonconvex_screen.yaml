@@ -1,0 +1,62 @@
+name: polynomial_nonconvex_screen
+# SEPARATE exploratory experiment: NONCONVEX (incl. odd-degree) polynomial margins.
+# certified_convex=False -> no analytic guarantee. nonconvex_report_mode=True -> each instance is
+# returned with screening_status in {numerically_certified_robust, non_robust, inconclusive} from a
+# multi-start L-BFGS-B screen (see meta "gt.screening_status"). These instances are NOT used to assign
+# ground-truth labels or to judge verifier soundness; report only the tally of screening outcomes.
+defaults:
+  input_dim: 100
+  hidden_dim: 100
+  degree: 17
+  num_outputs: 2
+
+  certified_convex: false
+  nonconvex_report_mode: true
+  norm: linf
+
+  init_mode: fanin
+  eps_normal: 0.02
+  delta_prime: 0.005
+
+  num_lines: 1400
+  center_scale: 2.0
+  line_t_min: -10.0
+  line_t_max: 10.0
+  line_grid_points: 240
+  boundary_tol: 1.0e-6
+  boundary_rel_tol: 1.0e-10
+  unique_tol: 1.0e-4
+
+  max_candidates: 8
+  candidate_margin_tol: 1.0e-8
+  grad_tol: 1.0e-12
+
+  nbc_num_restarts: 50
+  nbc_max_iter: 500
+  nbc_boundary_tol: 1.0e-10
+  nbc_ftol: 1.0e-15
+  nbc_gtol: 1.0e-10
+
+  weight_scale: 1.0
+  bias_scale: 1.0
+  output_weight_scale: 1.0
+  output_bias_scale: 1.0
+  bias_base_scale: 0.1
+  output_bias_base_scale: 0.1
+  opset: 13
+
+instances:
+  # Odd-degree cases (the ones removed from the main certified benchmark), plus a couple lower odd
+  # degrees, at two seeds each for a small screening tally.
+  - { id: ncpoly01_d11_a, construction: polynomial.algebraic_boundary, seed: 201, args: { degree: 11 } }
+  - { id: ncpoly02_d11_b, construction: polynomial.algebraic_boundary, seed: 202, args: { degree: 11 } }
+  - { id: ncpoly03_d13_a, construction: polynomial.algebraic_boundary, seed: 203, args: { degree: 13 } }
+  - { id: ncpoly04_d13_b, construction: polynomial.algebraic_boundary, seed: 204, args: { degree: 13 } }
+  - { id: ncpoly05_d15_a, construction: polynomial.algebraic_boundary, seed: 205, args: { degree: 15 } }
+  - { id: ncpoly06_d15_b, construction: polynomial.algebraic_boundary, seed: 206, args: { degree: 15 } }
+  - { id: ncpoly07_d17_a, construction: polynomial.algebraic_boundary, seed: 207, args: { degree: 17 } }
+  - { id: ncpoly08_d17_b, construction: polynomial.algebraic_boundary, seed: 208, args: { degree: 17 } }
+  - { id: ncpoly09_d19_a, construction: polynomial.algebraic_boundary, seed: 209, args: { degree: 19 } }
+  - { id: ncpoly10_d19_b, construction: polynomial.algebraic_boundary, seed: 210, args: { degree: 19 } }
+  - { id: ncpoly11_d21_a, construction: polynomial.algebraic_boundary, seed: 211, args: { degree: 21 } }
+  - { id: ncpoly12_d21_b, construction: polynomial.algebraic_boundary, seed: 212, args: { degree: 21 } }

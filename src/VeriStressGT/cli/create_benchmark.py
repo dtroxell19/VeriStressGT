@@ -138,8 +138,8 @@ def _run_one_instance(
     if seed is not None:
         setattr(run_args, "seed", seed)
 
-    # Run construction
-    cons.run(run_args)
+    # Run construction (capture the returned result so ground-truth / certificate metadata is persisted)
+    run_result = cons.run(run_args)
 
     # Sanity
     if not onnx_path.exists():
@@ -163,6 +163,16 @@ def _run_one_instance(
         # For reproducibility: store the per-instance args we passed
         "args": vars(deepcopy(run_args)),
     }
+
+    # Persist the constructor's returned ground-truth / certificate metadata under "gt" (best-effort,
+    # JSON-safe). This carries e.g. is_robust, certificate_type, certified_convex, norm, and (for the
+    # nonconvex polynomial screen) screening_status so downstream analysis can read it.
+    if isinstance(run_result, dict):
+        gt = run_result.get("meta", run_result)
+        try:
+            inst_meta["gt"] = json.loads(json.dumps(gt, default=str))
+        except (TypeError, ValueError):
+            pass
 
     _write_instance_meta(meta_path, inst_meta)
     return inst_meta
