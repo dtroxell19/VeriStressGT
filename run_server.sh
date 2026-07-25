@@ -25,8 +25,19 @@ TIMEOUT_POLY="${TIMEOUT_POLY:-600}"
 CPU_JOBS="${CPU_JOBS:-4}"
 mkdir -p runs
 
-tally () {  # $1 = results dir
-  [ -f "$1/results.jsonl" ] && { echo "  $1:"; jq -r .status "$1/results.jsonl" | sort | uniq -c; } || echo "  $1: (no results)"
+tally () {  # $1 = results dir  (jq-free)
+  if [ -f "$1/results.jsonl" ]; then
+    echo "  $1:"
+    python3 -c "import json,collections,sys
+c=collections.Counter(json.loads(l).get('status') for l in open(sys.argv[1]) if l.strip())
+[print('   %5d %s'%(n,s)) for s,n in c.most_common()]" "$1/results.jsonl"
+  else echo "  $1: (no results)"; fi
+}
+
+count_gt () {  # $1 = benchmark dir, $2 = gt field  (jq-free)
+  python3 -c "import json,glob,collections,sys
+c=collections.Counter(json.load(open(f)).get('gt',{}).get(sys.argv[2]) for f in glob.glob(sys.argv[1]+'/instances/*/meta.json'))
+[print('   %5d %s'%(n,s)) for s,n in c.most_common()]" "$1" "$2"
 }
 
 # --------------------------------------------------------------------------- #
@@ -60,9 +71,9 @@ if [ -z "${SKIP_POLY:-}" ]; then
     --out_dir "$BM/polynomial_nonconvex_screen" --overwrite || { echo "FATAL: nonconvex generation failed"; exit 1; }
 
   echo "--- convex certificate types (all analytic) ---"
-  jq -r '.gt.certificate_type' "$BM/polynomial_convex_certified/instances"/*/meta.json | sort | uniq -c
+  count_gt "$BM/polynomial_convex_certified" certificate_type
   echo "--- nonconvex screening tally ---"
-  jq -r '.gt.screening_status' "$BM/polynomial_nonconvex_screen/instances"/*/meta.json | sort | uniq -c
+  count_gt "$BM/polynomial_nonconvex_screen" screening_status
 
   run_all_verifiers () {  # $1 = benchmark dir, $2 = name prefix
     local bench="$1" name="$2"
