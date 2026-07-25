@@ -1,0 +1,16 @@
+Verifier,Scenario,best_addone,delta_auc
+abcrown,Synthetic,g_ibp,0.004
+marabou,Synthetic,g_ibp,0.083
+neuralsat,Synthetic,a_tau,0.013
+nnenum,Synthetic,g_ibp,0.073
+pyrat,Synthetic,margin_hat_min,0.003
+abcrown,Established*,unstable_fraction,0.038
+marabou,Established*,g_ibp,0.169
+neuralsat,Established*,unstable_fraction,0.141
+nnenum,Established*,d_eff,0.042
+pyrat,Established*,g_ibp,0.143
+abcrown,Combined,g_ibp,0.059
+marabou,Combined,g_ibp,0.208
+neuralsat,Combined,unstable_fraction,0.064
+nnenum,Combined,g_ibp,0.153
+pyrat,Combined,g_ibp,0.037

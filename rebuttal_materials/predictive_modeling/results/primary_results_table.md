@@ -1,0 +1,17 @@
+| Verifier | Scenario | n | TO_rate | Groups | H | Size_AUC | SizeProfile_AUC | dAUC | CI95 | Size_Brier | SizeProfile_Brier | Verdict |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| abcrown | Synthetic | 225 | 0.14 | 225 | 600 | 0.859 | 0.865 | 0.005 | [-0.033, +0.040] | 0.117 | 0.086 | PROFILE_ADDS_PARTIAL_VALUE |
+| marabou | Synthetic | 168 | 0.3 | 168 | 60 | 0.872 | 0.968 | 0.111 | [+0.064, +0.161] | 0.132 | 0.058 | PROFILE_ADDS_PREDICTIVE_VALUE |
+| neuralsat | Synthetic | 218 | 0.13 | 218 | 600 | 0.887 | 0.882 | 0.002 | [-0.039, +0.044] | 0.107 | 0.094 | PROFILE_ADDS_PARTIAL_VALUE |
+| nnenum | Synthetic | 127 | 0.2 | 127 | 60 | 0.822 | 0.927 | 0.107 | [+0.030, +0.187] | 0.136 | 0.081 | PROFILE_ADDS_PREDICTIVE_VALUE |
+| pyrat | Synthetic | 198 | 0.19 | 198 | 600 | 0.972 | 0.967 | 0.001 | [-0.015, +0.016] | 0.045 | 0.044 | PROFILE_ADDS_PARTIAL_VALUE |
+| abcrown | Combined | 343 | 0.28 | 231 | 360 | 0.768 | 0.825 | 0.056 | [+0.011, +0.116] | 0.233 | 0.227 | PROFILE_ADDS_PREDICTIVE_VALUE |
+| marabou | Combined | 286 | 0.38 | 174 | 60 | 0.6 | 0.805 | 0.2 | [+0.100, +0.288] | 0.294 | 0.185 | PROFILE_ADDS_PREDICTIVE_VALUE |
+| neuralsat | Combined | 336 | 0.35 | 224 | 240 | 0.771 | 0.838 | 0.082 | [+0.018, +0.153] | 0.187 | 0.159 | PROFILE_ADDS_PREDICTIVE_VALUE |
+| nnenum | Combined | 247 | 0.42 | 133 | 60 | 0.718 | 0.882 | 0.151 | [+0.016, +0.281] | 0.242 | 0.144 | PROFILE_ADDS_PREDICTIVE_VALUE |
+| pyrat | Combined | 313 | 0.31 | 204 | 360 | 0.832 | 0.879 | 0.046 | [-0.002, +0.108] | 0.196 | 0.144 | PROFILE_ADDS_PARTIAL_VALUE |
+| abcrown | Established* | 118 | 0.52 | 6 | 360 | 0.574 | 0.743 | 0.209 | [-0.067, +0.493] | 0.296 | 0.226 | exploratory PROFILE_ADDS_PARTIAL_VALUE |
+| marabou | Established* | 118 | 0.43 | 6 | 240 | 0.334 | 0.486 | 0.153 | [+0.050, +0.361] | 0.3 | 0.289 | exploratory PROFILE_ADDS_PREDICTIVE_VALUE |
+| neuralsat | Established* | 118 | 0.44 | 6 | 240 | 0.579 | 0.712 | 0.055 | [-0.080, +0.290] | 0.256 | 0.243 | exploratory PROFILE_ADDS_PARTIAL_VALUE |
+| nnenum | Established* | 120 | 0.6 | 6 | 240 | 0.653 | 0.732 | 0.025 | [-0.074, +0.338] | 0.227 | 0.217 | exploratory PROFILE_ADDS_PARTIAL_VALUE |
+| pyrat | Established* | 115 | 0.5 | 6 | 360 | 0.581 | 0.776 | 0.246 | [-0.009, +0.475] | 0.243 | 0.229 | exploratory PROFILE_ADDS_PARTIAL_VALUE |

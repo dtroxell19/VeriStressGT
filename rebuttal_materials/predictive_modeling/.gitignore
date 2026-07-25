@@ -1,5 +1,6 @@
-results/
 logs/
-plots/
 models/
 __pycache__/
+# bulky, reproducible intermediates (regenerate via run_all.py from the frozen table)
+results/cv/*.oof.parquet
+results/predictions/out_of_fold_predictions.csv

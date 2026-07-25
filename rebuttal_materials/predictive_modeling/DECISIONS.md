@@ -62,3 +62,25 @@ All work is isolated under `rebuttal_materials/predictive_modeling/`; no existin
   feature sets within a cell (splits depend only on (y, groups)). Thresholds picked from inner
   training predictions only.
 - Verdict gate is pre-registered (spec §9.3) and evaluated after the run; not redefined.
+
+## 2026-07-25 — Run complete (server, 50 cores) + findings
+- Full sweep ran on the compute server (sklearn on py3.10; ConvergenceWarnings on interpretation-only
+  fits are benign — coefficients still returned, reliability captured by the stability pass). Results
+  are internally consistent (one env). 9/9 leakage/correctness tests pass.
+- **Verdict (pre-registered gate):** the profile adds significant held-out timeout-prediction value
+  beyond size/type for 4/5 verifiers in the **combined** scenario (231 nets; ΔAUC +0.056/+0.082/+0.151/
+  +0.200 for abcrown/neuralsat/nnenum/marabou, CIs>0; pyrat +0.046 inconclusive) and for Marabou/nnenum
+  on **synthetic** (+0.111/+0.107). abcrown/neuralsat/pyrat synthetic: ΔAUC≈0 (size AUC 0.86–0.97 already),
+  profile improves Brier + runtime ranking. Established-only exploratory (6 groups).
+- **Drivers:** `g_ibp` (odds ratios up to 60–110×/SD, sign-consistent in every fold) and
+  `unstable_fraction`; stable `g_ibp × parameter_count` interaction ⇒ not a mere scale proxy.
+- **Transfer:** size trained on one domain ≈chance on the other (AUC 0.29–0.50); profile restores
+  discrimination (e.g. marabou 0.50→0.86) — architecture-agnostic difficulty. Two exceptions
+  (neuralsat/pyrat estab→synth).
+- Deliverables: REPORT.md (finalized), REBUTTAL_TEXT.md (short/medium/detailed), per-instance OOF CSV,
+  15 CV cells, transfer, coefficients, ablations, runtime, plots.
+
+## 2026-07-25 — Anonymization
+- Repo history rewritten (git-filter-repo): all author/committer identities forced to
+  NeurIPSAnon12345 <…@users.noreply.github.com>; blobs + messages scrubbed of real name/email/username
+  paths and the compute-host name. Force-pushed all branches. Local git identity set to anon.
