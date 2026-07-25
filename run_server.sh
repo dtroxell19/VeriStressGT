@@ -89,8 +89,11 @@ if [ -z "${SKIP_POLY:-}" ]; then
       --out_dir "runs/${name}_neuralsat" --overwrite || echo "WARN: neuralsat $name had errors"
     for V in marabou nnenum pyrat; do
       echo "=== [3] $V (CPU) on $name ==="
+      extra=()
+      # Marabou's adapter runs a compiled binary; point it at MARABOU_BIN if set.
+      [ "$V" = marabou ] && [ -n "${MARABOU_BIN:-}" ] && extra=(--marabou_bin "$MARABOU_BIN")
       $VERIFY --benchmark "$bench" --verifier "$V" \
-        --timeout "$TIMEOUT_POLY" --jobs "$CPU_JOBS" \
+        --timeout "$TIMEOUT_POLY" --jobs "$CPU_JOBS" "${extra[@]}" \
         --out_dir "runs/${name}_${V}" --overwrite || echo "WARN: $V $name had errors"
     done
     echo "--- $name tallies ---"
