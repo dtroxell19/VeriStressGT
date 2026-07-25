@@ -166,8 +166,12 @@ def apply_transforms(df, cols):
 
 def load_rows():
     """Load the frozen canonical row table; parquet preferred, CSV fallback
-    (so the CV runs on hosts without pyarrow)."""
+    (so the CV runs on hosts without pyarrow). Override the source with the
+    PM_ROWS env var (e.g. the 600 s-rerun table `instance_verifier_rows_600.parquet`)."""
     import pandas as pd
+    override = os.environ.get("PM_ROWS")
+    if override:
+        return pd.read_parquet(override) if override.endswith(".parquet") else pd.read_csv(override)
     pq = DATA_PROCESSED / "instance_verifier_rows.parquet"
     csv = DATA_PROCESSED / "instance_verifier_rows.csv"
     try:

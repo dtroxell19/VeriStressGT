@@ -39,7 +39,7 @@ def scenario_frames(df):
     }
 
 
-def run_primary(df, cfg, feats, only_scn=None, only_ver=None, n_jobs=-1):
+def run_primary(df, cfg, feats, only_scn=None, only_ver=None, n_jobs=-1, forced_horizon=None):
     cvdir = C.RESULTS / "cv"
     cvdir.mkdir(parents=True, exist_ok=True)
     frames = scenario_frames(df)
@@ -60,7 +60,8 @@ def run_primary(df, cfg, feats, only_scn=None, only_ver=None, n_jobs=-1):
             print(f"[run ] {tag}  rows={len(cell)}", flush=True)
             t0 = time.time()
             try:
-                oof, meta = E.run_cell(cell, feats, cfg, label=tag, n_jobs=n_jobs)
+                oof, meta = E.run_cell(cell, feats, cfg, label=tag, n_jobs=n_jobs,
+                                       horizon=forced_horizon)
             except Exception as exc:
                 import traceback
                 print(f"[ERR ] {tag}: {type(exc).__name__}: {exc}", flush=True)
@@ -87,7 +88,7 @@ def run_primary(df, cfg, feats, only_scn=None, only_ver=None, n_jobs=-1):
 # --------------------------------------------------------------------------- #
 # Scenario D: cross-domain transfer
 # --------------------------------------------------------------------------- #
-def run_transfer(df, cfg, feats_keys=("S", "SD"), n_jobs=-1):
+def run_transfer(df, cfg, feats_keys=("S", "SD"), n_jobs=-1, forced_horizon=None):
     from sklearn.metrics import roc_auc_score, brier_score_loss
     fs = M.feature_sets()
     outdir = C.RESULTS / "transfer"
@@ -97,7 +98,10 @@ def run_transfer(df, cfg, feats_keys=("S", "SD"), n_jobs=-1):
     for v in C.VERIFIERS:
         cell = df[df.verifier == v]
         # common horizon over union (per verifier) = combined-cell horizon
-        H, _, _ = GS.choose_horizon(cell.reset_index(drop=True))
+        if forced_horizon is not None:
+            H = forced_horizon
+        else:
+            H, _, _ = GS.choose_horizon(cell.reset_index(drop=True))
         for direction, src_dom, tgt_dom in [("synth_to_estab", "synthetic", "established"),
                                              ("estab_to_synth", "established", "synthetic")]:
             tag = f"{v}__{direction}"
@@ -177,6 +181,9 @@ def main():
     ap.add_argument("--only-verifier", default=None)
     ap.add_argument("--skip-transfer", action="store_true")
     ap.add_argument("--n-jobs", type=int, default=-1)
+    ap.add_argument("--horizon", type=int, default=None,
+                    help="Force a single common timeout horizon (s) for every cell "
+                         "(e.g. 240 or 600). Omit for the adaptive per-cell horizon.")
     args = ap.parse_args()
 
     cfg = C.load_config()
@@ -188,12 +195,14 @@ def main():
     df = C.load_rows()
     feats = M.feature_sets()
 
-    print(f"=== PRIMARY CV (repeats={cfg['cv']['outer_repeats']}) ===", flush=True)
-    run_primary(df, cfg, feats, args.only_scenario, args.only_verifier, args.n_jobs)
+    hz = f"forced {args.horizon}s" if args.horizon else "adaptive per-cell"
+    print(f"=== PRIMARY CV (repeats={cfg['cv']['outer_repeats']}, horizon={hz}) ===", flush=True)
+    run_primary(df, cfg, feats, args.only_scenario, args.only_verifier, args.n_jobs,
+                forced_horizon=args.horizon)
     run_correlations(df)
     if not args.skip_transfer:
         print("=== TRANSFER (Scenario D) ===", flush=True)
-        run_transfer(df, cfg, n_jobs=args.n_jobs)
+        run_transfer(df, cfg, n_jobs=args.n_jobs, forced_horizon=args.horizon)
     print("=== run_all complete ===", flush=True)
 
 

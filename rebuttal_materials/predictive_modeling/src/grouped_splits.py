@@ -12,17 +12,23 @@ HORIZON_GRID = [60, 120, 180, 240, 300, 360, 480, 600]
 
 def label_at_horizon(status, time, budget, horizon):
     """Timeout target at `horizon` seconds (spec sec 4.1/4.2).
-    Returns 1 (timeout), 0 (solved before horizon), or np.nan (excluded)."""
-    if budget is None or not np.isfinite(budget) or budget < horizon - 1e-6:
-        return np.nan                      # run can't be relabeled at this horizon
+    Returns 1 (timeout), 0 (solved before horizon), or np.nan (excluded).
+
+    A *conclusively solved* instance is labelable at ANY horizon regardless of the
+    run's nominal budget (a solve in 8 s is a valid negative at H=600). Only a true
+    TIMEOUT needs budget >= H, because otherwise we cannot know whether it would have
+    solved between its budget and H. (Fixes a bug where an all-solved/all-error
+    sub-benchmark spuriously dragged the common horizon down via budget rounding.)"""
     if status in C.EXCLUDE_STATUSES:
         return np.nan                      # ERROR/UNKNOWN/missing/other
-    if status == C.POS_STATUS:             # TIMEOUT at budget >= horizon
-        return 1.0
-    if status in C.NEG_STATUSES:           # conclusive UNSAT / SAT
+    if status in C.NEG_STATUSES:           # conclusive UNSAT / SAT -> valid at any horizon
         if not np.isfinite(time):
             return np.nan
         return 1.0 if time >= horizon - 1e-6 else 0.0   # solved-after-horizon => timeout@H
+    if status == C.POS_STATUS:             # TIMEOUT: only labelable if the run reached H
+        if budget is None or not np.isfinite(budget) or budget < horizon - 1e-6:
+            return np.nan
+        return 1.0
     return np.nan
 
 
