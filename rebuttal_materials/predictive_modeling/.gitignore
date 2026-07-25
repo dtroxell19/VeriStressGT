@@ -1,0 +1,5 @@
+results/
+logs/
+plots/
+models/
+__pycache__/

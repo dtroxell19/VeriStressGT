@@ -1,0 +1,40 @@
+{
+  "experiment": "veristress_difficulty_profile_predictive_modeling",
+  "source": {
+    "merged_records": "rebuttal_materials/merged_records_constructed_and_real.json",
+    "benchmarks_root": "src/VeriStressGT/benchmarks"
+  },
+  "verifiers": ["abcrown", "neuralsat", "marabou", "nnenum", "pyrat"],
+  "profile_features": ["margin_hat_min", "g_ibp", "unstable_fraction", "a_tau", "d_eff"],
+  "established_benchmarks": ["vnncomp_mnist_fc", "oval21"],
+  "synthetic_benchmarks": ["sweep_all", "polynomial_stress_22"],
+  "target": {
+    "positive_class": "TIMEOUT",
+    "negative_statuses": ["UNSAT", "SAT"],
+    "excluded_statuses": ["ERROR", "UNKNOWN", "missing", "other"],
+    "primary_horizon_policy": "per_verifier_common",
+    "horizon_sensitivity_seconds": [60, 180, 360],
+    "floor_time_epsilon": 1e-6
+  },
+  "cv": {
+    "outer_folds": 5,
+    "outer_repeats": 20,
+    "outer_seed_base": 1100,
+    "inner_folds": 4,
+    "min_folds_fallback": [5, 4, 3]
+  },
+  "eligibility": {
+    "min_rows": 40,
+    "min_pos": 20,
+    "min_neg": 20,
+    "min_groups": 10,
+    "exploratory_min_class": 10
+  },
+  "grid": {
+    "C": [0.01, 0.1, 1.0, 10.0],
+    "l1_ratio": [0.0, 0.25, 0.5, 0.75, 1.0],
+    "class_weight": [null, "balanced"]
+  },
+  "bootstrap": {"n_boot": 2000, "seed": 7},
+  "run": {"smoke_repeats": 3, "n_jobs": -1}
+}
