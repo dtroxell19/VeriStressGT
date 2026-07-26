@@ -1,0 +1,26 @@
+{
+  "abcrown": {
+    "n": 203,
+    "cpu_timeouts": 26,
+    "gpu_timeouts": 5,
+    "cpu_to_retained_on_gpu": 5,
+    "cpu_to_solved_on_gpu": 10,
+    "rank_spearman_censored": -0.12,
+    "rank_spearman_hard_only": -0.423,
+    "n_hard": 172,
+    "both_solved": 172,
+    "speedup_p50": 6.18
+  },
+  "neuralsat": {
+    "n": 203,
+    "cpu_timeouts": 23,
+    "gpu_timeouts": 25,
+    "cpu_to_retained_on_gpu": 17,
+    "cpu_to_solved_on_gpu": 6,
+    "rank_spearman_censored": 0.616,
+    "rank_spearman_hard_only": 0.406,
+    "n_hard": 148,
+    "both_solved": 148,
+    "speedup_p50": 3.83
+  }
+}
