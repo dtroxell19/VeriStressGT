@@ -32,7 +32,7 @@ if ! grep -q '"--benchmark"' "$VB"; then
 else
   python "$VB" \
     --benchmark "$SG/celeba_bench" --verifier abcrown \
-    --out_dir "$SG/verify_abcrown" --timeout 600 --jobs 1 || true
+    --out_dir "$SG/verify_abcrown" --timeout 600 --jobs 1 --overwrite || true
 fi
 
 echo "done. results -> $SG/{celeba_scale_results.json,REPORT.md,verify_abcrown/}"
