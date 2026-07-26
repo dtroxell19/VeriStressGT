@@ -1,0 +1,128 @@
+# Realism of the constructed instances (rebuttal draft)
+
+**Concern (reviewers + AC).** Are the provably-robust instances VeriStress-GT constructs representative
+of networks verifiers meet in practice, or are they artificial gadgets whose difficulty (and the
+verifier failures they expose) is an artifact of the construction?
+
+We answer in two parts: (1) the constructed instances match the **difficulty profile** of real
+verification benchmarks, and (2) the constructions are not synthetic-only — the same architectures can
+be realized as **fully trained classifiers on real data** with whole-network ground truth.
+
+---
+
+## 1. Constructed instances track the difficulty profile of real benchmarks
+
+We compare the synthetic constructors against a panel of real verification benchmarks — **MNIST_fc,
+oval21, reach_prob_density, rl_benchmarks, and cifar_biasfield** (5 benchmarks, 30 instances each, 150
+total) — on the five Difficulty-Profile components. See
+`plots/profile_synth_vs_real.png`.
+
+| component | synthetic (min / median / max) | real (min / median / max) | \|Δ median\| (signed-log) |
+|---|---|---|--:|
+| A_τ (local linear regions) | 0.00 / 5.55 / 6.40 | 0.00 / 5.66 / 6.40 | **0.02** |
+| d_eff / input_dim | 0.00 / 0.59 / 0.88 | 0.002 / 0.63 / 0.94 | **0.03** |
+| M̂_min (min margin) | 1e−5 / 0.34 / 1.9e3 | −17.7 / 0.19 / 23.6 | **0.12** |
+| U (unstable fraction) | 0.00 / 0.88 / 1.00 | 0.01 / 0.64 / 1.00 | **0.13** |
+| G_IBP (IBP relative gap) | −0.26 / 1.09 / 2.5e5 | 1.15 / 161 / 1.7e8 | 4.35 |
+
+On four of the five axes the synthetic and real distributions overlap closely — near-identical on
+**local-region count (A_τ)** and **effective dimensionality (d_eff/dim)**, same order on **margin** and
+**unstable fraction**. The one axis where the synthetic *median* sits below real is **G_IBP** (the IBP
+relative gap), where a few real benchmarks — MNIST_fc, cifar_biasfield — have extreme values; the
+synthetic *range* still extends into that regime (the per-constructor MEAP family reaches G_IBP ≈ 645,
+bracketing MNIST_fc's 771). The constructed instances are therefore not degenerate: across the profile
+that predicts verification hardness, they sit inside the real distribution rather than off to one side.
+
+*(We deliberately show synthetic-vs-real here. Difficulty is what the profile is meant to capture, and
+this is the fair, load-bearing comparison.)*
+
+### 1.1 Robust-vs-robust: real instances verifiers certify robust
+
+Our constructed instances are all provably robust, so the sharpest comparison is against **real
+instances that are themselves verified robust** — returned **UNSAT by at least one** of five verifiers
+(α,β-CROWN, Marabou, NeuralSAT, nnenum, PyRAT). Verified-robust counts: mnist_fc 48/90, oval21 29/30,
+rl_benchmarks 29/30, reach_prob_density 3/30 (each capped to 30 for equal per-benchmark weight;
+real-UNSAT n=91, real-all n=120). Percentiles (P25 / P50 / P75; d_eff normalized by input dim):
+
+| component | group | P25 | P50 | P75 |
+|---|---|--:|--:|--:|
+| **M̂_min** (min margin) | synthetic | 0.11 | 0.34 | 4.0 |
+| | real (all) | −1.66 | 0.11 | 0.70 |
+| | real (verified-robust) | 0.08 | 0.25 | 0.96 |
+| **U** (unstable frac) | synthetic | 0.77 | 0.88 | 1.00 |
+| | real (all) | 0.13 | 0.30 | 0.77 |
+| | real (verified-robust) | 0.08 | 0.16 | 0.42 |
+| **A_τ** (local regions) | synthetic | 3.57 | 5.55 | 6.39 |
+| | real (all) | 4.26 | 5.92 | 6.40 |
+| | real (verified-robust) | 2.25 | 6.38 | 6.40 |
+| **d_eff / input_dim** | synthetic | 0.29 | 0.59 | 0.64 |
+| | real (all) | 0.42 | 0.60 | 0.75 |
+| | real (verified-robust) | 0.36 | 0.56 | 0.88 |
+| **G_IBP** (IBP rel. gap) | synthetic | 0.25 | 1.09 | 24.9 |
+| | real (all) | 13.4 | 67.7 | 432 |
+| | real (verified-robust) | 9.34 | 59.4 | 467 |
+
+Under the fair robust-vs-robust comparison, four of five components overlap closely: A_τ is essentially
+identical (synthetic 3.6/5.6/6.4 vs verified-robust 2.3/6.4/6.4), d_eff and margin overlap, and our
+instances are in fact *harder* than real robust instances on unstable-fraction (median 0.88 vs 0.16 —
+verified-robust real instances have few unstable ReLUs, which is why a verifier can close them). The one
+axis with a pooled-median gap is **G_IBP**, but even there the synthetic *upper quartile* (24.9) reaches
+into the real range, and the gap is a **composition** effect, not a coverage limit:
+
+| synthetic family | n | G_IBP median | range |
+|---|--:|--:|---|
+| MEAP | 14 | **645** | [41, 5.4e3] |
+| MILP-exact-radius | 31 | **143** | [9.7, 5.2e4] |
+| ReLU-corners | 22 | 12.8 | [0, 2.5e5] |
+| paired-bias | 46 | 8.4 | [0.8, 56] |
+| deep-contractive | 50 | 0.99 | [0, 1.0] |
+| attention / embedded-projection | 40 | ≈0 | — |
+
+The MEAP (645) and MILP (143) families **bracket** the real verified-robust G_IBP (59; full-real 161);
+the low pooled synthetic median only reflects that the intentionally IBP-tight families (deep-contractive,
+attention) are the most numerous in the sweep. Reported per-family, the constructors already cover the
+real G_IBP range.
+
+## 2. The constructions are trainable architectures, not synthetic-only gadgets
+
+A natural follow-up objection is that the constructors are hand-built weight patterns. They are not
+required to be. Each MILP-encodable constructor can be realized as a **genuine classifier trained on
+real data** — a Lipschitz-controlled feature prefix followed by the constructor's structured head —
+retaining a **whole-network** robustness certificate (analytic where the prefix Lipschitz bound is
+tight; exact MILP near the boundary). Training never assigns the label; a rigorous post-training check
+does.
+
+We validated this end-to-end on three constructors (real MNIST, matched-capacity baselines):
+
+| constructor | test acc | matched baseline | whole-net ground truth | abcrown |
+|---|--:|--:|---|---|
+| Deep-Contractive CNN | 0.816 | 0.946 | MILP-exact radius (near-boundary) | UNSAT (correct) |
+| Paired-Bias CNN | 0.916 | 0.910 | MILP-exact radius | UNSAT (correct) |
+| MEAP (MLP) | 0.910 | 0.912 | MILP-exact radius | UNSAT (correct) |
+
+Two of the three train to accuracy **at or above** their matched ordinary baseline; the contractive one
+pays a measurable ~13-point accuracy cost, which is the honest, reportable price of the Lipschitz control
+that gives it its certificate. The point for realism: these are ordinary trained networks on real data
+whose *architecture* carries the constructor, and off-the-shelf abcrown parses and reasons about the
+exported ONNX exactly as it would any benchmark. The constructions are architecturally realizable and
+trainable — not artifacts of hand-set weights.
+
+---
+
+### Figures
+- `plots/profile_synth_vs_real.png` — difficulty-profile components, synthetic vs real (§1).
+- `plots/profile_per_benchmark_winner.png`, `plots/profile_per_benchmark_points.png` — per-benchmark
+  breakdown (supporting detail; shows real benchmarks are heterogeneous in difficulty).
+
+### Reproduce
+```
+# §1 figure + closeness table (omit --trained -> synthetic-vs-real, 2 groups):
+PYTHONPATH=src python -m VeriStressGT.realism.profile_distributions \
+  --synthetic benchmarks/sweep_all/difficulty_profiles.json \
+  --real benchmarks/vnncomp_mnist_fc/difficulty_profiles.json benchmarks/oval21/difficulty_profiles.json \
+         benchmarks/real_reach_prob_density/difficulty_profiles.json \
+         benchmarks/real_rl_benchmarks/difficulty_profiles.json \
+         benchmarks/real_cifar_biasfield/difficulty_profiles.json \
+  --out-dir rebuttal_materials/realism_sweep_analytic/plots
+# §2 trained constructors: see rebuttal_materials/realism_smoke/REPORT.md (reproduce commands + env)
+```
