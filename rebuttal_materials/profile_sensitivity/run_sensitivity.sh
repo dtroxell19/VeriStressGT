@@ -20,6 +20,10 @@ SRC="$REPO/rebuttal_materials/profile_sensitivity/src"
 # module src first (common/driver/...), core src second (VeriStressGT); common.py also
 # self-registers the core src, so either ordering works.
 export PYTHONPATH="$SRC:$REPO/src"
+# Cap BLAS/OpenMP threads to 1 so the 56 loky workers don't each spawn a full numpy/BLAS
+# thread pool (torch.set_num_threads(1) alone does NOT cap OpenBLAS/MKL). Prevents
+# oversubscription (load avg >> n_jobs) that thrashes instead of parallelizing.
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1
 # CPU-only: the profiler runs on CPU; hiding the GPU silences the harmless
 # "NVIDIA driver too old" CUDA-init warning and avoids contending with GPU
 # verifier jobs. Override by exporting CUDA_VISIBLE_DEVICES before calling.
