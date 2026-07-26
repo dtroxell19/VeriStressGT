@@ -21,8 +21,16 @@ echo "[1/2] build CelebA-128 backbone + paired-bias ground-truth instances + aut
 python "$SG/run_celeba_scale.py" --n 8 --num-pairs 64 --celeba-root "$ROOT"
 
 echo "[2/2] verify (verifiers strain at 49k-dim; timeouts are expected and are the point)"
-python -m VeriStressGT.cli.verify_benchmark \
-  --benchmark "$SG/celeba_bench" --verifier abcrown \
-  --out_dir "$SG/verify_abcrown" --timeout 600 --jobs 1 || true
+# Run by explicit file path (not `-m`) so a stale pip-installed VeriStressGT in
+# site-packages can't shadow the current cli/verify_benchmark.py. Abort early with a
+# clear message if the resolved file has an unexpected (old) argument signature.
+VB="$PWD/src/VeriStressGT/cli/verify_benchmark.py"
+if ! grep -q '"--benchmark"' "$VB"; then
+  echo "  WARNING: $VB has an unexpected signature (stale checkout?). Skipping verify." >&2
+else
+  python "$VB" \
+    --benchmark "$SG/celeba_bench" --verifier abcrown \
+    --out_dir "$SG/verify_abcrown" --timeout 600 --jobs 1 || true
+fi
 
 echo "done. results -> $SG/{celeba_scale_results.json,REPORT.md,verify_abcrown/}"
