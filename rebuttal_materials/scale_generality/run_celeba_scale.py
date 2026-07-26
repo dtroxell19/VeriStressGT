@@ -42,35 +42,87 @@ def build_backbone():
     )
 
 
-def try_train_celeba(backbone, celeba_root, attr_idx=31, epochs=1, max_imgs=4000):
-    """Train `backbone` + a linear attribute head on CelebA (attr 31 = 'Smiling').
-    Returns (trained_backbone, test_acc, x0_pool) or (backbone, None, None) if unavailable."""
+# Real-image datasets. CelebA needs manual data (quota-limited gdrive); STL-10 and
+# CIFAR-10 auto-download via torchvision so the backbone trains with zero data hassle.
+# All are resized to 128x128 so the input is 49,152-dim regardless of native resolution.
+_DATASETS = {
+    "celeba": dict(cls="CelebA", download=False, ncls=2, target="attr", label="Smiling(attr)"),
+    "stl10":  dict(cls="STL10",  download=True,  ncls=10, target=None,   label="STL-10 class"),
+    "cifar10": dict(cls="CIFAR10", download=True, ncls=10, target=None,  label="CIFAR-10 class"),
+}
+
+
+def _make_dataset(dsets, cls, data_root, transforms, train, spec):
+    """Build a torchvision dataset for the train/test split, unifying the split API differences."""
+    if cls == "CelebA":
+        return dsets.CelebA(data_root, split=("train" if train else "test"),
+                            target_type="attr", transform=transforms, download=False)
+    if cls == "STL10":
+        return dsets.STL10(data_root, split=("train" if train else "test"),
+                          transform=transforms, download=spec["download"])
+    return dsets.CIFAR10(data_root, train=train, transform=transforms, download=spec["download"])
+
+
+def _to_label(y, spec, attr_idx=31):
+    """Map a batch of targets to class indices (CelebA attr -> binary; else int label)."""
+    if spec["target"] == "attr":
+        return (y[:, attr_idx] > 0).long()   # robust to {0,1} or {-1,1} attr encodings
+    return y.long()
+
+
+def try_train_backbone(backbone, data_root, dataset="stl10", epochs=2, max_imgs=6000):
+    """Train `backbone` + a linear classification head on a real-image dataset.
+    `dataset` in {stl10, cifar10} auto-downloads; celeba needs local data.
+    Returns (trained_backbone, test_acc, x0_pool, dataset_label) or
+    (backbone, None, None, None) if the data is unavailable."""
+    spec = _DATASETS[dataset]
     try:
-        from torchvision import datasets, transforms
-        tf = transforms.Compose([transforms.CenterCrop(178), transforms.Resize(IMG),
-                                 transforms.ToTensor()])
-        ds = datasets.CelebA(celeba_root, split="train", target_type="attr", transform=tf, download=False)
+        from torchvision import datasets as dsets, transforms
+        if dataset == "celeba":
+            tf = transforms.Compose([transforms.CenterCrop(178), transforms.Resize(IMG),
+                                     transforms.ToTensor()])
+        else:
+            tf = transforms.Compose([transforms.Resize(IMG), transforms.ToTensor()])
+        ds = _make_dataset(dsets, spec["cls"], data_root, tf, train=True, spec=spec)
     except Exception as e:
-        print(f"[celeba] unavailable ({type(e).__name__}); using untrained backbone. "
-              f"(certificate is backbone-agnostic; server run should provide CelebA.)")
-        return backbone, None, None
+        print(f"[{dataset}] unavailable ({type(e).__name__}: {str(e)[:80]}); using untrained backbone. "
+              f"(certificate is backbone-agnostic; the scale/GT claims hold either way.)")
+        return backbone, None, None, None
     with torch.no_grad():
         featdim = nn.Flatten()(backbone(torch.zeros(1, 3, IMG, IMG))).shape[1]
-    head = nn.Linear(featdim, 2)
+    head = nn.Linear(featdim, spec["ncls"])
     opt = torch.optim.Adam(list(backbone.parameters()) + list(head.parameters()), lr=1e-3)
     loader = torch.utils.data.DataLoader(ds, batch_size=64, shuffle=True)
-    backbone.train(); seen = 0; pool = []
-    for x, y in loader:
-        yb = (y[:, attr_idx] > 0).long()   # robust to {0,1} or {-1,1} attr encodings
-        logit = head(nn.Flatten()(backbone(x)))
-        loss = nn.functional.cross_entropy(logit, yb)
-        opt.zero_grad(); loss.backward(); opt.step()
-        pool.append(x.detach())
-        seen += x.shape[0]
-        if seen >= max_imgs:
-            break
+    backbone.train(); pool = []
+    for _ep in range(epochs):
+        seen = 0
+        for x, y in loader:
+            yb = _to_label(y, spec)
+            logit = head(nn.Flatten()(backbone(x)))
+            loss = nn.functional.cross_entropy(logit, yb)
+            opt.zero_grad(); loss.backward(); opt.step()
+            if len(pool) < 2:
+                pool.append(x.detach())
+            seen += x.shape[0]
+            if seen >= max_imgs:
+                break
     backbone.eval()
-    return backbone, float("nan"), torch.cat(pool)[:64]
+    # quick held-out test accuracy so "trained" is a real, reportable number
+    acc = float("nan")
+    try:
+        te = _make_dataset(dsets, spec["cls"], data_root, tf, train=False, spec=spec)
+        tl = torch.utils.data.DataLoader(te, batch_size=128, shuffle=False)
+        correct = tot = 0
+        with torch.no_grad():
+            for x, y in tl:
+                pred = head(nn.Flatten()(backbone(x))).argmax(1)
+                correct += int((pred == _to_label(y, spec)).sum()); tot += x.shape[0]
+                if tot >= 2000:
+                    break
+        acc = correct / max(tot, 1)
+    except Exception:
+        pass
+    return backbone, acc, torch.cat(pool)[:64], spec["label"]
 
 
 @torch.no_grad()
@@ -105,17 +157,21 @@ def main():
     ap.add_argument("--num-pairs", type=int, default=64)
     ap.add_argument("--margin", type=float, default=0.05)
     ap.add_argument("--eps", type=float, default=0.02)
-    ap.add_argument("--celeba-root", default=str(REPO / "data"))
+    ap.add_argument("--dataset", default="stl10", choices=sorted(_DATASETS.keys()),
+                    help="real-image dataset for the backbone; stl10/cifar10 auto-download.")
+    ap.add_argument("--data-root", "--celeba-root", dest="data_root", default=str(REPO / "data"))
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
     torch.manual_seed(args.seed)
     OUT.mkdir(parents=True, exist_ok=True)
 
     backbone = build_backbone().eval()
-    backbone, acc, pool = try_train_celeba(backbone, args.celeba_root)
+    backbone, acc, pool, ds_label = try_train_backbone(backbone, args.data_root, args.dataset)
     F = _feat_dim(backbone)
     trained = acc is not None
-    print(f"backbone: 3x{IMG}x{IMG} -> feat {F}  (trained={trained})")
+    src = f"{args.dataset} ({ds_label})" if trained else "untrained"
+    print(f"backbone: 3x{IMG}x{IMG} -> feat {F}  (trained={trained}"
+          + (f", {args.dataset} test_acc={acc:.3f}" if trained else "") + ")")
 
     bench_dir = OUT / "celeba_bench"
     rows = []
@@ -145,9 +201,10 @@ def main():
               f"parity {res['parity_max_err']:.1e}, unstable {gt['unstable_pair_fraction_x0']:.2f}")
 
     (OUT / "celeba_scale_results.json").write_text(json.dumps(
-        {"trained_backbone": trained, "test_acc": acc, "input_dim": 3 * IMG * IMG,
+        {"trained_backbone": trained, "dataset": args.dataset if trained else None,
+         "dataset_label": ds_label, "test_acc": acc, "input_dim": 3 * IMG * IMG,
          "feat_dim": F, "instances": rows}, indent=2))
-    _report(rows, trained, F)
+    _report(rows, trained, F, args.dataset if trained else None, acc)
     print(f"-> {OUT}/celeba_scale_results.json + REPORT.md ; benchmark -> {bench_dir}")
 
 
@@ -157,17 +214,21 @@ def build_backbone_from(bb):
     return copy.deepcopy(bb).eval()
 
 
-def _report(rows, trained, F):
+def _report(rows, trained, F, dataset=None, acc=None):
     gt_mean = np.mean([r["gt_construct_s"] for r in rows])
     prof_mean = np.mean([r["profile_s"] for r in rows])
     par = max(r["parity_max_err"] for r in rows)
-    L = ["# Part B: scale + arbitrary-architecture demonstration (CelebA 128x128)\n",
+    acc_str = (f"trained on {dataset.upper()} (real photos, resized to 128x128; "
+               f"held-out test acc {acc:.3f})" if trained
+               else "untrained (pass --dataset stl10|cifar10 to auto-download + train; the "
+                    "certificate is backbone-agnostic either way)")
+    L = ["# Part B: scale + arbitrary-architecture demonstration (real backbone, 128x128)\n",
          "**The Paired-Bias ground-truth certificate is backbone-agnostic and O(1)**, so it composes with a "
-         "real, heterogeneous, downsampling CelebA CNN backbone (strided conv + BatchNorm + MaxPool) at "
+         "real, heterogeneous, downsampling CNN backbone (strided conv + BatchNorm + MaxPool) at "
          f"**{3*128*128:,}-dim input** — 16x CIFAR, ~230x MNIST-8x8 — with no solver and cost independent of "
          "backbone size. This answers WvAC's *'scales to real-world models'* and *'not tied to specific "
          "architectures'*.\n",
-         f"- backbone: 3x128x128 -> {F} features, {'trained on CelebA (attr=Smiling)' if trained else 'untrained (server run trains it; certificate is backbone-agnostic either way)'}.",
+         f"- backbone: 3x128x128 -> {F} features, {acc_str}.",
          f"- ground-truth construction: **{gt_mean:.2f}s/instance** (analytic paired-bias certificate, O(1) in backbone size — MILP GT is already 231s on a 512-ReLU MNIST net and does not scale here).",
          f"- **Difficulty Profiles remain computable at scale**: autograd gradient path profiles each 49k-dim "
          f"instance in **{prof_mean:.2f}s** (one backward per sample-batch; finite differences would need "
