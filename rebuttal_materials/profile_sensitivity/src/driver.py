@@ -186,25 +186,35 @@ LONG_COLS = ["instance_id", "benchmark", "family", "arch", "domain", "axis",
              "u_mode", "u_tau", "seed", "component", "value", "na_reason", "wall_time_s"]
 
 
-def run(subset: pd.DataFrame, cfg: dict, axes, n_jobs=-1, timeout_s=300):
+def _consolidate():
+    """Merge all per-axis CSVs into sensitivity_long.csv."""
+    frames = [pd.read_csv(f) for f in sorted(C.RESULTS.glob("axis_*.csv"))]
+    if frames:
+        pd.concat(frames, ignore_index=True).to_csv(C.RESULTS / "sensitivity_long.csv", index=False)
+
+
+def run(subset: pd.DataFrame, cfg: dict, axes, n_jobs=-1, timeout_s=300, exclude_benchmarks=()):
+    """Run the recompute sweeps, CHECKPOINTING each axis to its CSV as soon as it
+    finishes (crash-safe: killing mid-run keeps completed axes). Instances in
+    `exclude_benchmarks` (e.g. the CIFAR-scale oval21 conv nets, which dominate
+    finite-difference profiling cost and add little to the sensitivity medians) are
+    dropped from the recompute; they remain in the frozen-345 correlation/index."""
     C.ensure_dirs()
-    jobs = build_jobs(subset, cfg, axes, timeout_s)
-    print(f"built {len(jobs)} jobs over axes {axes} on {len(subset)} instances", flush=True)
-    results = Parallel(n_jobs=n_jobs, backend="loky", verbose=5)(
-        delayed(run_job)(j) for j in jobs)
-    rows = [r for sub in results for r in sub]
-    long = pd.DataFrame(rows)[LONG_COLS]
+    if exclude_benchmarks:
+        before = len(subset)
+        subset = subset[~subset.benchmark.isin(exclude_benchmarks)].reset_index(drop=True)
+        print(f"excluded {before - len(subset)} instances from {exclude_benchmarks}; "
+              f"{len(subset)} remain for recompute", flush=True)
     for axis in axes:
-        sub = long[long.axis == axis]
-        sub.to_csv(C.RESULTS / f"axis_{axis}.csv", index=False)
-    # merge with any existing per-axis files into the consolidated long table
-    all_axis = []
-    for f in sorted(C.RESULTS.glob("axis_*.csv")):
-        all_axis.append(pd.read_csv(f))
-    if all_axis:
-        pd.concat(all_axis, ignore_index=True).to_csv(C.RESULTS / "sensitivity_long.csv", index=False)
-    print(f"wrote {len(long)} component rows -> results/axis_*.csv + sensitivity_long.csv", flush=True)
-    return long
+        jobs = build_jobs(subset, cfg, [axis], timeout_s)
+        print(f"[axis {axis}] {len(jobs)} jobs on {len(subset)} instances", flush=True)
+        results = Parallel(n_jobs=n_jobs, backend="loky", verbose=5)(
+            delayed(run_job)(j) for j in jobs)
+        rows = [r for sub in results for r in sub]
+        pd.DataFrame(rows)[LONG_COLS].to_csv(C.RESULTS / f"axis_{axis}.csv", index=False)
+        _consolidate()   # checkpoint after every axis
+        print(f"[axis {axis}] wrote {len(rows)} rows -> axis_{axis}.csv (checkpointed)", flush=True)
+    print("done; sensitivity_long.csv consolidated", flush=True)
 
 
 def main():
@@ -228,7 +238,8 @@ def main():
     else:
         axes = (["N", "dist", "atau", "eta", "U", "seed"]
                 if args.axes == "all" else args.axes.split(","))
-    run(subset, cfg, axes, n_jobs=args.n_jobs, timeout_s=cfg.get("component_timeout_s", 300))
+    run(subset, cfg, axes, n_jobs=args.n_jobs, timeout_s=cfg.get("component_timeout_s", 300),
+        exclude_benchmarks=tuple(cfg.get("exclude_benchmarks_recompute", [])))
 
 
 if __name__ == "__main__":

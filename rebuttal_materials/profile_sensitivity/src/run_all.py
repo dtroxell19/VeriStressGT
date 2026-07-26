@@ -56,7 +56,8 @@ def main():
         axes = (["N", "dist", "atau", "eta", "U", "seed"]
                 if args.axes == "all" else args.axes.split(","))
         D.run(sub, cfg, axes, n_jobs=args.n_jobs,
-              timeout_s=cfg.get("component_timeout_s", 300))
+              timeout_s=cfg.get("component_timeout_s", 300),
+              exclude_benchmarks=tuple(cfg.get("exclude_benchmarks_recompute", [])))
 
     if args.stage in ("analysis", "all"):
         import analysis as A
