@@ -1,0 +1,47 @@
+{
+  "trained_backbone": false,
+  "test_acc": null,
+  "input_dim": 49152,
+  "feat_dim": 2048,
+  "instances": [
+    {
+      "instance": "celeba_000",
+      "input_dim": 49152,
+      "feat_dim": 2048,
+      "label": 0,
+      "gt_construct_s": 0.019,
+      "parity_max_err": 1.9569659545637386e-08,
+      "profile_s": 0.154,
+      "empirical_margin_x0": 0.1,
+      "unstable_pair_fraction_x0": 1.0,
+      "margin_hat_min": 0.0997,
+      "d_eff": 24919.1758
+    },
+    {
+      "instance": "celeba_001",
+      "input_dim": 49152,
+      "feat_dim": 2048,
+      "label": 1,
+      "gt_construct_s": 0.005,
+      "parity_max_err": 1.7883989095190955e-08,
+      "profile_s": 0.073,
+      "empirical_margin_x0": 0.1,
+      "unstable_pair_fraction_x0": 1.0,
+      "margin_hat_min": 0.0997,
+      "d_eff": 25251.0508
+    },
+    {
+      "instance": "celeba_002",
+      "input_dim": 49152,
+      "feat_dim": 2048,
+      "label": 2,
+      "gt_construct_s": 0.006,
+      "parity_max_err": 1.7703683394265646e-08,
+      "profile_s": 0.083,
+      "empirical_margin_x0": 0.1,
+      "unstable_pair_fraction_x0": 1.0,
+      "margin_hat_min": 0.0998,
+      "d_eff": 24789.1387
+    }
+  ]
+}
