@@ -61,7 +61,7 @@ def try_train_celeba(backbone, celeba_root, attr_idx=31, epochs=1, max_imgs=4000
     loader = torch.utils.data.DataLoader(ds, batch_size=64, shuffle=True)
     backbone.train(); seen = 0; pool = []
     for x, y in loader:
-        yb = y[:, attr_idx].long()
+        yb = (y[:, attr_idx] > 0).long()   # robust to {0,1} or {-1,1} attr encodings
         logit = head(nn.Flatten()(backbone(x)))
         loss = nn.functional.cross_entropy(logit, yb)
         opt.zero_grad(); loss.backward(); opt.step()
