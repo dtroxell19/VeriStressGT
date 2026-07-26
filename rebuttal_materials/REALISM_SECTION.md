@@ -42,32 +42,35 @@ Our constructed instances are all provably robust, so the sharpest comparison is
 instances that are themselves verified robust** — returned **UNSAT by at least one** of five verifiers
 (α,β-CROWN, Marabou, NeuralSAT, nnenum, PyRAT). Verified-robust counts: mnist_fc 48/90, oval21 29/30,
 rl_benchmarks 29/30, reach_prob_density 3/30 (each capped to 30 for equal per-benchmark weight;
-real-UNSAT n=91, real-all n=120). Percentiles (P25 / P50 / P75; d_eff normalized by input dim):
+real-UNSAT n=91, real-all n=120). Min / median / max (d_eff normalized by input dim):
 
-| component | group | P25 | P50 | P75 |
+| component | group | min | median | max |
 |---|---|--:|--:|--:|
-| **M̂_min** (min margin) | synthetic | 0.11 | 0.34 | 4.0 |
-| | real (all) | −1.66 | 0.11 | 0.70 |
-| | real (verified-robust) | 0.08 | 0.25 | 0.96 |
-| **U** (unstable frac) | synthetic | 0.77 | 0.88 | 1.00 |
-| | real (all) | 0.13 | 0.30 | 0.77 |
-| | real (verified-robust) | 0.08 | 0.16 | 0.42 |
-| **A_τ** (local regions) | synthetic | 3.57 | 5.55 | 6.39 |
-| | real (all) | 4.26 | 5.92 | 6.40 |
-| | real (verified-robust) | 2.25 | 6.38 | 6.40 |
-| **d_eff / input_dim** | synthetic | 0.29 | 0.59 | 0.64 |
-| | real (all) | 0.42 | 0.60 | 0.75 |
-| | real (verified-robust) | 0.36 | 0.56 | 0.88 |
-| **G_IBP** (IBP rel. gap) | synthetic | 0.25 | 1.09 | 24.9 |
-| | real (all) | 13.4 | 67.7 | 432 |
-| | real (verified-robust) | 9.34 | 59.4 | 467 |
+| **M̂_min** (min margin) | synthetic | 1e−5 | 0.34 | 1.9e3 |
+| | real (all) | −17.7 | 0.11 | 3.37 |
+| | real (verified-robust) | −17.7 | 0.25 | 3.37 |
+| **U** (unstable frac) | synthetic | 0.00 | 0.88 | 1.00 |
+| | real (all) | 0.01 | 0.30 | 1.00 |
+| | real (verified-robust) | 0.01 | 0.16 | 1.00 |
+| **A_τ** (local regions) | synthetic | 0.00 | 5.55 | 6.40 |
+| | real (all) | 0.00 | 5.92 | 6.40 |
+| | real (verified-robust) | 0.69 | 6.38 | 6.40 |
+| **d_eff / input_dim** | synthetic | 0.00 | 0.59 | 0.88 |
+| | real (all) | 0.002 | 0.60 | 0.94 |
+| | real (verified-robust) | 0.07 | 0.56 | 0.94 |
+| **G_IBP** (IBP rel. gap) | synthetic | −0.26 | 1.09 | 2.5e5 |
+| | real (all) | 1.15 | 67.7 | 2.5e5 |
+| | real (verified-robust) | 2.48 | 59.4 | 9.6e4 |
 
-Under the fair robust-vs-robust comparison, four of five components overlap closely: A_τ is essentially
-identical (synthetic 3.6/5.6/6.4 vs verified-robust 2.3/6.4/6.4), d_eff and margin overlap, and our
-instances are in fact *harder* than real robust instances on unstable-fraction (median 0.88 vs 0.16 —
-verified-robust real instances have few unstable ReLUs, which is why a verifier can close them). The one
-axis with a pooled-median gap is **G_IBP**, but even there the synthetic *upper quartile* (24.9) reaches
-into the real range, and the gap is a **composition** effect, not a coverage limit:
+Under the fair robust-vs-robust comparison, the synthetic instances **cover the real range** on four of
+five components: A_τ shares the same support (both max out at 6.40), d_eff and min-margin overlap, and on
+**unstable-fraction our instances are *harder*** than real robust ones (median 0.88 vs 0.16 —
+verified-robust real instances have few unstable ReLUs, which is why a verifier can close them). We do
+not claim the full distributions are identical (a formal test in `realism_stats/` shows real
+verified-robust nets sit higher on A_τ and G_IBP), but the real instances fall inside the synthetic range
+on every axis. The one axis with a pooled-*median* gap is **G_IBP**, and even there the synthetic *range*
+extends to 2.5e5 — beyond the real band — while the low median is a **composition** effect, not a coverage
+limit:
 
 | synthetic family | n | G_IBP median | range |
 |---|--:|--:|---|
