@@ -1,0 +1,3 @@
+index,spearman,kendall,isotonic_r2,decile_lo,decile_hi,monotone_deciles
+DI_pred,0.3974,0.2964,0.2737,0.1619,0.6143,0
+DI_PCA,0.4204,0.3268,0.3488,0.3295,0.5986,0

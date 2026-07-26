@@ -126,23 +126,24 @@ have dependencies; there is no single difficulty measure; recommended defaults a
 **Response.** We add a systematic sensitivity study that varies each knob one at a time and reports where
 each component stabilizes, plus recommended defaults.
 
-| Knob | swept over | finding |
-|---|---|---|
-| Sample count N | 50 → 1600 | components reach a stable plateau; we recommend the smallest N within the plateau |
-| Sampling distribution | uniform / boundary-biased / mixture / PGD-heavy | affects only the sampled min-margin; the boundary-biased mixture is tightest |
-| η (in G_IBP, d_eff) | 1e-12 → 1e-3 | **flat by design** — η is a numerical constant, not a difficulty knob |
-| τ for unstable-fraction | ReLU vs smooth | **ReLU is exact 0-crossing → τ-independent by definition** |
-| τ = A_τ grid width | 0.05 → 0.5 × projection | the one genuinely tunable knob; has a stable plateau → recommended default |
+| Knob | swept over | finding | recommended |
+|---|---|---|---|
+| Sample count N | 50 → 1600 | M̂_min, G_IBP, d_eff converge by **N=50**; A_τ needs more (within 8% by N=800) | N=1600 (50 for all but A_τ) |
+| Sampling distribution | uniform / boundary / mixture / PGD-heavy | small effect (swings ≤ 0.04); uniform-only under-estimates hardness | boundary-biased mixture |
+| η (in G_IBP, d_eff) | 1e-12 → 1e-3 | **flat for η ≤ 1e-6** (d_eff 35.8→35.6, G_IBP 444→444); only an absurd η=1e-3 moves it | η=1e-9 |
+| τ for unstable-fraction | ReLU vs smooth | **ReLU: exact 0-crossing, τ-independent** (U=0.740 for all τ, both tests) | ω_j>τ, τ=1e-2 |
+| τ = A_τ grid width | 0.05 → 0.5 × proj | stable across τ ∈ [0.05, 0.2] and proj ∈ {5,10,20}; drifts only at coarse τ=0.5 | τ=0.1, proj=10 |
+| random seed | 16 seeds | run-to-run CoV < 1% (U/G_IBP essentially deterministic) | ≥ 8-seed mean |
 
-The honest, useful message: the parameters that *look* tunable (η, ReLU instability) are invariant by
-construction, and the single genuinely tunable one (A_τ's grid width) is stable — so the profile is not
-delicate. We also report the full **inter-component dependence matrix** (rank + nonlinear correlation;
-e.g. G_IBP and effective-dim are the most coupled, ρ ≈ 0.58, while min-margin is largely independent),
-and a **single unified Difficulty Index** — a standardized combination of the five components — that
-**monotonically tracks real verifier timeout rates** (rank correlation ≈ 0.42; timeout rate rises from
-~0.33 in the easiest decile to ~0.60 in the hardest). Two independently-derived versions of the index
-(a principal-component version and a predictively-weighted version) agree, which is the robustness
-check. *(The exact plateau values and the defaults table are finalizing from the running sweep.)*
+The honest, useful message: the parameters that *look* tunable (η, and the ReLU unstable-fraction
+threshold) are invariant by construction — which the sweep confirms empirically — and the single
+genuinely tunable knob (A_τ's grid width) sits on a stable plateau, so the profile is not delicate. We
+also report the full **inter-component dependence matrix** (rank + distance correlation; G_IBP and
+effective-dim are the most coupled, ρ = 0.58, A_τ–d_eff = 0.46, while min-margin is largely independent,
+|ρ| ≤ 0.36), and a **single unified Difficulty Index** — a standardized combination of the five
+components — that **monotonically tracks real verifier timeout rates** (Spearman 0.40–0.42; timeout rate
+rises from ~0.33 in the easiest decile to ~0.60 in the hardest). Two independently-derived versions (a
+principal-component index and a predictively-weighted index) agree, which is the robustness check.
 
 ---
 

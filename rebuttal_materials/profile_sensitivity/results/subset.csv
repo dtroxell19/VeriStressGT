@@ -1,49 +1,49 @@
 instance_id,benchmark,family,arch,difficulty,tercile,onnx_path,vnnlib_path,has_onnx,domain
 ep3,sweep_all,Constant-on-Box,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/ep3/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/ep3/spec.vnnlib,True,synthetic
 ep4,sweep_all,Constant-on-Box,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/ep4/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/ep4/spec.vnnlib,True,synthetic
-dc_cnn24,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn24/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn24/spec.vnnlib,True,synthetic
-dc_cnn25,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn25/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn25/spec.vnnlib,True,synthetic
-dc_cnn2,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn2/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn2/spec.vnnlib,True,synthetic
 dc_cnn26,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn26/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn26/spec.vnnlib,True,synthetic
-dc_cnn3,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn3/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn3/spec.vnnlib,True,synthetic
+dc_cnn25,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn25/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn25/spec.vnnlib,True,synthetic
 dc_cnn27,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn27/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn27/spec.vnnlib,True,synthetic
-dc_cnn4,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn4/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn4/spec.vnnlib,True,synthetic
-ld8,sweep_all,Dominant Key Attn,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/ld8/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/ld8/spec.vnnlib,True,synthetic
+dc_cnn24,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn24/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn24/spec.vnnlib,True,synthetic
+dc_cnn28,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn28/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn28/spec.vnnlib,True,synthetic
+dc_cnn23,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn23/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn23/spec.vnnlib,True,synthetic
+dc_cnn29,sweep_all,Deep Contractive,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn29/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/dc_cnn29/spec.vnnlib,True,synthetic
+ld10,sweep_all,Dominant Key Attn,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/ld10/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/ld10/spec.vnnlib,True,synthetic
 ld9,sweep_all,Dominant Key Attn,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/ld9/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/ld9/spec.vnnlib,True,synthetic
-ld7,sweep_all,Dominant Key Attn,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/ld7/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/ld7/spec.vnnlib,True,synthetic
+ld11,sweep_all,Dominant Key Attn,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/ld11/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/ld11/spec.vnnlib,True,synthetic
 fp9,sweep_all,Fixed Order Attn,ATTENTION,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/fp9/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/fp9/spec.vnnlib,True,synthetic
-fp7,sweep_all,Fixed Order Attn,ATTENTION,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/fp7/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/fp7/spec.vnnlib,True,synthetic
+fp10,sweep_all,Fixed Order Attn,ATTENTION,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/fp10/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/fp10/spec.vnnlib,True,synthetic
 rc7,sweep_all,Input-Corner Stress,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/rc7/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/rc7/spec.vnnlib,True,synthetic
 rc15,sweep_all,Input-Corner Stress,MLP,0.2,medium,src/VeriStressGT/benchmarks/sweep_all/instances/rc15/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/rc15/spec.vnnlib,True,synthetic
 rc21,sweep_all,Input-Corner Stress,MLP,0.8,hard,src/VeriStressGT/benchmarks/sweep_all/instances/rc21/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/rc21/spec.vnnlib,True,synthetic
-meap2,sweep_all,MEAP,MLP,0.4,medium,src/VeriStressGT/benchmarks/sweep_all/instances/meap2/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/meap2/spec.vnnlib,True,synthetic
+meap5,sweep_all,MEAP,MLP,0.4,medium,src/VeriStressGT/benchmarks/sweep_all/instances/meap5/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/meap5/spec.vnnlib,True,synthetic
 meap4,sweep_all,MEAP,MLP,0.6,hard,src/VeriStressGT/benchmarks/sweep_all/instances/meap4/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/meap4/spec.vnnlib,True,synthetic
 milp16,sweep_all,MILP,MLP,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/milp16/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/milp16/spec.vnnlib,True,synthetic
-milp20,sweep_all,MILP,MLP,0.2,medium,src/VeriStressGT/benchmarks/sweep_all/instances/milp20/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/milp20/spec.vnnlib,True,synthetic
+milp14,sweep_all,MILP,MLP,0.2,medium,src/VeriStressGT/benchmarks/sweep_all/instances/milp14/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/milp14/spec.vnnlib,True,synthetic
 milp30,sweep_all,MILP,MLP,0.8,hard,src/VeriStressGT/benchmarks/sweep_all/instances/milp30/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/milp30/spec.vnnlib,True,synthetic
 milp26,sweep_all,MILP,MLP,0.8,hard,src/VeriStressGT/benchmarks/sweep_all/instances/milp26/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/milp26/spec.vnnlib,True,synthetic
-000031,vnncomp_mnist_fc,MNIST_fc,MLP,0.0,easy,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000031/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000031/spec.vnnlib,True,established
-000034,vnncomp_mnist_fc,MNIST_fc,MLP,0.0,easy,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000034/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000034/spec.vnnlib,True,established
-000004,vnncomp_mnist_fc,MNIST_fc,MLP,0.0,easy,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000004/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000004/spec.vnnlib,True,established
 000035,vnncomp_mnist_fc,MNIST_fc,MLP,0.0,easy,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000035/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000035/spec.vnnlib,True,established
-000066,vnncomp_mnist_fc,MNIST_fc,MLP,0.2,medium,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000066/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000066/spec.vnnlib,True,established
+000034,vnncomp_mnist_fc,MNIST_fc,MLP,0.0,easy,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000034/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000034/spec.vnnlib,True,established
+000036,vnncomp_mnist_fc,MNIST_fc,MLP,0.0,easy,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000036/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000036/spec.vnnlib,True,established
+000031,vnncomp_mnist_fc,MNIST_fc,MLP,0.0,easy,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000031/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000031/spec.vnnlib,True,established
 000063,vnncomp_mnist_fc,MNIST_fc,MLP,0.2,medium,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000063/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000063/spec.vnnlib,True,established
+000066,vnncomp_mnist_fc,MNIST_fc,MLP,0.2,medium,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000066/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000066/spec.vnnlib,True,established
 000016,vnncomp_mnist_fc,MNIST_fc,MLP,0.4,medium,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000016/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000016/spec.vnnlib,True,established
 000017,vnncomp_mnist_fc,MNIST_fc,MLP,0.4,medium,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000017/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000017/spec.vnnlib,True,established
-000086,vnncomp_mnist_fc,MNIST_fc,MLP,1.0,hard,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000086/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000086/spec.vnnlib,True,established
-000081,vnncomp_mnist_fc,MNIST_fc,MLP,1.0,hard,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000081/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000081/spec.vnnlib,True,established
-000087,vnncomp_mnist_fc,MNIST_fc,MLP,1.0,hard,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000087/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000087/spec.vnnlib,True,established
-000083,vnncomp_mnist_fc,MNIST_fc,MLP,1.0,hard,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000083/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000083/spec.vnnlib,True,established
-pb_cnn_23,sweep_all,Paired-Biases,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_23/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_23/spec.vnnlib,True,synthetic
+000055,vnncomp_mnist_fc,MNIST_fc,MLP,1.0,hard,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000055/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000055/spec.vnnlib,True,established
+000048,vnncomp_mnist_fc,MNIST_fc,MLP,1.0,hard,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000048/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000048/spec.vnnlib,True,established
+000037,vnncomp_mnist_fc,MNIST_fc,MLP,1.0,hard,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000037/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000037/spec.vnnlib,True,established
+000020,vnncomp_mnist_fc,MNIST_fc,MLP,1.0,hard,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000020/model.onnx,src/VeriStressGT/benchmarks/vnncomp_mnist_fc/instances/000020/spec.vnnlib,True,established
+pb_cnn_25,sweep_all,Paired-Biases,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_25/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_25/spec.vnnlib,True,synthetic
 pb_cnn_24,sweep_all,Paired-Biases,CNN,0.0,easy,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_24/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_24/spec.vnnlib,True,synthetic
 pb_cnn_22,sweep_all,Paired-Biases,CNN,0.2,medium,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_22/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_22/spec.vnnlib,True,synthetic
 pb_cnn_33,sweep_all,Paired-Biases,CNN,0.2,medium,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_33/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_33/spec.vnnlib,True,synthetic
 pb_cnn_40,sweep_all,Paired-Biases,CNN,1.0,hard,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_40/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_40/spec.vnnlib,True,synthetic
 pb_cnn_41,sweep_all,Paired-Biases,CNN,1.0,hard,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_41/model.onnx,src/VeriStressGT/benchmarks/sweep_all/instances/pb_cnn_41/spec.vnnlib,True,synthetic
-poly06_deg12,polynomial_stress_22,Polynomial Net,POLYNOMIAL,0.2,medium,,src/VeriStressGT/benchmarks/polynomial_stress_22/instances/poly06_deg12/spec.vnnlib,False,synthetic
+poly11_deg18_b,polynomial_stress_22,Polynomial Net,POLYNOMIAL,0.2,medium,,src/VeriStressGT/benchmarks/polynomial_stress_22/instances/poly11_deg18_b/spec.vnnlib,False,synthetic
 poly13_deg19_b,polynomial_stress_22,Polynomial Net,POLYNOMIAL,0.6,hard,,src/VeriStressGT/benchmarks/polynomial_stress_22/instances/poly13_deg19_b/spec.vnnlib,False,synthetic
 poly12_deg19_a,polynomial_stress_22,Polynomial Net,POLYNOMIAL,0.6,hard,,src/VeriStressGT/benchmarks/polynomial_stress_22/instances/poly12_deg19_a/spec.vnnlib,False,synthetic
 vb_oval21_0027,oval21,oval21,CNN,0.0,easy,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0027/model.onnx,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0027/spec.vnnlib,True,established
 vb_oval21_0007,oval21,oval21,CNN,0.4,medium,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0007/model.onnx,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0007/spec.vnnlib,True,established
 vb_oval21_0029,oval21,oval21,CNN,0.6,hard,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0029/model.onnx,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0029/spec.vnnlib,True,established
-vb_oval21_0010,oval21,oval21,CNN,0.8,hard,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0010/model.onnx,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0010/spec.vnnlib,True,established
+vb_oval21_0013,oval21,oval21,CNN,0.8,hard,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0013/model.onnx,src/VeriStressGT/benchmarks/oval21/instances/vb_oval21_0013/spec.vnnlib,True,established

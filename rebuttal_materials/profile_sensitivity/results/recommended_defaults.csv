@@ -1,0 +1,8 @@
+knob,recommended,justification
+n_samples,1600,"smallest N within 5% of the N=1600 estimate for every sampled component (per-component plateaus: a_tau=1600, d_eff=50, g_ibp=50, margin_hat_min=50)."
+dist_preset,current_mixture,uniform-only under-estimates boundary hardness (higher M_hat_min); the boundary-biased mixture matches the paper and gives the tightest min-margin without the variance of pgd_heavy.
+atau_width (tau),0.1,"A_tau is stable across width in [0.05,0.2]; 0.1 is the mid-plateau grid width used throughout the paper."
+atau_proj,10,A_tau flattens for projection dim >= 10; 10 balances fidelity and cost.
+eta,1e-09,eta is a numerical-stability constant only; G_IBP and d_eff are flat for eta <= 1e-6. 1e-9 avoids division blow-up when |M_hat_min| or ||grad||_2 is tiny.
+u_smooth_mode / u_tau,"omega, tau=1e-2","ReLU U is exact and tau-independent; for smooth activations the omega_j>tau test with a small tau (1e-2) is the faithful eq.12 criterion and is robust to tau in [1e-3,1e-1]."
+seed,report >=8-seed mean,run-to-run CoV at the recommended N is small (margin_hat_min CoV~0.000; d_eff CoV~0.006; unstable_fraction CoV~0.000; g_ibp CoV~0.000; a_tau CoV~0.001); averaging >=8 seeds removes residual sampling noise.

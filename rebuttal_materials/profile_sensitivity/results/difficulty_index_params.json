@@ -1,0 +1,39 @@
+{
+  "mu": {
+    "margin_hat_min": 1.5174554383903336,
+    "g_ibp": 3.6990290836472974,
+    "unstable_fraction": 0.6996882226851748,
+    "a_tau": 4.892001841141913,
+    "d_eff": 4.097373623000739
+  },
+  "sd": {
+    "margin_hat_min": 3.4577734907103217,
+    "g_ibp": 3.6662028004214067,
+    "unstable_fraction": 5.061147553158211,
+    "a_tau": 2.1056534917210263,
+    "d_eff": 1.8169400303926266
+  },
+  "orient": {
+    "margin_hat_min": -1.0,
+    "g_ibp": 1.0,
+    "unstable_fraction": 1.0,
+    "a_tau": 1.0,
+    "d_eff": 1.0
+  },
+  "pred_weights": {
+    "margin_hat_min": 0.2488,
+    "g_ibp": 2.1632000000000002,
+    "unstable_fraction": 1.4912,
+    "a_tau": 0.0708,
+    "d_eff": 0.0014000000000000123
+  },
+  "pca_components": {
+    "margin_hat_min": 0.3300051234434034,
+    "g_ibp": 0.47810258112971293,
+    "unstable_fraction": -0.07312853366350049,
+    "a_tau": 0.5478540297026797,
+    "d_eff": 0.5975137823690523
+  },
+  "pca_explained_variance_ratio": 0.39246252475271015,
+  "pca_sign": 1.0
+}
