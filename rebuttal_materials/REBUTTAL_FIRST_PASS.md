@@ -69,21 +69,24 @@ further (larger relaxation gaps / higher local complexity), we reach that tail o
 amplitude-pushed instances. (Omnibus energy test rejects identity, p = 0.001 — driven mainly by G_IBP,
 which is a family-mix effect since the constructed set pools families with very different relaxation gaps.)
 
-**Response — part (b): we demonstrate real scale on an arbitrary backbone.** Our Paired-Bias
+**Response — part (b): we demonstrate real scale on an arbitrary trained backbone.** Our Paired-Bias
 construction's certificate is **backbone-agnostic** — it holds for *any* upstream network — so we graft
-it onto a real, heterogeneous, downsampling CNN (strided conv + BatchNorm + pooling) at **CelebA
-128×128 (49,152-dim input)**, and the ground-truth cost stays **O(1)** because it is analytic, not
-solved.
+it onto a real, heterogeneous, downsampling CNN (strided conv + BatchNorm + pooling) that is **genuinely
+trained on real images** (CIFAR-10 upsampled to 128×128, held-out test acc 0.44) at **49,152-dim input**,
+and the ground-truth cost stays **O(1)** because it is analytic, not solved.
 
-| Scale rung | input dim | vs CIFAR | ground-truth cost | profile cost |
+| Scale rung | input dim | vs 32² image | ground-truth cost | profile cost |
 |---|---|---|---|---|
 | MNIST 8×8 | 192 | 0.06× | analytic, O(1) | ms |
 | MNIST 28×28 | 784 | 0.26× | analytic, O(1) | ~0.01 s |
-| **CelebA 128×128** | **49,152** | **16×** | **analytic, ~0.01 s** | **~0.1 s (autograd)** |
+| **trained CNN @ 128×128** | **49,152** | **16×** | **analytic, ~0.01 s** | **~0.05 s (autograd)** |
 | (exact-MILP GT, for contrast) | 784 | — | **~230 s** and does not scale | — |
 
-So the framework is neither wedded to a specific architecture nor limited to toy scale, and the
-solver-free ground truth is exactly what lets it scale where an exact-MILP label cannot.
+The head grafts onto a downsampling trunk it was never co-designed with, over a frozen *trained* feature
+extractor, and every instance is analytically robust with all pairs unstable near x0 (a genuine stress
+test) — ONNX/ORT parity ≤ 6.4e-8. So the framework is neither wedded to a specific architecture nor
+limited to toy scale, and the solver-free ground truth is exactly what lets it scale where an exact-MILP
+label cannot.
 
 ---
 
@@ -91,9 +94,9 @@ solver-free ground truth is exactly what lets it scale where an exact-MILP label
 
 **Concern.** The profile relies on sampling and gradients — is it still computable on large models?
 
-**Response.** Yes. We profile the 49,152-dim CelebA instances in **~0.1 s each** using an autograd
-gradient path (one backward pass), versus the ~49,000 forward passes finite differences would need. The
-diagnostic scales with the models it is meant to diagnose.
+**Response.** Yes. We profile the 49,152-dim instances (real trained CIFAR-10 backbone at 128×128) in
+**~0.05 s each** using an autograd gradient path (one backward pass), versus the ~49,000 forward passes
+finite differences would need. The diagnostic scales with the models it is meant to diagnose.
 
 ---
 

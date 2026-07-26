@@ -242,12 +242,15 @@ def _report(rows, trained, F, dataset=None, acc=None):
         L.append(f"| {r['instance']} | {r['input_dim']:,} | {r['feat_dim']} | {r['gt_construct_s']} "
                  f"| {r['profile_s']} | {r['parity_max_err']:.1e} | {r.get('unstable_pair_fraction_x0','')} "
                  f"| {r.get('empirical_margin_x0','')} |")
+    rung = (f"{dataset.upper()} @ 128x128" if trained else "real-image @ 128x128")
     L.append("\n## Scale ladder\n")
-    L.append("MNIST-8x8 (192-dim, `realism_smoke`) -> MNIST-28x28 (784-dim, `real_networks/paired_bias_real`) "
-             "-> **CelebA-128x128 (49,152-dim, here)**. The analytic GT cost is flat across the ladder; only "
-             "profiling grows (~linearly), and the autograd path keeps it feasible.\n")
-    L.append("*Verify:* `python -m VeriStressGT.cli.verify_benchmark --benchmark "
-             "rebuttal_materials/scale_generality/celeba_bench --verifier abcrown ...` "
+    L.append(f"MNIST-8x8 (192-dim, `realism_smoke`) -> MNIST-28x28 (784-dim, `real_networks/paired_bias_real`) "
+             f"-> **{rung} (49,152-dim, here)**. The analytic GT cost is flat across the ladder; only "
+             "profiling grows (~linearly), and the autograd path keeps it feasible. (Instance ids retain a "
+             "legacy `celeba_` prefix regardless of the dataset used to train the backbone.)\n")
+    L.append("*Verify:* `python src/VeriStressGT/cli/verify_benchmark.py --benchmark "
+             "rebuttal_materials/scale_generality/celeba_bench --verifier abcrown "
+             "--out_dir rebuttal_materials/scale_generality/verify_abcrown --timeout 600 --overwrite` "
              "(verifiers strain at this scale — expected; the point is that GT + profiles are constructible).")
     (OUT / "REPORT.md").write_text("\n".join(L) + "\n")
 
