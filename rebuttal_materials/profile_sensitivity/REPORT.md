@@ -7,6 +7,27 @@ production centre-point on a stratified 32-instance subset (all architectures, f
 terciles); the correlation matrix and the unified Difficulty Index use the full frozen 345-instance
 table. Figures in `plots/`.
 
+## Experiments performed
+We ran six one-at-a-time sensitivity sweeps plus two whole-table dependence analyses. **(1) Sample
+count:** each component was recomputed at N ∈ {50, 100, 200, 400, 800, 1600} and its normalized drift
+from the N=1600 estimate tracked to locate a convergence plateau. **(2) Seed stability:** every
+component was recomputed over 16 independent random seeds at the recommended N and summarized by its
+coefficient of variation, isolating sampling noise from true signal. **(3) Sampling distribution:** the
+box-point sampler was swept across `uniform_only`, `boundary_only`, the production `current_mixture`, and
+`pgd_heavy`, measuring how much each strategy moves the profile. **(4) η (numerical-stability constant):**
+the denominator floor in G_IBP and d_eff was swept over 1e-12 → 1e-3 to confirm the components are flat
+across every physically-sane value. **(5) τ, two distinct knobs:** the A_τ quantization grid width was
+swept over [0.05, 0.5] and its projection dimension over {5, 10, 20}, and the unstable-fraction threshold
+was swept for both the legacy width test and the paper's ω_j>τ test — with a separate smooth-activation
+control (`tests/test_omega_smooth.py`) to exhibit the τ-dependence that the ReLU subset masks by
+construction. Each sweep varies one knob around a fixed production centre-point on a stratified
+32-instance subset spanning all architectures, families, and difficulty terciles. On top of the sweeps we
+computed **(6) the full 5×5 inter-component dependence matrix** (Spearman rank + distance correlation,
+with per-domain variants) and **(7) two independently-derived unified Difficulty Indices** (a
+predictively-weighted logistic combination and a first-principal-component combination), each validated
+against real per-instance verifier timeout rates — both over the frozen 345-instance table. Every sweep
+emits a CSV under `results/` and a figure under `plots/`; the sections below report the numbers.
+
 ## Headline
 The profile is **not** hyperparameter-fragile. Four of the five components are essentially constant
 across every knob and every random seed; the only genuinely tunable knob (A_τ's grid width) sits on a
