@@ -87,11 +87,25 @@ feature, not a limitation: the component that *looks* like a tunable hyperparame
 - **A_τ grid width τ** (the one genuinely tunable knob, gVrS-Q2): A_τ is stable across τ ∈ [0.05, 0.2]
   (values 4.44–4.73) and across projection dim ∈ {5,10,20} (± ~0.1), drifting only at a very coarse
   τ=0.5. Recommended τ = 0.1 (mid-plateau), projection dim = 10 (`plots/atau_grid.png`).
-- **Unstable-fraction threshold τ** (JJNS-Q2): for ReLU networks U is the exact 0-crossing test and is
-  **τ-independent by definition** — the sweep confirms U = 0.740 exactly for every τ and both the legacy
-  width test and the paper's ω_j>τ test on this (ReLU-only) subset. The ω_j>τ test's τ-dependence only
-  manifests on smooth-activation nets, verified separately (`tests/test_omega_smooth.py`: a sigmoid net's
-  U drops 1.0→0.0 as τ grows, while a ReLU control stays τ-invariant). `plots/u_tau_curve.png`.
+- **Unstable-fraction threshold τ** (JJNS-Q2). τ thresholds each neuron's *slope-variation*
+  ω_j = max φ′ − min φ′ over the input box (unstable ⇔ ω_j > τ). **How U changes with τ is entirely an
+  activation-family question**, which is why a single reported range was incomplete:
+  - **ReLU / piecewise-linear — U is exactly τ-invariant for every τ ∈ (0,1), by structure not tuning.**
+    φ′ ∈ {0,1}, so ω_j is *binary*: 1 iff the pre-activation straddles 0, else 0, and `ω_j > τ` collapses
+    to the exact 0-crossing test for any τ in the open unit interval. This is *why* the all-ReLU benchmark
+    sweep is dead flat at U = 0.740 for every τ — τ has nothing to act on, not a lucky choice.
+  - **Smooth (sigmoid/tanh) — U(τ) is a monotone non-increasing step function**: U → 1 as τ → 0 (every
+    curved neuron counts) and decays to 0 once τ exceeds the largest ω_j, which is bounded by the
+    activation's slope range (≤ 0.25 sigmoid, ≤ 1 tanh). On the sigmoid probe
+    (`tests/test_omega_smooth.py`), U = 1.0 for τ ≤ 0.05, 0.5 at τ = 0.1, 0.0 at τ = 0.25 — a **low plateau
+    up to ~20 % of the max slope-swing, then decay** (`plots/u_tau_curve.png`).
+
+  **Recommended τ = 1e-2.** It sits on the smooth low-plateau (captures every neuron operating in its
+  nonlinear region — the smooth analogue of ReLU's 0-crossing), is a *no-op* for ReLU/piecewise-linear
+  nets (any τ ∈ (0,1) gives the exact test), and its small positive value discards only float-noise
+  curvature in saturated neurons (ω_j ~ 1e-3). U is unchanged across τ ∈ [1e-3, 5e-2] for both families,
+  so the value is not delicate; for cross-activation consistency an equivalent relative form is
+  τ = 5 %·(range of φ′), which auto-scales to ≈0.0125 (sigmoid) / ≈0.05 (tanh).
 
 ## 6. Recommended defaults
 From the plateaus/CoV above (`results/recommended_defaults.csv`):
@@ -103,7 +117,7 @@ From the plateaus/CoV above (`results/recommended_defaults.csv`):
 | η | 1e-9 | flat for η ≤ 1e-6; avoids blow-up |
 | A_τ grid width τ | 0.1 | mid-plateau of [0.05, 0.2] |
 | A_τ projection dim | 10 | flattens for ≥ 10 |
-| U smooth-activation test | ω_j>τ, τ=1e-2 | faithful eq.12; robust for τ ∈ [1e-3, 1e-1]; ReLU is τ-free |
+| U smooth-activation test | ω_j>τ, τ=1e-2 | on the smooth-net plateau (U flat for τ≤0.05, sigmoid); no-op for ReLU (ω binary ⇒ exact 0-crossing ∀τ∈(0,1)); U only decays for τ≳0.1 |
 | seeds | ≥ 8-seed mean | removes residual < 1% sampling noise |
 
 ## 7. Inter-component dependence (full 345 table)
