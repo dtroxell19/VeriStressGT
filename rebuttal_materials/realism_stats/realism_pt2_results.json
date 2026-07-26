@@ -1,0 +1,131 @@
+{
+  "counts": {
+    "vnncomp_mnist_fc": 90,
+    "oval21": 30,
+    "real_cifar_biasfield": 30,
+    "vnncomp22_acasxu": 185,
+    "real_rl_benchmarks": 30
+  },
+  "n_synth": 203,
+  "per_component": [
+    {
+      "component": "M\u0302_min",
+      "key": "M_hat_min",
+      "syn": [
+        "1e-05",
+        "0.34",
+        "1.94e+03"
+      ],
+      "real": [
+        "-1.06",
+        "0.003",
+        "23.65"
+      ],
+      "cliffs_delta": 0.471,
+      "delta_ci": [
+        0.403,
+        0.534
+      ],
+      "magnitude": "medium",
+      "coverage": 0.56,
+      "n_syn": 203,
+      "n_real": 365
+    },
+    {
+      "component": "G_IBP",
+      "key": "G_IBP",
+      "syn": [
+        "-0.26",
+        "1.09",
+        "2.53e+05"
+      ],
+      "real": [
+        "1.15",
+        "490",
+        "1.74e+08"
+      ],
+      "cliffs_delta": -0.655,
+      "delta_ci": [
+        -0.719,
+        -0.59
+      ],
+      "magnitude": "large",
+      "coverage": 0.63,
+      "n_syn": 203,
+      "n_real": 180
+    },
+    {
+      "component": "U",
+      "key": "U",
+      "syn": [
+        "0.00",
+        "0.88",
+        "1.00"
+      ],
+      "real": [
+        "0.00977",
+        "0.48",
+        "0.89"
+      ],
+      "cliffs_delta": 0.648,
+      "delta_ci": [
+        0.57,
+        0.719
+      ],
+      "magnitude": "large",
+      "coverage": 1.0,
+      "n_syn": 203,
+      "n_real": 180
+    },
+    {
+      "component": "A_\u03c4",
+      "key": "A_tau",
+      "syn": [
+        "0.00",
+        "5.55",
+        "6.40"
+      ],
+      "real": [
+        "0.00",
+        "5.24",
+        "6.40"
+      ],
+      "cliffs_delta": -0.018,
+      "delta_ci": [
+        -0.107,
+        0.075
+      ],
+      "magnitude": "negligible",
+      "coverage": 1.0,
+      "n_syn": 203,
+      "n_real": 365
+    },
+    {
+      "component": "d_eff/input_dim",
+      "key": "d_eff",
+      "syn": [
+        "0.00",
+        "0.59",
+        "0.88"
+      ],
+      "real": [
+        "0.0016",
+        "0.51",
+        "0.94"
+      ],
+      "cliffs_delta": 0.039,
+      "delta_ci": [
+        -0.052,
+        0.128
+      ],
+      "magnitude": "negligible",
+      "coverage": 0.85,
+      "n_syn": 203,
+      "n_real": 365
+    }
+  ],
+  "omnibus_energy": {
+    "statistic": 1.6187,
+    "p_value": 0.001
+  }
+}
