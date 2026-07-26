@@ -291,6 +291,11 @@ def recert_corners(onnx_path: str, vnnlib_path: str, max_corner_bits: int = 20) 
 # Family E: Deep-Contractive CNN (cnn.deep_contractive_cnn)
 # --------------------------------------------------------------------------- #
 def recert_deep_contractive(onnx_path: str, vnnlib_path: str, cert_json: dict = None) -> FamilyResult:
+    if cert_json is None:
+        import os, json as _json
+        cj = os.path.join(os.path.dirname(onnx_path), "certificate.json")
+        if os.path.exists(cj):
+            cert_json = _json.load(open(cj))
     """Structural exact certificate (primary) + rigorous Lipschitz recheck (secondary).
 
     The network ends ...Conv -> ReLU -> Flatten -> Gemm with fc.weight[label] all
@@ -335,6 +340,207 @@ def recert_deep_contractive(onnx_path: str, vnnlib_path: str, cert_json: dict = 
 
 
 # --------------------------------------------------------------------------- #
+# Generic MLP-layer extraction from an ONNX Gemm/Relu chain
+# --------------------------------------------------------------------------- #
+def mlp_layers_from_onnx(onnx_path):
+    """Ordered [(W,b) Fraction, 'relu', ...] for a Gemm/(MatMul+Add)/Relu MLP.
+
+    Gemm weight is (out,in) with transB=1 (nn.Linear), so forward = W@x+b. Skips
+    Flatten/Reshape/Identity. Raises on unsupported ops.
+    """
+    m = onnx.load(onnx_path)
+    inits = {i.name: numpy_helper.to_array(i) for i in m.graph.initializer}
+    layers = []
+    for node in m.graph.node:
+        op = node.op_type
+        if op == "Gemm":
+            W = SB.to_frac_array(inits[node.input[1]])
+            if not any(a.name == "transB" and a.i for a in node.attribute):
+                W = W.T
+            bn = node.input[2] if len(node.input) > 2 else None
+            b = SB.to_frac_array(inits[bn]) if bn and bn in inits \
+                else np.array([FR(0)] * W.shape[0], dtype=object)
+            layers.append((W, b))
+        elif op == "Relu":
+            layers.append("relu")
+        elif op in ("Flatten", "Reshape", "Identity", "Dropout"):
+            pass
+        else:
+            raise ValueError(f"mlp_layers_from_onnx: unsupported op {op}")
+    return layers
+
+
+# --------------------------------------------------------------------------- #
+# Family I: MILP exact-radius (mlp_relu.milp) — complete check
+# --------------------------------------------------------------------------- #
+def recert_milp(onnx_path: str, vnnlib_path: str, max_splits: int = 25) -> FamilyResult:
+    """Re-certify robustness at the shipped eps. Exact-rational IBP first; if
+    inconclusive (near-boundary eps_frac->1), escalate to an exact-rational complete
+    check that branches on unstable ReLUs (tiny net) so every leaf is linear. Does NOT
+    re-derive r*."""
+    layers = mlp_layers_from_onnx(onnx_path)
+    lo, hi, label = parse_vnnlib_box(vnnlib_path)
+    lb = SB.frac_ibp_margin_lb(layers, lo, hi, label)
+    if lb > 0:
+        return FamilyResult("exact_rational", lb, True, {"ibp_positive": True},
+                            notes="exact-rational IBP margin > 0")
+    # box branch-and-bound is SOUND (over-approximation) so True => certified; a
+    # non-closing result is INCONCLUSIVE (box relaxation can't track the input-space
+    # halfspace of a ReLU split -> spurious infeasible leaves), NOT a robustness failure.
+    ok, n_leaves = _complete_check(layers, lo, hi, label, max_splits)
+    if ok:
+        return FamilyResult("complete_check", None, True,
+                            {"ibp_positive": False, "box_bab_robust": True},
+                            notes=f"exact-rational box branch-and-bound closed ({n_leaves} leaves)")
+    return FamilyResult("inconclusive", None, False,
+                        {"ibp_positive": False, "box_bab_robust": False},
+                        notes="exact-rational IBP + box-BaB too loose for this near-boundary MILP "
+                              "instance; robustness at eps<r* rests on the exact-radius MILP (complete)")
+
+
+def _complete_check(layers, lo, hi, label, max_splits):
+    """Exact-rational branch-and-bound: branch on the PRE-activation sign of each
+    unstable ReLU (staying on the same layer until all its unstable neurons are split),
+    so every leaf is fully linear and its exact IBP margin is a true bound. Sound; leaves
+    that still have unsplit unstable neurons at the budget fall back to the ReLU relaxation
+    (may fail to close -> reported)."""
+    import sys
+    sys.setrecursionlimit(100000)
+    leaves = [0]
+
+    def rec(lo, hi, li, splits):
+        while li < len(layers):
+            L = layers[li]
+            if L == "relu":
+                unstable = [j for j in range(len(lo)) if lo[j] < 0 < hi[j]]
+                if unstable and splits < max_splits:
+                    j = unstable[0]
+                    lo_i, hi_i = lo.copy(), hi.copy(); hi_i[j] = FR(0)   # inactive: z_j <= 0
+                    lo_a, hi_a = lo.copy(), hi.copy(); lo_a[j] = FR(0)   # active:   z_j >= 0
+                    return (rec(lo_i, hi_i, li, splits + 1)
+                            and rec(lo_a, hi_a, li, splits + 1))
+                lo, hi = SB.frac_interval_relu(lo, hi)
+            else:
+                W, b = L
+                lo, hi = SB.frac_interval_linear(lo, hi, W, b)
+            li += 1
+        leaves[0] += 1
+        others = [hi[k] for k in range(len(hi)) if k != label]
+        return (lo[label] - max(others)) > 0
+
+    return rec(lo, hi, 0, 0), leaves[0]
+
+
+# --------------------------------------------------------------------------- #
+# Families F/G: Attention (linear_dominance, fixed_pattern) — interval enclosure
+# --------------------------------------------------------------------------- #
+def recert_attention(onnx_path: str, vnnlib_path: str, prec_bits: int = 200) -> FamilyResult:
+    """Rigorous mpmath.iv enclosure of the attention forward over the box.
+
+    Dominant-Key is matmul/relu/reshape (no softmax); Fixed-Order adds a real
+    softmax. Direct interval enclosure of the margin over B_eps(x0) with outward
+    rounding -> lower endpoint > 0 certifies over the continuum, with no Lipschitz
+    looseness (this is what closes the razor-thin margin_slack~1.0001 fixed-order set).
+    """
+    from . import iv_onnx
+    lo, hi, label = parse_vnnlib_box(vnnlib_path)
+    mlb, _ = iv_onnx.interval_margin_lb(onnx_path, lo, hi, label, prec_bits)
+    return FamilyResult("interval_mpmath", mlb, bool(mlb > 0),
+                        {"interval_enclosure_positive": bool(mlb > 0)},
+                        notes=f"direct mpmath.iv box enclosure (prec={prec_bits} bits)")
+
+
+# --------------------------------------------------------------------------- #
+# Family H: Polynomial (polynomial.algebraic_boundary) — interval enclosure
+# --------------------------------------------------------------------------- #
+def recert_polynomial(onnx_path: str, vnnlib_path: str, prec_bits: int = 200,
+                      subdiv_dims: int = 0, subdiv_k: int = 2) -> FamilyResult:
+    """Rigorous mpmath.iv enclosure of the (nonconvex) polynomial margin over the box.
+
+    Poly instances ship no ONNX (regenerated from args). We regenerate deterministically
+    and interval-evaluate mu(x) = sum_j alpha_j (W1_j.x + b1_j)^degree + (b2_0-b2_1) over
+    the committed box: the input->preactivation map is linear (tight) and the only
+    nonlinearity is an elementwise integer power (iv encloses exactly per neuron), so the
+    lower endpoint > 0 is a rigorous certificate despite nonconvexity. Optional bisection
+    of the `subdiv_dims` widest input coords (k parts each) tightens the dependency slack.
+    """
+    import json as _json
+    import os
+    import tempfile
+    from .soundness_audit import regenerate
+    from . import iv_onnx
+
+    inst_dir = os.path.dirname(vnnlib_path)
+    meta = _json.load(open(os.path.join(inst_dir, "meta.json")))
+    lo, hi, label = parse_vnnlib_box(vnnlib_path)
+    deg = int(meta["args"].get("degree", 0))
+    with tempfile.TemporaryDirectory() as t:
+        onnx_re, _, _ = regenerate(meta, t)
+        if not subdiv_dims:
+            mlb, _ = iv_onnx.interval_margin_lb(onnx_re, lo, hi, label, prec_bits)
+        else:
+            widths = [(hi[i] - lo[i], i) for i in range(len(lo))]
+            widths.sort(reverse=True)
+            dims = [i for _, i in widths[:subdiv_dims]]
+            mlb = _subdiv_min_margin(onnx_re, lo, hi, label, dims, subdiv_k, prec_bits)
+    return FamilyResult("interval_mpmath", mlb, bool(mlb > 0),
+                        {"interval_enclosure_positive": bool(mlb > 0)},
+                        notes=f"degree={deg}, nonconvex shipped; iv box enclosure"
+                              + (f" +{subdiv_k}^{subdiv_dims} subdivision" if subdiv_dims else ""))
+
+
+def recert_polynomial_convex(onnx_path: str, vnnlib_path: str, degree: int = None) -> FamilyResult:
+    """EXACT certificate for a convex (Prop-11) polynomial instance.
+
+    mu(x) = sum_j alpha_j (W1_j.x + b1_j)^degree + (b2_0 - b2_1), alpha_j = W2[0,j]-W2[1,j].
+    If every alpha_j >= 0 and degree is even, mu is convex, so over the l_inf box of radius
+    eps:  min mu(x) >= mu(x0) - eps*||grad mu(x0)||_1  (convex first-order bound, dual norm).
+    All quantities are exact rationals from the shipped fp32 params -> a machine-checked proof.
+    """
+    W = load_inits(onnx_path)
+    lo, hi, label = parse_vnnlib_box(vnnlib_path)
+    W1 = SB.to_frac_array(W["W1"]); b1 = SB.to_frac_array(W["b1"])
+    W2 = SB.to_frac_array(W["W2"]); b2 = SB.to_frac_array(W["b2"])
+    x0 = _center_eps(lo, hi)
+    eps = (hi[0] - lo[0]) / 2
+    if degree is None:
+        import json as _json, os
+        degree = int(_json.load(open(os.path.join(os.path.dirname(vnnlib_path), "meta.json")))["args"]["degree"])
+    alpha = W2[0] - W2[1]                       # (hidden,)
+    checks = {}
+    checks["degree_even"] = (degree % 2 == 0)
+    checks["alpha_nonneg"] = bool(np.all(np.array([a >= 0 for a in alpha])))
+    s = W1 @ x0 + b1                            # exact preactivations
+    mu_x0 = sum(alpha[j] * s[j] ** degree for j in range(len(alpha))) + (b2[0] - b2[1])
+    coeff = np.array([alpha[j] * degree * s[j] ** (degree - 1) for j in range(len(alpha))], dtype=object)
+    grad = W1.T @ coeff                         # exact gradient of mu at x0
+    grad_l1 = sum(abs(g) for g in grad)
+    lb = mu_x0 - eps * grad_l1                  # convex first-order lower bound over the box
+    positive = checks["degree_even"] and checks["alpha_nonneg"] and lb > 0
+    return FamilyResult("exact_rational", lb, bool(positive), checks,
+                        notes=f"convex Prop-11, degree={degree}: lb=mu(x0)-eps*||grad||_1")
+
+
+def _subdiv_min_margin(onnx_path, lo, hi, label, dims, k, prec_bits):
+    """Min interval margin lower bound over a k-way bisection grid on `dims`."""
+    from fractions import Fraction
+    from . import iv_onnx
+    grids = []
+    for i in dims:
+        step = (hi[i] - lo[i]) / k
+        grids.append([(lo[i] + step * j, lo[i] + step * (j + 1)) for j in range(k)])
+    worst = None
+    import itertools
+    for combo in itertools.product(*grids):
+        slo = np.array(lo, dtype=object); shi = np.array(hi, dtype=object)
+        for (a, b), i in zip(combo, dims):
+            slo[i] = a; shi[i] = b
+        mlb, _ = iv_onnx.interval_margin_lb(onnx_path, slo, shi, label, prec_bits)
+        worst = mlb if worst is None else min(worst, mlb)
+    return worst
+
+
+# --------------------------------------------------------------------------- #
 # Dispatch by construction id
 # --------------------------------------------------------------------------- #
 FAMILY_FUNCS = {
@@ -342,4 +548,9 @@ FAMILY_FUNCS = {
     "mlp_relu.meap": recert_meap,
     "mlp_relu.embedded_projection": recert_embedded_projection,
     "mlp_relu.corners": recert_corners,
+    "cnn.deep_contractive_cnn": recert_deep_contractive,
+    "attention.linear_dominance": recert_attention,
+    "attention.fixed_pattern": recert_attention,
+    "mlp_relu.milp.exact_radius": recert_milp,
+    "polynomial.algebraic_boundary": recert_polynomial,
 }
