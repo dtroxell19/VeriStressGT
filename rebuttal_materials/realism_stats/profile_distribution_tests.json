@@ -1,0 +1,92 @@
+{
+  "n_constructed": 225,
+  "n_real_verified_robust": 77,
+  "per_component": [
+    {
+      "component": "M\u0302_min",
+      "n_con": 225,
+      "n_real": 77,
+      "mannwhitney_p": 0.5244,
+      "ks_p": 0.0,
+      "cliffs_delta": 0.049,
+      "delta_ci": [
+        -0.059,
+        0.152
+      ],
+      "magnitude": "negligible",
+      "equivalent": false,
+      "real_within_constructed": 0.99,
+      "direction": "\u2014"
+    },
+    {
+      "component": "G_IBP",
+      "n_con": 225,
+      "n_real": 77,
+      "mannwhitney_p": 0.0,
+      "ks_p": 0.0,
+      "cliffs_delta": -0.647,
+      "delta_ci": [
+        -0.724,
+        -0.564
+      ],
+      "magnitude": "large",
+      "equivalent": false,
+      "real_within_constructed": 0.81,
+      "direction": "constructed harder"
+    },
+    {
+      "component": "U",
+      "n_con": 225,
+      "n_real": 77,
+      "mannwhitney_p": 0.0,
+      "ks_p": 0.0,
+      "cliffs_delta": 0.546,
+      "delta_ci": [
+        0.459,
+        0.635
+      ],
+      "magnitude": "large",
+      "equivalent": false,
+      "real_within_constructed": 1.0,
+      "direction": "constructed harder"
+    },
+    {
+      "component": "A_\u03c4",
+      "n_con": 225,
+      "n_real": 77,
+      "mannwhitney_p": 0.0,
+      "ks_p": 0.0,
+      "cliffs_delta": -0.661,
+      "delta_ci": [
+        -0.73,
+        -0.587
+      ],
+      "magnitude": "large",
+      "equivalent": false,
+      "real_within_constructed": 1.0,
+      "direction": "constructed harder"
+    },
+    {
+      "component": "d_eff/input_dim",
+      "n_con": 225,
+      "n_real": 77,
+      "mannwhitney_p": 0.0001,
+      "ks_p": 0.0,
+      "cliffs_delta": 0.292,
+      "delta_ci": [
+        0.191,
+        0.383
+      ],
+      "magnitude": "small",
+      "equivalent": false,
+      "real_within_constructed": 1.0,
+      "direction": "real harder"
+    }
+  ],
+  "omnibus_energy": {
+    "statistic": 1.4685,
+    "p_value": 0.001,
+    "n_con_complete": 225,
+    "n_real_complete": 77
+  }
+}
