@@ -83,6 +83,29 @@ the low pooled synthetic median only reflects that the intentionally IBP-tight f
 attention) are the most numerous in the sweep. Reported per-family, the constructors already cover the
 real G_IBP range.
 
+### 1.2 G_IBP is a knob, not a ceiling: one hyperparameter moves it into the real band
+
+The one axis with a pooled-median gap is also the one that is *trivial to dial*. G_IBP responds
+monotonically to a single amplitude hyperparameter in each amplifier-type family, so reaching the real
+verified-robust band (median 59, P25–P75 **[9.3, 467]**) takes one knob change — no redesign. We
+generated a 12-instance suite (`gibp_realband/`, 3 per family) doing exactly this:
+
+| family | knob turned | default G_IBP (median) | after one push | lands in real band [9.3, 467]? |
+|---|---|--:|---|:--:|
+| paired-bias | `margin` 1e-3 → 1e-4 (± `num_pairs`) | 8.4 | **103 → 369** | ✅ cleanly inside at every setting |
+| ReLU-corners | `hinge_l1` = 1e3 → 1e5 | 12.8 | **253 → 24,381** | ✅ enters at 1e3, sweeps through and past |
+| MILP-exact-radius | ε near the boundary (`ε_frac`→1) | 143 | **373 → 13,241** | ✅ enters at 0.99, overshoots at 0.9999 |
+| MEAP | `num_pairs` = 32 → 128 | 645 | **1,322 → 5,335** | ⤴ above — dial `num_pairs`≈8–16 for the median |
+
+Two things this shows. (1) **Coverage is by design, not luck:** every amplifier family reaches the real
+band, and paired-bias lands squarely inside it (103–369) at all tested settings. (2) **The knob is
+monotone,** so you can place an instance anywhere along the real G_IBP range — including its median — by
+turning one dial; corners/MILP/MEAP even *overshoot*, so the constraint is choosing the setting, not
+reaching the range. The four intentionally IBP-tight families (deep-contractive, embedded-projection,
+both attention) are ≈0 by construction and are neither able nor meant to amplify — that is the point of
+those families. So the low default pooled median is a *sampling choice* in the released sweep, not a
+limitation of the constructors. (Details + ready-to-use "real-median" settings in `gibp_realband/README.md`.)
+
 ## 2. The constructions are trainable architectures, not synthetic-only gadgets
 
 A natural follow-up objection is that the constructors are hand-built weight patterns. They are not
