@@ -203,23 +203,37 @@ produce *SAT* (non-robust) instances whose closeness to the decision boundary ca
 scale?
 
 **Response.** Three constructors emit a genuine in-box counterexample (SAT) with an explicit
-proximity-to-violation knob; they trade off between *exactness* of that proximity and *scalability*.
+proximity-to-violation knob, and they trade off between *exactness* of that proximity and *scalability*.
 
-| Constructor | proximity knob | proximity control | scalable? | SAT mechanism |
-|---|---|---|:--:|---|
-| **Polynomial (algebraic boundary)** | ε vs the **known L∞ boundary distance** d\* (`known_boundary_dist_linf`, `exact_boundary_dist`) | continuous, analytic | **✅** (polynomial eval; any input dim / degree) | explicit `non_robust` status when the min signed margin over the box < 0 |
-| **Input-corner (ReLU corners)** | box half-width vs the sign-flip corner gap | analytic closed-form | **✅** | the corner where the margin changes sign enters the box |
-| **MILP exact-radius** | `epsilon_mode`: ε = `frac`·r\* / r\* / 1.01·r\* | **mathematically exact** (ε/r\*−1) | ✗ (MILP solve; small ReLU nets) | certified counterexample just past the true radius r\* |
+The **polynomial (algebraic-boundary) constructor is the most natural *scalable* SAT generator.** Its
+decision surface is an explicit algebraic variety, and the construction records the exact L∞ distance from
+the center x0 to that surface in closed form (`known_boundary_dist_linf` / `exact_boundary_dist`). So
+proximity to violation is not something you search for — you *set* it: place x0 at any signed distance from
+the boundary and sweep the query radius ε across it, and the instance flips from robust to non-robust at a
+point you already know analytically. Because it only needs cheap forward evaluations of a polynomial, this
+works at arbitrary input dimension and arbitrary degree — the same construction that gives a 5-dim toy also
+gives a high-dimensional one — and the constructor exposes an explicit `non_robust` status (asserted when
+the minimum signed margin over the box drops below zero). This is the family we would point a reviewer to
+for "give me SAT instances of increasing size, each a controllable hair past the boundary."
 
-**Recommendation.** The **polynomial (algebraic-boundary) constructor is the most natural *scalable* SAT
-generator**: the decision surface is an explicit algebraic variety and the L∞ distance from x0 to it is
-known in closed form, so you place x0 at any signed distance and sweep ε across the boundary to set
-proximity — at arbitrary input dimension and polynomial degree, with only cheap forward evaluations. When
-you need *certified-exact* proximity and can afford small networks, **MILP exact-radius** gives the tightest
-possible control: it returns the true minimal-violation radius r\*, so ε/r\* is the exact normalized
-distance to violation. The robust-by-construction families (Paired-Bias, MEAP, Deep-Contractive, attention)
-are the **UNSAT side** of the benchmark — their certificate *is* margin > 0 — so they are not the natural
-SAT source (they can be driven to the boundary ε→r, but not naturally past it with controlled proximity).
+**MILP exact-radius gives the tightest possible proximity control, but does not scale.** It solves for the
+*true* minimal-violation radius r\* of a ReLU network and then sets ε relative to it (`epsilon_mode`:
+`frac`·r\*, exactly r\*, or 1.01·r\*), so ε/r\* is the *certified-exact* normalized distance to violation —
+there is no looseness at all in how close to violation the instance sits. The price is that r\* comes from a
+MILP solve, so this is confined to small ReLU networks. It is the right tool when you want a handful of
+instances whose proximity is exact and provable rather than merely analytic, and it is exactly the
+constructor whose non-scaling motivates the solver-free families.
+
+**Input-corner (ReLU corners) is a lightweight analytic middle ground.** The margin is a closed form over
+the input box, dominated by the box corners, so a SAT instance is produced simply by widening the box until
+the corner where the margin changes sign is pulled inside it; proximity to violation is the gap between the
+box edge and that sign-flip corner. Like the polynomial family it needs no solver and scales, but its
+control is coarser (corner-quantized) than the polynomial's continuous boundary distance.
+
+For contrast, the robust-by-construction families (Paired-Bias, MEAP, Deep-Contractive, attention) are the
+**UNSAT side** of the benchmark: their certificate *is* margin > 0, so they are not the natural SAT source.
+They can be driven right up to the boundary (ε → r) but not naturally pushed past it with controlled
+proximity — that is what the three constructors above are for.
 
 ---
 
