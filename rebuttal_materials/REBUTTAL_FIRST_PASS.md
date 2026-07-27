@@ -196,6 +196,69 @@ the "systematic study + unified formula" the reviewers asked for.
 
 ---
 
+## 8. Which constructors yield scalable SAT instances with controllable proximity to violation? [gVrS, AC]
+
+**Concern.** The framework emphasizes provably-robust (UNSAT) instances; which constructions naturally
+produce *SAT* (non-robust) instances whose closeness to the decision boundary can be dialed, and do those
+scale?
+
+**Response.** Three constructors emit a genuine in-box counterexample (SAT) with an explicit
+proximity-to-violation knob; they trade off between *exactness* of that proximity and *scalability*.
+
+| Constructor | proximity knob | proximity control | scalable? | SAT mechanism |
+|---|---|---|:--:|---|
+| **Polynomial (algebraic boundary)** | ε vs the **known L∞ boundary distance** d\* (`known_boundary_dist_linf`, `exact_boundary_dist`) | continuous, analytic | **✅** (polynomial eval; any input dim / degree) | explicit `non_robust` status when the min signed margin over the box < 0 |
+| **Input-corner (ReLU corners)** | box half-width vs the sign-flip corner gap | analytic closed-form | **✅** | the corner where the margin changes sign enters the box |
+| **MILP exact-radius** | `epsilon_mode`: ε = `frac`·r\* / r\* / 1.01·r\* | **mathematically exact** (ε/r\*−1) | ✗ (MILP solve; small ReLU nets) | certified counterexample just past the true radius r\* |
+
+**Recommendation.** The **polynomial (algebraic-boundary) constructor is the most natural *scalable* SAT
+generator**: the decision surface is an explicit algebraic variety and the L∞ distance from x0 to it is
+known in closed form, so you place x0 at any signed distance and sweep ε across the boundary to set
+proximity — at arbitrary input dimension and polynomial degree, with only cheap forward evaluations. When
+you need *certified-exact* proximity and can afford small networks, **MILP exact-radius** gives the tightest
+possible control: it returns the true minimal-violation radius r\*, so ε/r\* is the exact normalized
+distance to violation. The robust-by-construction families (Paired-Bias, MEAP, Deep-Contractive, attention)
+are the **UNSAT side** of the benchmark — their certificate *is* margin > 0 — so they are not the natural
+SAT source (they can be driven to the boundary ε→r, but not naturally past it with controlled proximity).
+
+---
+
+## 9. How far do the constructors scale (params, input dim — ImageNet backbones, long-sequence attention), and do Difficulty Profiles remain computable there? [JJNS-Q4, WvAC]
+
+**Concern.** Do the constructions and their profiles hold up at real parameter counts and input dimensions
+— e.g. Paired-Bias on ImageNet-scale backbones, attention with long sequences?
+
+**Response.** For the head-based families the ground-truth cost is **O(1) in backbone size and input
+dimension**, so scaling is a property of the certificate, not a hope.
+
+- **Paired-Bias / MEAP heads — GT cost independent of the backbone.** The certificate is analytic (label
+  row hard-zeroed, monotone coupled-ReLU pair gaps ⇒ margin ≥ *margin* > 0 for **any** frozen upstream Ψ),
+  so it neither solves nor inspects the backbone. We demonstrated this on a real *trained* CNN at
+  **49,152-dim (128²×3)** with **~0.01 s/instance** GT regardless of the downsampling trunk (§2b). Because
+  that cost does not grow with backbone parameters, the same head composes with an **ImageNet-scale**
+  backbone (e.g. ResNet-50, ~25 M params, or a ViT) at 224²×3 ≈ **150k-dim** — ~3× our demonstrated input —
+  with the *same* O(1) analytic GT. This is extrapolation on a cost that is provably constant, not on a hope
+  that a solver keeps up.
+- **Attention — cheap analytic certificate, sequence length affects *tightness* not soundness.** The gap
+  condition (1−μ > bound) is closed-form and cheap at any sequence length, but longer sequences make the
+  near-orthogonal token structure harder (μ grows, the usable margin shrinks) and widen the softmax
+  interval enclosure. So long sequences remain *certifiable* but at a smaller usable ε — a disclosed
+  tightness limit, orthogonal to the O(1) GT of the head families.
+- **MILP exact-radius does not scale** (solver-bound, small ReLU nets) — which is precisely why the analytic
+  certificate families exist: solver-free ground truth scales where an exact-label MILP cannot.
+
+**Do the Difficulty Profiles remain computable at that scale? Yes.** The autograd gradient path computes
+each gradient in **one backward pass — O(1) in input dimension** — versus the ~input_dim forward passes
+finite differences need. We profiled the 49,152-dim instances in **~0.05 s each** (§3); the IBP components
+(G_IBP, U) are a single interval forward pass, and the sampled components (A_τ, d_eff, M̂_min) are N
+backward passes. The diagnostic scales with the models it is meant to diagnose.
+
+*Honest scope.* We ran end-to-end up to 49k-dim and modest attention sequence lengths; ResNet/ViT-on-
+ImageNet and long-context attention are extrapolations justified by the constant certificate cost, not yet
+each executed end-to-end (see the scope list below).
+
+---
+
 ## Not yet covered here (in progress — do not claim these yet)
 
 - Formal guarantees / failure modes of the polynomial global-separation checker.
