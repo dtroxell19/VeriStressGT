@@ -18,23 +18,40 @@ profile adds significant held-out AUC for 4/5 verifiers when the benchmarks are 
 unstable-fraction are the stable drivers. Where size already predicts timeouts, the profile improves
 calibration. We report this heterogeneity rather than a single score.
 
-## MEDIUM (~210 words)
-Reviewers asked whether the Difficulty Profile predicts the outcome of an individual verification
-instance, not just population trends. We trained a separate interpretable model (elastic-net logistic
-regression) per verifier and evaluated timeout prediction with repeated **network-grouped**
-cross-validation (5×20; groups = ONNX identity, so two properties of the same network never span
-train/test). For every verifier and scenario we compare, on identical folds, **size/type features**
-against **size/type + the five profile components**, and report the paired held-out ΔAUC with a 95%
-group-bootstrap confidence interval.
+## MEDIUM (~350 words)
+Reviewers raised a fair question: the Difficulty Profile explains verifier timeouts *in aggregate*, but
+does it tell you anything about a *single* instance? To find out, we built a deliberately simple,
+interpretable predictor — one elastic-net logistic regression per verifier — that predicts whether that
+verifier will time out on a given instance. We scored it honestly, with repeated cross-validation (5
+folds × 20 repeats) that groups by network identity, so two properties of the same network never land on
+opposite sides of the train/test split. On identical folds we compared ordinary network descriptors
+(input/output size, depth, width, parameter count, architecture type) *alone* against those same
+descriptors *plus* the five profile components, and measured the paired gain in held-out AUC with a 95%
+network-bootstrap interval.
 
-Pooling synthetic (225 nets) and established benchmarks (231 networks total), the profile adds
-significant value for **4 of 5 verifiers** — ΔAUC +0.056 (abcrown), +0.082 (neuralsat), +0.151
-(nnenum), +0.200 (marabou), all CIs above zero; only pyrat is inconclusive. On synthetic alone, the
-complete verifiers **Marabou (0.87→0.97)** and **nnenum (0.82→0.93)** gain +0.11 AUC and roughly half
-their Brier score, while for the strong branch-and-bound verifiers (abcrown, neuralsat, pyrat) size
-already predicts timeouts (AUC 0.86–0.97) and the profile instead improves calibration. Ablations and
-coefficients single out the **IBP relative gap** (odds ratios up to 60–110× per SD) and
-**unstable-fraction** as the stable predictors. Base rates (0.13–0.42) are reported with every cell.
+Pooling our synthetic networks with established VNN-COMP benchmarks (231 networks in all), the profile
+adds genuinely significant predictive power for four of five verifiers — +0.056 AUC for α,β-CROWN, +0.082
+for NeuralSAT, +0.151 for nnenum, +0.200 for Marabou, every interval clear of zero; only PyRAT, whose
+accuracy is already at ceiling, is inconclusive. On the synthetic networks alone the two *complete*
+verifiers benefit most (Marabou 0.87→0.97, nnenum 0.82→0.93, ~half the Brier error), while for the
+branch-and-bound verifiers size already predicts timeouts and the profile instead sharpens their
+calibration. Two components do most of the work: the IBP relative gap and the unstable fraction.
+
+One objection still stands — any model handed five extra variables can look better by luck. So we ran a
+real significance test: a parametric bootstrap adapted from the "actionable-features" analysis of a
+published excess-mortality study. We treat the network descriptors as fixed *intrinsic* features and the
+profile as the *actionable* block under test, generate null datasets whose outcomes depend on the
+intrinsic features only, and ask how often the profile's measured gain could arise by chance. Pooled
+across all instances and all five verifiers in a single gradient-boosted model (verifier identity
+included as a covariate), the profile improves held-out prediction by **ΔAUC +0.107 — a gain not one of
+1,000 null draws reached (p = 0.001; the null 95% ceiling was only +0.020)**. Run per verifier, it is
+significant at the bootstrap floor in 7 of 10 verifier×dataset cells and significant in 8 of 10, with
+PyRAT the one honest exception — and it even recovers nonlinear signal the linear model missed (abcrown
+on synthetic, flat under logistic regression, becomes clearly significant once a nonlinear model can use
+the profile). Finally, a per-instance effect δ = P(timeout | size + profile) − P(timeout | size), with
+bootstrap intervals, shows *which* instances the profile flags: those it pushes toward timeout have
+visibly higher IBP gap and unstable fraction. The three tests agree — the profile carries real
+per-instance information beyond raw network scale, not an artifact of extra parameters.
 
 ## DETAILED (~430 words)
 Several reviewers and the AC noted that our Difficulty-Profile analysis is population-level and does
