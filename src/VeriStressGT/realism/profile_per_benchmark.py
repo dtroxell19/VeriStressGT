@@ -16,10 +16,10 @@ Outputs (to --out-dir):
 
 Usage:
     PYTHONPATH=src python -m VeriStressGT.realism.profile_per_benchmark \
-        --trained rebuttal_materials/realism_sweep_analytic/difficulty_profiles.json \
+        --trained experiments/realism_sweep_analytic/difficulty_profiles.json \
         --synthetic benchmarks/sweep_all/difficulty_profiles.json \
         --real benchmarks/real_*/difficulty_profiles.json benchmarks/vnncomp_mnist_fc/difficulty_profiles.json \
-        --out-dir rebuttal_materials/realism_sweep_analytic/plots
+        --out-dir experiments/realism_sweep_analytic/plots
 """
 from __future__ import annotations
 

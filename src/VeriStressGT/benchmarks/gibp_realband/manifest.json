@@ -31,12 +31,12 @@
         "gamma": 0.001,
         "weight_scale": 2.0,
         "label": 0,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/meap_hi1/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/meap_hi1/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/meap_hi1/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/meap_hi1/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/meap_hi1/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/meap_hi1/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/meap_hi1/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/meap_hi1/spec.vnnlib",
         "x0": "[ 0.17640524  0.04001572  0.0978738   0.22408931  0.1867558  -0.09772779\n  0.09500884 -0.01513572 -0.01032189  0.04105985  0.01440436  0.14542735\n  0.07610377  0.0121675   0.04438632  0.03336744  0.14940791 -0.02051583\n  0.03130677 -0.08540957 -0.25529897  0.06536186  0.08644363 -0.07421651\n  0.22697547 -0.14543657  0.00457585 -0.01871839  0.15327792  0.14693588\n  0.01549474  0.03781625 -0.08877858 -0.19807965 -0.03479122  0.0156349\n  0.12302907  0.12023798 -0.03873268 -0.03023027 -0.1048553  -0.1420018\n -0.17062703  0.19507754 -0.05096522 -0.04380743 -0.12527953  0.07774904\n -0.16138978 -0.02127403 -0.08954666  0.03869025 -0.05108051 -0.11806323\n -0.00281822  0.04283319  0.00665172  0.03024719 -0.06343221 -0.03627412\n -0.06724604 -0.03595532 -0.08131463 -0.17262827  0.01774262 -0.04017809\n -0.16301984  0.04627823 -0.09072984  0.00519454  0.07290906  0.01289829\n  0.11394008 -0.12348258  0.04023416 -0.06848101 -0.08707972 -0.05788497\n -0.03115525  0.00561653 -0.11651498  0.09008265  0.04656624 -0.15362437\n  0.14882521  0.18958892  0.11787796 -0.01799248 -0.10707527  0.10544517\n -0.0403177   0.1222445   0.0208275   0.0976639   0.03563664  0.07065732\n  0.00105     0.17858706  0.01269121  0.04019894]",
         "epsilon": 0.1,
         "label": 0,
@@ -69,12 +69,12 @@
         "gamma": 0.001,
         "weight_scale": 2.0,
         "label": 0,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/meap_hi2/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/meap_hi2/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/meap_hi2/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/meap_hi2/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/meap_hi2/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/meap_hi2/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/meap_hi2/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/meap_hi2/spec.vnnlib",
         "x0": "[ 0.17640524  0.04001572  0.0978738   0.22408931  0.1867558  -0.09772779\n  0.09500884 -0.01513572 -0.01032189  0.04105985  0.01440436  0.14542735\n  0.07610377  0.0121675   0.04438632  0.03336744  0.14940791 -0.02051583\n  0.03130677 -0.08540957 -0.25529897  0.06536186  0.08644363 -0.07421651\n  0.22697547 -0.14543657  0.00457585 -0.01871839  0.15327792  0.14693588\n  0.01549474  0.03781625 -0.08877858 -0.19807965 -0.03479122  0.0156349\n  0.12302907  0.12023798 -0.03873268 -0.03023027 -0.1048553  -0.1420018\n -0.17062703  0.19507754 -0.05096522 -0.04380743 -0.12527953  0.07774904\n -0.16138978 -0.02127403 -0.08954666  0.03869025 -0.05108051 -0.11806323\n -0.00281822  0.04283319  0.00665172  0.03024719 -0.06343221 -0.03627412\n -0.06724604 -0.03595532 -0.08131463 -0.17262827  0.01774262 -0.04017809\n -0.16301984  0.04627823 -0.09072984  0.00519454  0.07290906  0.01289829\n  0.11394008 -0.12348258  0.04023416 -0.06848101 -0.08707972 -0.05788497\n -0.03115525  0.00561653 -0.11651498  0.09008265  0.04656624 -0.15362437\n  0.14882521  0.18958892  0.11787796 -0.01799248 -0.10707527  0.10544517\n -0.0403177   0.1222445   0.0208275   0.0976639   0.03563664  0.07065732\n  0.00105     0.17858706  0.01269121  0.04019894]",
         "epsilon": 0.1,
         "label": 0,
@@ -107,12 +107,12 @@
         "gamma": 0.001,
         "weight_scale": 2.0,
         "label": 0,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/meap_hi3/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/meap_hi3/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/meap_hi3/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/meap_hi3/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/meap_hi3/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/meap_hi3/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/meap_hi3/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/meap_hi3/spec.vnnlib",
         "x0": "[ 0.16243455 -0.06117564 -0.05281718 -0.10729686  0.08654077 -0.23015387\n  0.17448118 -0.0761207   0.03190391 -0.02493704  0.14621079 -0.20601407\n -0.03224172 -0.03840544  0.11337694 -0.10998913 -0.01724282 -0.08778584\n  0.00422137  0.05828152 -0.11006192  0.11447237  0.09015907  0.05024944\n  0.0900856  -0.06837279 -0.01228902 -0.09357695 -0.02678881  0.05303555\n -0.06916608 -0.03967535 -0.06871727 -0.08452057 -0.06712461 -0.00126646\n -0.11173104  0.02344157  0.16598022  0.07420442 -0.01918356 -0.0887629\n -0.07471583  0.16924547  0.00508078 -0.06369957  0.01909155  0.21002553\n  0.0120159   0.06172031  0.03001703 -0.03522499 -0.11425181 -0.03493427\n -0.02088942  0.05866232  0.08389834  0.09311021  0.02855873  0.08851412\n -0.0754398   0.12528682  0.05129298 -0.02980928  0.04885181 -0.00755717\n  0.11316293  0.1519817   0.21855755 -0.13964963 -0.14441139 -0.05044659\n  0.01600371  0.08761689  0.03156349 -0.20222013 -0.0306204   0.08279746\n  0.02300947  0.07620112 -0.02223281 -0.02007581  0.01865614  0.04100516\n  0.01982997  0.01190086 -0.06706623  0.03775638  0.01218213  0.1129484\n  0.11989179  0.01851564 -0.0375285  -0.06387305  0.04234944  0.00773401\n -0.03438537  0.00435969 -0.06200008  0.0698032 ]",
         "epsilon": 0.1,
         "label": 0,
@@ -149,12 +149,12 @@
         "epsilon_mode": "safe",
         "save_x0": false,
         "save_json": false,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi1/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi1/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/milp_hi1/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/milp_hi1/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi1/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi1/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/milp_hi1/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/milp_hi1/spec.vnnlib",
         "seed": 0,
         "y": 0,
         "r_star": 0.2964719223893034,
@@ -188,12 +188,12 @@
         "epsilon_mode": "safe",
         "save_x0": false,
         "save_json": false,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi2/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi2/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/milp_hi2/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/milp_hi2/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi2/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi2/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/milp_hi2/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/milp_hi2/spec.vnnlib",
         "seed": 1,
         "y": 0,
         "r_star": 0.0768279297879942,
@@ -227,12 +227,12 @@
         "epsilon_mode": "safe",
         "save_x0": false,
         "save_json": false,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi3/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi3/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/milp_hi3/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/milp_hi3/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi3/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi3/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/milp_hi3/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/milp_hi3/spec.vnnlib",
         "seed": 2,
         "y": 4,
         "r_star": 0.04992191690642783,
@@ -268,8 +268,8 @@
         "tau": 0.0001,
         "big_m": 2.0,
         "quiet": false,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/rc_hi1/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/rc_hi1/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/rc_hi1/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/rc_hi1/spec.vnnlib"
       },
       "gt": {
         "label": 0,
@@ -313,8 +313,8 @@
         "tau": 0.0001,
         "big_m": 2.0,
         "quiet": false,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/rc_hi2/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/rc_hi2/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/rc_hi2/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/rc_hi2/spec.vnnlib"
       },
       "gt": {
         "label": 0,
@@ -358,8 +358,8 @@
         "tau": 0.0001,
         "big_m": 2.0,
         "quiet": false,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/rc_hi3/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/rc_hi3/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/rc_hi3/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/rc_hi3/spec.vnnlib"
       },
       "gt": {
         "label": 0,
@@ -402,12 +402,12 @@
         "num_classes": 10,
         "label": 0,
         "epsilon": 0.05,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi1/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi1/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/pb_hi1/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/pb_hi1/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi1/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi1/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/pb_hi1/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/pb_hi1/spec.vnnlib",
         "is_robust": true,
         "label": 0,
         "epsilon": 0.05,
@@ -452,12 +452,12 @@
         "num_classes": 10,
         "label": 0,
         "epsilon": 0.05,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi2/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi2/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/pb_hi2/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/pb_hi2/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi2/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi2/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/pb_hi2/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/pb_hi2/spec.vnnlib",
         "is_robust": true,
         "label": 0,
         "epsilon": 0.05,
@@ -502,12 +502,12 @@
         "num_classes": 10,
         "label": 0,
         "epsilon": 0.05,
-        "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi3/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi3/spec.vnnlib"
+        "onnx_path": "experiments/gibp_push/instances/pb_hi3/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/pb_hi3/spec.vnnlib"
       },
       "gt": {
-        "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi3/model.onnx",
-        "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi3/spec.vnnlib",
+        "onnx_path": "experiments/gibp_push/instances/pb_hi3/model.onnx",
+        "vnnlib_path": "experiments/gibp_push/instances/pb_hi3/spec.vnnlib",
         "is_robust": true,
         "label": 0,
         "epsilon": 0.05,

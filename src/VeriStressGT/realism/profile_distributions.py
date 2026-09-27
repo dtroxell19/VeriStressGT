@@ -8,10 +8,10 @@ closely than the bare synthetic constructors do. Produced BEFORE any verifier is
 
 Usage:
     PYTHONPATH=src python -m VeriStressGT.realism.profile_distributions \
-        --trained rebuttal_materials/realism_sweep_analytic/difficulty_profiles.json \
+        --trained experiments/realism_sweep_analytic/difficulty_profiles.json \
         --synthetic benchmarks/sweep_all/difficulty_profiles.json \
         --real benchmarks/vnncomp_mnist_fc/difficulty_profiles.json benchmarks/oval21/difficulty_profiles.json \
-        --out-dir rebuttal_materials/realism_sweep_analytic/plots
+        --out-dir experiments/realism_sweep_analytic/plots
 """
 from __future__ import annotations
 

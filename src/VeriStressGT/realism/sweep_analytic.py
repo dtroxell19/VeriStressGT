@@ -15,7 +15,7 @@ verification.
 
 Usage:
     PYTHONPATH=src python -m VeriStressGT.realism.sweep_analytic --config configs/realism_sweep_analytic.yaml \
-        --out-dir rebuttal_materials/realism_sweep_analytic --data-dir /tmp/realism_data
+        --out-dir experiments/realism_sweep_analytic --data-dir /tmp/realism_data
 """
 from __future__ import annotations
 

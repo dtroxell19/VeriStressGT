@@ -19,7 +19,7 @@ DEVICE="${DEVICE:-cuda}"
 TIMEOUT="${TIMEOUT:-600}"
 CPU_JOBS="${CPU_JOBS:-8}"
 export NEURALSAT_SETTING_FILE="${NEURALSAT_SETTING_FILE:-$PWD/src/VeriStressGT/configs/neuralsat_settings.json}"
-OUT="rebuttal_materials/predictive_modeling/server_reruns/est600"
+OUT="experiments/predictive_modeling/server_reruns/est600"
 mkdir -p "$OUT"
 
 BENCHES="${ONLY:-vnncomp_mnist_fc oval21}"

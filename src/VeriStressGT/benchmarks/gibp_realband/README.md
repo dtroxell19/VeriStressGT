@@ -34,5 +34,5 @@ Ready-to-use "real-median G_IBP" settings: paired-bias `num_pairs=32, num_backbo
 margin=0.001`; corners `hinge_l1=1000`; MILP near-boundary at `h=20`.
 
 Reproduce: `PYTHONPATH=src python -m VeriStressGT.cli.create_benchmark --spec
-src/VeriStressGT/configs/gibp_push.yaml --out_dir rebuttal_materials/gibp_push --overwrite`, then filter
+src/VeriStressGT/configs/gibp_push.yaml --out_dir experiments/gibp_push --overwrite`, then filter
 to the meap/milp/rc/pb families (this suite).

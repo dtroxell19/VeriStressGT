@@ -24,7 +24,7 @@ from . import sound_families as F
 
 REPO = Path(__file__).resolve().parents[3]
 BENCH = REPO / "src" / "VeriStressGT" / "benchmarks"
-OUT = REPO / "rebuttal_materials" / "sound_arithmetic"
+OUT = REPO / "experiments" / "sound_arithmetic"
 SWEEP = BENCH / "sweep_all" / "instances"
 POLY = BENCH / "polynomial_stress_22" / "instances"
 CONVEX = OUT / "poly_convex" / "instances"
@@ -95,7 +95,7 @@ def run(limit=None):
     # convex polynomial companion (regenerate onnx first via gen_poly_convex.py)
     if not any(CONVEX.glob("*/model.onnx")):
         print("  [convex companion] no model.onnx found; run "
-              "rebuttal_materials/sound_arithmetic/gen_poly_convex.py first", flush=True)
+              "experiments/sound_arithmetic/gen_poly_convex.py first", flush=True)
     for mp in sorted(CONVEX.glob("*/meta.json")):
         meta = json.loads(mp.read_text())
         d = mp.parent

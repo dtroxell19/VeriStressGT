@@ -25,12 +25,12 @@
     "num_classes": 10,
     "label": 0,
     "epsilon": 0.05,
-    "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi2/model.onnx",
-    "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi2/spec.vnnlib"
+    "onnx_path": "experiments/gibp_push/instances/pb_hi2/model.onnx",
+    "vnnlib_path": "experiments/gibp_push/instances/pb_hi2/spec.vnnlib"
   },
   "gt": {
-    "onnx_path": "rebuttal_materials/gibp_push/instances/pb_hi2/model.onnx",
-    "vnnlib_path": "rebuttal_materials/gibp_push/instances/pb_hi2/spec.vnnlib",
+    "onnx_path": "experiments/gibp_push/instances/pb_hi2/model.onnx",
+    "vnnlib_path": "experiments/gibp_push/instances/pb_hi2/spec.vnnlib",
     "is_robust": true,
     "label": 0,
     "epsilon": 0.05,

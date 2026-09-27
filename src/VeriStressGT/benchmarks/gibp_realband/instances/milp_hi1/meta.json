@@ -24,12 +24,12 @@
     "epsilon_mode": "safe",
     "save_x0": false,
     "save_json": false,
-    "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi1/model.onnx",
-    "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi1/spec.vnnlib"
+    "onnx_path": "experiments/gibp_push/instances/milp_hi1/model.onnx",
+    "vnnlib_path": "experiments/gibp_push/instances/milp_hi1/spec.vnnlib"
   },
   "gt": {
-    "onnx_path": "rebuttal_materials/gibp_push/instances/milp_hi1/model.onnx",
-    "vnnlib_path": "rebuttal_materials/gibp_push/instances/milp_hi1/spec.vnnlib",
+    "onnx_path": "experiments/gibp_push/instances/milp_hi1/model.onnx",
+    "vnnlib_path": "experiments/gibp_push/instances/milp_hi1/spec.vnnlib",
     "seed": 0,
     "y": 0,
     "r_star": 0.2964719223893034,

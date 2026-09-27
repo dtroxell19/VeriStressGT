@@ -10,8 +10,8 @@ status is UNSAT.
 Usage:
     PYTHONPATH=src python -m VeriStressGT.realism.profile_unsat \
         --synthetic benchmarks/sweep_all/difficulty_profiles.json \
-        --real NAME=benchmarks/<b>/difficulty_profiles.json:rebuttal_materials/real_verify/<b>/results.jsonl ... \
-        --out-dir rebuttal_materials/realism_sweep_analytic/plots
+        --real NAME=benchmarks/<b>/difficulty_profiles.json:experiments/real_verify/<b>/results.jsonl ... \
+        --out-dir experiments/realism_sweep_analytic/plots
 """
 from __future__ import annotations
 

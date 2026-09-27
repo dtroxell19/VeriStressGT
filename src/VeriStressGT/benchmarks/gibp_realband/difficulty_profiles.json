@@ -1,8 +1,8 @@
 {
   "instances": [
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/meap_hi1/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/meap_hi1/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/meap_hi1/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/meap_hi1/spec.vnnlib",
       "epsilon": 0.1,
       "input_dim": 100,
       "num_classes": 10,
@@ -158,8 +158,8 @@
       "instance_id": "meap_hi1"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/meap_hi2/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/meap_hi2/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/meap_hi2/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/meap_hi2/spec.vnnlib",
       "epsilon": 0.1,
       "input_dim": 100,
       "num_classes": 10,
@@ -319,8 +319,8 @@
       "instance_id": "meap_hi2"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/meap_hi3/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/meap_hi3/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/meap_hi3/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/meap_hi3/spec.vnnlib",
       "epsilon": 0.1,
       "input_dim": 100,
       "num_classes": 10,
@@ -484,8 +484,8 @@
       "instance_id": "meap_hi3"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/milp_hi1/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/milp_hi1/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/milp_hi1/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/milp_hi1/spec.vnnlib",
       "epsilon": 0.29350720316541046,
       "input_dim": 50,
       "num_classes": 5,
@@ -621,8 +621,8 @@
       "instance_id": "milp_hi1"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/milp_hi2/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/milp_hi2/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/milp_hi2/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/milp_hi2/spec.vnnlib",
       "epsilon": 0.07675110185820622,
       "input_dim": 50,
       "num_classes": 5,
@@ -758,8 +758,8 @@
       "instance_id": "milp_hi2"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/milp_hi3/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/milp_hi3/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/milp_hi3/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/milp_hi3/spec.vnnlib",
       "epsilon": 0.04991692471473719,
       "input_dim": 50,
       "num_classes": 5,
@@ -895,8 +895,8 @@
       "instance_id": "milp_hi3"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/rc_hi1/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/rc_hi1/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/rc_hi1/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/rc_hi1/spec.vnnlib",
       "epsilon": 0.2,
       "input_dim": 100,
       "num_classes": 10,
@@ -1028,8 +1028,8 @@
       "instance_id": "rc_hi1"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/rc_hi2/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/rc_hi2/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/rc_hi2/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/rc_hi2/spec.vnnlib",
       "epsilon": 0.2,
       "input_dim": 100,
       "num_classes": 10,
@@ -1161,8 +1161,8 @@
       "instance_id": "rc_hi2"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/rc_hi3/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/rc_hi3/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/rc_hi3/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/rc_hi3/spec.vnnlib",
       "epsilon": 0.2,
       "input_dim": 100,
       "num_classes": 10,
@@ -1294,8 +1294,8 @@
       "instance_id": "rc_hi3"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/pb_hi1/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/pb_hi1/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/pb_hi1/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/pb_hi1/spec.vnnlib",
       "epsilon": 0.05000000000000002,
       "input_dim": 48,
       "num_classes": 10,
@@ -1443,8 +1443,8 @@
       "instance_id": "pb_hi1"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/pb_hi2/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/pb_hi2/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/pb_hi2/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/pb_hi2/spec.vnnlib",
       "epsilon": 0.05000000000000002,
       "input_dim": 48,
       "num_classes": 10,
@@ -1592,8 +1592,8 @@
       "instance_id": "pb_hi2"
     },
     {
-      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/pb_hi3/model.onnx",
-      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/rebuttal_materials/gibp_push/instances/pb_hi3/spec.vnnlib",
+      "onnx_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/pb_hi3/model.onnx",
+      "vnnlib_path": "/Users/anon/Desktop/rebuttals/VeriStressGT/experiments/gibp_push/instances/pb_hi3/spec.vnnlib",
       "epsilon": 0.05000000000000002,
       "input_dim": 48,
       "num_classes": 10,

@@ -26,8 +26,8 @@
     "tau": 0.0001,
     "big_m": 2.0,
     "quiet": false,
-    "onnx_path": "rebuttal_materials/gibp_push/instances/rc_hi1/model.onnx",
-    "vnnlib_path": "rebuttal_materials/gibp_push/instances/rc_hi1/spec.vnnlib"
+    "onnx_path": "experiments/gibp_push/instances/rc_hi1/model.onnx",
+    "vnnlib_path": "experiments/gibp_push/instances/rc_hi1/spec.vnnlib"
   },
   "gt": {
     "label": 0,

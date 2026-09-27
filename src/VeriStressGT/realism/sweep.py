@@ -11,7 +11,7 @@ analogue of sweep_all. Use fewer than 225 instances.
 
 Usage:
     PYTHONPATH=src python -m VeriStressGT.realism.sweep --config configs/realism_sweep.yaml \
-        --out-dir rebuttal_materials/realism_sweep --data-dir /tmp/realism_data
+        --out-dir experiments/realism_sweep --data-dir /tmp/realism_data
 """
 from __future__ import annotations
 
