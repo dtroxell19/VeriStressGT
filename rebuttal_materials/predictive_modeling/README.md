@@ -40,7 +40,7 @@ group-bootstrap CI; Brier, AP, calibration reported alongside.
   all imputation/standardization/tuning inside training folds.
 
 ## Outputs
-- `REPORT.md`, `REBUTTAL_TEXT.md` — findings + rebuttal-ready text.
+- `REPORT.md` — findings.
 - `results/primary_results_table.csv`, `results/cv/*.summary.json` — per-cell metrics + verdict.
 - `results/predictions/out_of_fold_predictions.csv` — the per-instance predictor artifact.
 - `results/transfer/`, `results/coefficients/`, `plots/` — transfer, interpretation, figures.

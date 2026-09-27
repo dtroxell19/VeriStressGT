@@ -77,7 +77,7 @@ All work is isolated under `rebuttal_materials/predictive_modeling/`; no existin
 - **Transfer:** size trained on one domain ≈chance on the other (AUC 0.29–0.50); profile restores
   discrimination (e.g. marabou 0.50→0.86) — architecture-agnostic difficulty. Two exceptions
   (neuralsat/pyrat estab→synth).
-- Deliverables: REPORT.md (finalized), REBUTTAL_TEXT.md (short/medium/detailed), per-instance OOF CSV,
+- Deliverables: REPORT.md (finalized), per-instance OOF CSV,
   15 CV cells, transfer, coefficients, ablations, runtime, plots.
 
 ## 2026-07-25 — Anonymization
