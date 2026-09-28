@@ -47,6 +47,10 @@ class VerifierOpts:
     radius_scale: float = 1.0              # [BUG eps_half] 0.5
     bab: bool = True
     milp_max_unstable: int = 600           # exact MILP when the root has at most this many unstable ReLUs
+    weight_dtype: Optional[str] = None     # [BUG weights_fp16] "float16"
+    hwc_layout: bool = False               # [BUG] read a CHW image box as if it were HWC
+    prove_any_row: bool = False            # [BUG bab_any_row] a domain is "proved" if ANY disjunct is
+    label_shift: int = 0                   # [BUG label_off_by_one] verify robustness of class label+1
 
 
 def opts_for_bug(bug: str) -> VerifierOpts:
@@ -62,6 +66,10 @@ def opts_for_bug(bug: str) -> VerifierOpts:
         "disjunct_last": replace(base, disjunct_last=True),
         "input_clip01": replace(base, clip01=True),
         "eps_half": replace(base, radius_scale=0.5),
+        "weights_fp16": replace(base, weight_dtype="float16"),
+        "hwc_layout": replace(base, hwc_layout=True),
+        "bab_any_row": replace(base, prove_any_row=True),
+        "label_off_by_one": replace(base, label_shift=1),
     }
     if bug not in table:
         raise ValueError(f"unknown bug {bug!r}; choose from {sorted(table)}")
@@ -180,7 +188,8 @@ def bab(graph: Graph, C: torch.Tensor, c: torch.Tensor, r: torch.Tensor, opts: V
         cb, rb = c.expand((B,) + c.shape[1:]), r.expand((B,) + r.shape[1:])
         lb, infeasible, scores, _ = _bounds_with_splits(graph, C, cb, rb, splits, opts.bounds)
         visited += B
-        proved = infeasible | (lb.min(dim=1).values > opts.verify_threshold)
+        row_lb = lb.max(dim=1).values if opts.prove_any_row else lb.min(dim=1).values
+        proved = infeasible | (row_lb > opts.verify_threshold)
         if not opts.bab and not bool(proved.all()):
             return "unknown", visited
         for i in range(B):
@@ -223,7 +232,7 @@ def _solve(graph: Graph, C: torch.Tensor, lo: torch.Tensor, hi: torch.Tensor,
     lb, _, scores, iv = _bounds_with_splits(graph, C, c, r, {}, opts.bounds)
     thr = opts.verify_threshold
     open_rows = [int(d) for d in torch.argsort(lb[0]) if float(lb[0, d]) <= thr]
-    if not open_rows:
+    if not open_rows or (opts.prove_any_row and len(open_rows) < lb.shape[1]):
         return {"status": "unsat", "stage": "bounds", "attack_margin": m}
 
     n_unstable = sum(int((s > 0).sum()) for s in scores.values())
@@ -254,16 +263,22 @@ def _solve(graph: Graph, C: torch.Tensor, lo: torch.Tensor, hi: torch.Tensor,
     return {"status": status, "stage": "bab", "domains": visited, "attack_margin": m}
 
 
-def load_problem(onnx_path: str, vnnlib_path: str) -> Tuple[Graph, Spec]:
-    graph = load_graph(onnx_path)
+def load_problem(onnx_path: str, vnnlib_path: str, weight_dtype: Optional[str] = None) -> Tuple[Graph, Spec]:
+    graph = load_graph(onnx_path, weight_dtype=weight_dtype)
     n_out = graph.forward(torch.zeros((1,) + graph.input_shape, dtype=DTYPE)).shape[1]
     return graph, parse_vnnlib(vnnlib_path, n_out)
 
 
 def verify(onnx_path: str, vnnlib_path: str, bug: str = "none", time_budget: float = 60.0) -> Dict:
     t0 = time.time()
-    graph, spec = load_problem(onnx_path, vnnlib_path)
-    return verify_box(graph, spec.C, spec.center, spec.radius, bug, time_budget - (time.time() - t0))
+    opts = opts_for_bug(bug)
+    graph, spec = load_problem(onnx_path, vnnlib_path, weight_dtype=opts.weight_dtype)
+    C = spec.C
+    if opts.label_shift:  # [BUG] rows built against the wrong class index
+        n_out = C.shape[1]
+        wrong = (spec.label + opts.label_shift) % n_out
+        C = np.stack([np.eye(n_out)[wrong] - np.eye(n_out)[j] for j in range(n_out) if j != wrong])
+    return verify_box(graph, C, spec.center, spec.radius, bug, time_budget - (time.time() - t0))
 
 
 def verify_box(graph: Graph, C_np: np.ndarray, center_np: np.ndarray, radius_np: np.ndarray,
@@ -272,6 +287,11 @@ def verify_box(graph: Graph, C_np: np.ndarray, center_np: np.ndarray, radius_np:
     opts = opts_for_bug(bug)
     center = torch.tensor(center_np, dtype=DTYPE).reshape((1,) + graph.input_shape)
     radius = torch.tensor(radius_np, dtype=DTYPE).reshape((1,) + graph.input_shape) * opts.radius_scale
+    if opts.hwc_layout and len(graph.input_shape) == 3 and graph.input_shape[0] > 1:
+        # [BUG] the flat VNNLIB coordinates are CHW, but are read as HWC and transposed to CHW
+        c_, h_, w_ = graph.input_shape
+        center = center.reshape(1, h_, w_, c_).permute(0, 3, 1, 2).contiguous()
+        radius = radius.reshape(1, h_, w_, c_).permute(0, 3, 1, 2).contiguous()
     lo, hi = center - radius, center + radius
     if opts.clip01:
         lo, hi = lo.clamp(0.0, 1.0), hi.clamp(0.0, 1.0)

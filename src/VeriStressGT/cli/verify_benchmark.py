@@ -176,7 +176,9 @@ def _run_one(
         )
         cmd = [conda_exe, "run", "-n", conda_env, "--no-capture-output"] + cmd
 
-    t0 = time.time()
+    # monotonic: on macOS it does not advance while the machine sleeps, so a suspended laptop does
+    # not inflate recorded runtimes (the subprocess timeout is also monotonic-based).
+    t0 = time.monotonic()
     timed_out = False
     rc: Optional[int] = None
     stdout = ""
@@ -210,7 +212,7 @@ def _run_one(
             f"{traceback.format_exc()}"
         )
 
-    wall = time.time() - t0
+    wall = time.monotonic() - t0
 
     stdout_path.write_text(stdout)
     stderr_path.write_text(stderr)

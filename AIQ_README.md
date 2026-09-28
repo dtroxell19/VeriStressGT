@@ -64,9 +64,9 @@ what exposes false UNSAT claims, the dangerous direction.
 | Role | Verifiers |
 |------|-----------|
 | Sound controls | `reference` (in-house: PGD attack, then CROWN bounds, then exact MILP via scipy/HiGHS or ReLU-split BaB), `ibp_only` |
-| Planted, tier (b) | 8 mutants of the reference with one injected bug each: `ibp_sign`, `relu_no_intercept`, `conv_bias_dropped`, `tol_unsat`, `tol_sat`, `disjunct_last` (the Appendix D bug), `input_clip01`, `eps_half` |
-| Real | `abcrown`, `pyrat` (skipped if not installed) |
-| Planted, tier (a) | output-level faults on each real verifier: `timeout_as_unsat`, `crash_as_sat` (the rebuttal-era parser bug), `conv_sat_to_unsat`, `attention_unsat_to_sat` |
+| Planted, tier (b) | 12 mutants of the reference with one injected bug each. Bound computation: `ibp_sign`, `relu_no_intercept`, `conv_bias_dropped`. Numerics: `tol_unsat`, `tol_sat`, `weights_fp16` (verifies a half-precision copy of the network). Search logic: `disjunct_last` (the Appendix D bug), `bab_any_row` (prunes a sub-domain once any disjunct is proved). Input/spec handling: `input_clip01`, `eps_half`, `hwc_layout` (reads a CHW image box as HWC), `label_off_by_one` |
+| Real | `abcrown`, `pyrat`, `nnenum` (each skipped if not installed) |
+| Planted, tier (a) | 6 output-level faults on each real verifier: `timeout_as_unsat`, `crash_as_sat` (the rebuttal-era parser bug), `conv_sat_to_unsat`, `attention_unsat_to_sat`, `cache_collision` (results cached by network file, ignoring the spec), `flaky` (nondeterministic flips on ~15% of instances) |
 
 Bug descriptions and the failure classes they model are in `src/VeriStressGT/soundness/bugs.py`.
 
@@ -98,43 +98,46 @@ both only try to prove UNSAT and never report SAT.
 ### Sample run results
 
 **Machine:** MacBook Pro (Apple Silicon), CPU only. **Config:** card defaults (60 s timeout,
-4 parallel in-house jobs, 2 parallel real-verifier jobs). The full card run takes about 15 min.
+4 parallel in-house jobs, 2 parallel real-verifier jobs, abcrown + pyrat + nnenum). The full card
+run takes about 30 min.
 
 Benchmark: 50 instances (24 UNSAT, 26 SAT, including 4 attack-hard tiny-CNN SAT instances where
 PGD fails and only a completed proof procedure decides the instance).
 
-**1. Buggy verifiers caught** (16 planted; 2 never exercised, so rates are out of 14)
+**1. Buggy verifiers caught** (30 planted; 3 never exercised, so rates are out of 27)
 
-| Labels used for scoring | Caught | Sound controls flagged |
+| Labels used for scoring | Caught | Sound verifiers flagged |
 |---|---|---|
-| Ground truth | **14/14 (100%)** | none |
-| Majority vote, one buggy verifier in the pool | 12/14 (86%) | none |
-| Majority vote, full pool | 12/14 (86%) | **both** (`reference`, `ibp_only`) |
+| Ground truth | **27/27 (100%)** | none |
+| Majority vote, one buggy verifier in the pool | 25/27 (93%) | none |
+| Majority vote, full pool | 26/27 (96%) | **3**: `reference`, `ibp_only`, and the real `nnenum` |
 
-**2. Scoring accuracy** (each of the 844 definitive verdicts across all verifiers is one judgment)
+**2. Scoring accuracy** (each of the 1,429 definitive verdicts across all verifiers is one judgment)
 
 | Labels used for scoring | Correctly scored | Wrongful accusations | Wrongful acquittals | Unscored (ties) |
 |---|---|---|---|---|
-| Ground truth | **844/844 (100%)** | 0 | 0 | 0 |
-| Majority vote, one buggy verifier in the pool | 836/844 (99.1%) | 0 | 0 | 8 |
-| Majority vote, full pool | 739/844 (87.6%) | 36 | 69 | 0 |
+| Ground truth | **1429/1429 (100%)** | 0 | 0 | 0 |
+| Majority vote, one buggy verifier in the pool | 1416/1429 (99.1%) | 0 | 0 | 13 |
+| Majority vote, full pool | 1352/1429 (94.6%) | 33 | 44 | 0 |
 
 A wrongful accusation calls a correct verdict wrong; a wrongful acquittal calls a wrong verdict
 correct. Ground-truth SAT labels are re-certified from their witnesses on every run, so the 100%
 is checked, not assumed.
 
-- **Not exercised:** `pyrat+crash_as_sat` (pyrat never crashed) and
-  `abcrown+attention_unsat_to_sat` (abcrown crashes on every attention model, so it never produced
-  an UNSAT to flip). These faults never changed a verdict, so there was nothing to catch.
-- **`mutant:conv_bias_dropped`** only gives wrong answers when the attack fails and the proof
-  procedure has to decide. The attack-hard CNN instances expose it (false UNSAT on 3 of 4).
+- **Not exercised:** `pyrat+crash_as_sat` (pyrat never crashed), and
+  `abcrown+attention_unsat_to_sat` / `nnenum+attention_unsat_to_sat` (neither verifier produced an
+  UNSAT on an attention model to flip). These faults never changed a verdict.
+- **Hard-to-expose bugs:** `mutant:conv_bias_dropped` and `mutant:weights_fp16` only produce wrong
+  answers when the attack fails and the proof procedure decides, which happens on the attack-hard
+  CNN instances. `mutant:hwc_layout` goes wrong on a single instance (`rcnn_2_sat_near`), the only
+  multi-channel SAT instance whose scrambled box excludes every counterexample.
 - **Majority vote, one buggy verifier:** it misses `abcrown+crash_as_sat` and
   `pyrat+attention_unsat_to_sat`. Their false SATs land on attention instances where the only
   other decisive verifier is the real tool that supports them, so the vote ties and nobody is
   flagged.
-- **Majority vote, full pool:** the planted false-UNSAT verdicts outvote the truth on
-  near-threshold SAT instances. Both sound controls are flagged for correct answers, and
-  `abcrown+timeout_as_unsat` and `mutant:conv_bias_dropped` go undetected.
+- **Majority vote, full pool:** the planted false-UNSAT verdicts outvote the truth on near-threshold
+  SAT instances. Three sound verifiers are flagged for correct answers, including real nnenum, and
+  `mutant:conv_bias_dropped` goes undetected.
 - **pyrat false UNSAT (prove-only mode):** with counterexample search off, unmodified pyrat
   (`con_z`, torch float32) reported `tcnn_2_sat_near` as robust. Exact rational arithmetic on the
   model's weights confirms the stored witness lies in the box with margin -2.99e-6. With the attack

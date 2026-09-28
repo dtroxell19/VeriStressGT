@@ -67,6 +67,30 @@ MUTANT_BUGS: Dict[str, Dict[str, str]] = {
                        "the specified radius is verified.",
         "models": "specification-parsing off-by-factor bug",
     },
+    "weights_fp16": {
+        "fails_as": "false_unsat",
+        "description": "Loads the network weights in half precision and verifies that copy, i.e. the "
+                       "quantized deployment model rather than the network in the specification.",
+        "models": "precision mismatch between the verified and the specified model",
+    },
+    "hwc_layout": {
+        "fails_as": "false_unsat",
+        "description": "Reads the flat VNNLIB input box as HWC and transposes it to CHW, scrambling the "
+                       "per-coordinate bounds of multi-channel image inputs.",
+        "models": "tensor-layout (channels-first vs channels-last) conversion bug",
+    },
+    "bab_any_row": {
+        "fails_as": "false_unsat",
+        "description": "Treats a sub-domain as verified once ANY output disjunct is proved, instead of all "
+                       "of them (conjunction/disjunction confusion in branch-and-bound pruning).",
+        "models": "logic error in multi-disjunct pruning",
+    },
+    "label_off_by_one": {
+        "fails_as": "false_sat",
+        "description": "Builds the specification rows against class (label + 1) mod C, verifying "
+                       "robustness of the wrong class.",
+        "models": "0- vs 1-based class-index bug",
+    },
 }
 
 
@@ -107,10 +131,46 @@ WRAPPER_BUGS: Dict[str, Dict] = {
         "models": "numerical overflow in softmax / bilinear bound code",
         "fn": lambda s, inst: "sat" if (s == "unsat" and _is_attention(inst)) else None,
     },
+    "cache_collision": {
+        "fails_as": "false_unsat",
+        "description": "Results are cached by network file alone, ignoring the specification: every later "
+                       "query on the same network returns the first cached verdict.",
+        "models": "incremental-verification cache keyed on the model hash only",
+        "apply": lambda statuses, instances: _cache_collision(statuses, instances),
+    },
+    "flaky": {
+        "fails_as": "false_unsat",
+        "description": "Nondeterministic parallel reductions flip a definitive verdict on a pseudo-random "
+                       "~15% of instances (deterministic per instance id, so runs are reproducible).",
+        "models": "run-to-run nondeterminism (e.g. unordered GPU reductions) near decision thresholds",
+        "fn": lambda s, inst: ({"sat": "unsat", "unsat": "sat"}.get(s) if _hash_frac(inst["id"]) < 0.15 else None),
+    },
 }
 
 
+def _hash_frac(key: str) -> float:
+    import hashlib
+    return int(hashlib.sha256(key.encode()).hexdigest()[:8], 16) / 0xFFFFFFFF
+
+
+def _cache_collision(statuses: Dict[str, str], instances: Dict[str, Dict]) -> Dict[str, str]:
+    cache: Dict[str, str] = {}
+    out = {}
+    for iid in sorted(statuses):
+        key = instances[iid].get("sha256", {}).get("onnx") or iid
+        s = statuses[iid]
+        if key in cache:
+            out[iid] = cache[key]
+        else:
+            out[iid] = s
+            if s in ("sat", "unsat"):
+                cache[key] = s
+    return out
+
+
 def apply_wrapper(bug: str, statuses: Dict[str, str], instances: Dict[str, Dict]) -> Dict[str, str]:
+    if "apply" in WRAPPER_BUGS[bug]:  # stateful wrappers see the whole benchmark
+        return WRAPPER_BUGS[bug]["apply"](statuses, instances)
     fn: WrapperFn = WRAPPER_BUGS[bug]["fn"]
     out = {}
     for iid, s in statuses.items():

@@ -139,10 +139,10 @@ def _plot_matrix(verdicts: Dict[str, Dict[str, str]], gt: Dict[str, str], order:
     ax.set_yticks([y - 0.5 for y in range(1, len(order))], minor=True)
     ax.grid(which="minor", color="white", lw=0.5)
     ax.tick_params(which="minor", length=0)
-    ax.legend(handles=[Patch(facecolor=c, edgecolor="gray", label=l) for c, l in
-                       zip(colors, ["correct verdict", "wrong verdict", "timeout / unknown / error", "unsupported"])],
-              loc="upper center", bbox_to_anchor=(0.5, -0.28), ncol=4, fontsize=8)
-    fig.tight_layout()
+    fig.legend(handles=[Patch(facecolor=c, edgecolor="gray", label=l) for c, l in
+                        zip(colors, ["correct verdict", "wrong verdict", "timeout / unknown / error", "unsupported"])],
+               loc="lower center", ncol=4, fontsize=8, frameon=False)
+    fig.tight_layout(rect=(0, 0.03, 1, 1))
     fig.savefig(out_path, dpi=180)
     plt.close(fig)
     print(f"  saved {out_path}", flush=True)
@@ -158,7 +158,7 @@ class Thrust1RunnerCLI(scfg.DataConfig):
     timeout = scfg.Value(60.0, type=float, help="Per-instance wall-clock timeout (s).", tags=["algo_param"])
     jobs = scfg.Value(4, type=int, help="Parallel instances for the in-house verifiers.", tags=["algo_param"])
     real_jobs = scfg.Value(2, type=int, help="Parallel instances for each real verifier.", tags=["algo_param"])
-    real_verifiers = scfg.Value(["abcrown", "pyrat"], help="Real verifiers to run (skipped if missing).",
+    real_verifiers = scfg.Value(["abcrown", "pyrat", "nnenum"], help="Real verifiers to run (skipped if missing).",
                                 tags=["algo_param"])
     mutant_bugs = scfg.Value(list(MUTANT_BUGS), help="Reference-verifier mutants to run.", tags=["algo_param"])
     wrapper_bugs = scfg.Value(list(WRAPPER_BUGS), help="Output-level faults applied to each real verifier.",

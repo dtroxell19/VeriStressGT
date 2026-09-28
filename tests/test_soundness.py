@@ -94,6 +94,16 @@ def test_scoring():
     print("ok scoring: ground truth flags the bug, majority vote misses it")
 
 
+def test_cache_collision_wrapper():
+    """A spec-blind result cache hands the base instance's verdict to its SAT twin."""
+    from VeriStressGT.soundness.bugs import apply_wrapper
+    instances = {"a": {"id": "a", "sha256": {"onnx": "net1"}}, "a_sat_near": {"id": "a_sat_near", "sha256": {"onnx": "net1"}},
+                 "b": {"id": "b", "sha256": {"onnx": "net2"}}}
+    out = apply_wrapper("cache_collision", {"a": "unsat", "a_sat_near": "sat", "b": "timeout"}, instances)
+    assert out == {"a": "unsat", "a_sat_near": "unsat", "b": "timeout"}
+    print("ok cache_collision reuses the cached verdict across specs")
+
+
 if __name__ == "__main__":
     torch.set_num_threads(1)
     for name, fn in list(globals().items()):

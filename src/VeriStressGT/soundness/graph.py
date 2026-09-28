@@ -101,13 +101,17 @@ def _gemm_node(W: np.ndarray, attrs: dict, C: Optional[np.ndarray], in_shape, na
     return lin, lin_abs, b, (out_dim,)
 
 
-def load_graph(onnx_path: str, *, check: bool = True) -> Graph:
+def load_graph(onnx_path: str, *, check: bool = True, weight_dtype: Optional[str] = None) -> Graph:
     import onnx
     from onnx import numpy_helper
 
     model = onnx.load(onnx_path)
     g = model.graph
     consts: Dict[str, np.ndarray] = {i.name: numpy_helper.to_array(i) for i in g.initializer}
+    if weight_dtype:  # [BUG weights_fp16] reason about a reduced-precision copy of the weights
+        consts = {k: v.astype(weight_dtype).astype(v.dtype) if v.dtype.kind == "f" else v
+                  for k, v in consts.items()}
+        check = False
     real_inputs = [i for i in g.input if i.name not in consts]
     if len(real_inputs) != 1:
         raise UnsupportedOp(f"expected exactly one graph input, got {len(real_inputs)}")
