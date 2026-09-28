@@ -1,0 +1,37 @@
+{
+  "id": "tcnn_1_sat_near",
+  "construction": "cnn.random_witness",
+  "seed": 1,
+  "variant": "sat_near",
+  "paths": {
+    "onnx": "instances/tcnn_1_sat_near/model.onnx",
+    "vnnlib": "instances/tcnn_1_sat_near/spec.vnnlib",
+    "meta": "instances/tcnn_1_sat_near/meta.json"
+  },
+  "sha256": {
+    "onnx": "b1d3da805fba0322cc9f7ae41f9ee863dec00c111cdd0acdaf0612c65ecb627a",
+    "vnnlib": "6edb83e4a88489dddafec92a3f6a0584ab1aa435a36d8ce47c82a0ee7055229d"
+  },
+  "args": {
+    "arch": "conv(1->2,3x3)-relu-conv(2->2,3x3,s2)-relu-fc(8->4)",
+    "epsilon_base": 0.02,
+    "epsilon_scale_vs_base": 30.088344243945617
+  },
+  "ground_truth": {
+    "label": "sat",
+    "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+    "witness": "instances/tcnn_1_sat_near/witness.json",
+    "witness_margin_f64": -8.230361295608057e-05,
+    "witness_margin_f32": -8.230656385421753e-05,
+    "violated_classes": [
+      3
+    ],
+    "last_disjunct_class": 3,
+    "base_instance": "tcnn_1",
+    "eps_scale": 30.088344243945617,
+    "threshold_bracket": [
+      30.067984288904963,
+      30.088344243945617
+    ]
+  }
+}

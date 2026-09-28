@@ -1,0 +1,15 @@
+# alpha-beta-CROWN config for the Thrust 1 (soundness) card.
+# Same as abcrown_basic.yaml, but runs the PGD attack before verification (pgd_order: before) so
+# abcrown can report counterexamples, as it would in VNN-COMP. abcrown_basic.yaml uses
+# pgd_order: input_bab, which skips the up-front attack and makes abcrown prove-only.
+general:
+  device: cpu
+  save_adv_example: true
+attack:
+  pgd_order: before
+  cex_path: ./test_cex.txt
+solver:
+  alpha-crown:
+    max_time: 1000000000.0
+bab:
+  timeout: 3000000.0

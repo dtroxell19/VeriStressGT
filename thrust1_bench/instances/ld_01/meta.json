@@ -1,0 +1,55 @@
+{
+  "id": "ld_01",
+  "construction": "attention.linear_dominance",
+  "seed": 1,
+  "paths": {
+    "onnx": "instances/ld_01/model.onnx",
+    "vnnlib": "instances/ld_01/spec.vnnlib",
+    "meta": "instances/ld_01/meta.json"
+  },
+  "sha256": {
+    "onnx": "d226b1393b023b6ac67a86c8152c425e988d7b6c15de37db1f2ab5ca9d6b0584",
+    "vnnlib": "199127b34c3e3dafbe7e45440f67d6388b695862f6a237aacf2735c472e796f2"
+  },
+  "args": {
+    "seed": 1,
+    "n": 4,
+    "d": 4,
+    "d_v": 4,
+    "num_classes": 10,
+    "gate_scale": 0.5,
+    "noise_scale": 0.2,
+    "epsilon": 0.02,
+    "margin_factor": 2.0,
+    "onnx_path": "thrust1_bench/instances/ld_01/model.onnx",
+    "vnnlib_path": "thrust1_bench/instances/ld_01/spec.vnnlib"
+  },
+  "gt": {
+    "construction": "attention.linear_dominance",
+    "seed": 1,
+    "n": 4,
+    "d": 4,
+    "d_k": 4,
+    "d_v": 4,
+    "num_classes": 10,
+    "gate_scale": 0.5,
+    "noise_scale": 0.2,
+    "epsilon": 0.02,
+    "margin_factor": 2.0,
+    "label": 0,
+    "is_robust": true,
+    "ground_truth": "UNSAT",
+    "sv_V": 1.0000000000000007,
+    "L_h": 1.0000000000000004,
+    "dw": 0.020800000000000003,
+    "dV": 0.04000000000000003,
+    "B_max": 0.02348414606302031,
+    "cert_rhs": 0.09393658425208128,
+    "nominal_margin": 0.18787316850416255,
+    "margin_over_cert": 2.0
+  },
+  "ground_truth": {
+    "label": "unsat",
+    "certificate": "analytic: dominant key + Lipschitz head (Prop. 10)"
+  }
+}

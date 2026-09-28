@@ -1,0 +1,2067 @@
+{
+  "name": "thrust1",
+  "created_at": "2026-09-28T06:16:31.424744Z",
+  "git_commit": "fa244dd754782f02b763f85947f1a692f76d9851",
+  "common": {
+    "onnx_name": "model.onnx",
+    "vnnlib_name": "spec.vnnlib",
+    "meta_name": "meta.json"
+  },
+  "mode": "spec",
+  "instances": [
+    {
+      "id": "milp_s0_a",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/milp_s0_a/model.onnx",
+        "vnnlib": "instances/milp_s0_a/spec.vnnlib",
+        "meta": "instances/milp_s0_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "89bf47c9c5ecc881281fa3331e5a02047e85f5f178b41ad943b959e73e7a6ff4",
+        "vnnlib": "32e658eaefe21d8fba73f13e6a0358cbeb700ff68bd1662830503153884f8a1f"
+      },
+      "args": {
+        "seed": 0,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.5,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s0_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s0_a/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/milp_s0_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s0_a/spec.vnnlib",
+        "seed": 0,
+        "y": 4,
+        "r_star": 0.2137463925571502,
+        "epsilon": 0.1068731962785751,
+        "epsilon_mode": "safe"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "exact-radius MILP: eps < r*"
+      }
+    },
+    {
+      "id": "milp_s0_b",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/milp_s0_b/model.onnx",
+        "vnnlib": "instances/milp_s0_b/spec.vnnlib",
+        "meta": "instances/milp_s0_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "89bf47c9c5ecc881281fa3331e5a02047e85f5f178b41ad943b959e73e7a6ff4",
+        "vnnlib": "dda45e3bb2b6e0a74bcc9ab39f14477673f6045ae73595d2f8cc6ebf3cbf4f07"
+      },
+      "args": {
+        "seed": 0,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.999,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s0_b/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s0_b/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/milp_s0_b/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s0_b/spec.vnnlib",
+        "seed": 0,
+        "y": 4,
+        "r_star": 0.2137463925571502,
+        "epsilon": 0.21353264616459305,
+        "epsilon_mode": "safe"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "exact-radius MILP: eps < r*"
+      }
+    },
+    {
+      "id": "milp_s1_a",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/milp_s1_a/model.onnx",
+        "vnnlib": "instances/milp_s1_a/spec.vnnlib",
+        "meta": "instances/milp_s1_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "ebbf99c94f360d7286d1e3c19fbaee12b26adaa8f1b32a2319d0d072d770884a",
+        "vnnlib": "87146154b994ae1231b150f144004719ee6a7c16d4a6b3a903cb8caec4889d00"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.9,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s1_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s1_a/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/milp_s1_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s1_a/spec.vnnlib",
+        "seed": 1,
+        "y": 4,
+        "r_star": 0.2114400490337415,
+        "epsilon": 0.19029604413036735,
+        "epsilon_mode": "safe"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "exact-radius MILP: eps < r*"
+      }
+    },
+    {
+      "id": "milp_s1_b",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/milp_s1_b/model.onnx",
+        "vnnlib": "instances/milp_s1_b/spec.vnnlib",
+        "meta": "instances/milp_s1_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "ebbf99c94f360d7286d1e3c19fbaee12b26adaa8f1b32a2319d0d072d770884a",
+        "vnnlib": "91fd6b382468931d9eaa7c5ab263ce9a1c391dfa9cbc2458782ceb39fc4b2d8f"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.9999,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s1_b/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s1_b/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/milp_s1_b/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s1_b/spec.vnnlib",
+        "seed": 1,
+        "y": 4,
+        "r_star": 0.2114400490337415,
+        "epsilon": 0.21141890502883812,
+        "epsilon_mode": "safe"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "exact-radius MILP: eps < r*"
+      }
+    },
+    {
+      "id": "milp_s2_a",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/milp_s2_a/model.onnx",
+        "vnnlib": "instances/milp_s2_a/spec.vnnlib",
+        "meta": "instances/milp_s2_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "2ccf65a5af3b7f5ad8aaf7b36a04a050ea537cd63737775705a82ec3edacf835",
+        "vnnlib": "d59dded8f7f873bb2d7adbf639fd446e6fdb0d9bb1c50fe367be3d74bb40c745"
+      },
+      "args": {
+        "seed": 2,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.99,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s2_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s2_a/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/milp_s2_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s2_a/spec.vnnlib",
+        "seed": 2,
+        "y": 1,
+        "r_star": 0.08245525832646576,
+        "epsilon": 0.0816307057432011,
+        "epsilon_mode": "safe"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "exact-radius MILP: eps < r*"
+      }
+    },
+    {
+      "id": "milp_s2_b",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/milp_s2_b/model.onnx",
+        "vnnlib": "instances/milp_s2_b/spec.vnnlib",
+        "meta": "instances/milp_s2_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "2ccf65a5af3b7f5ad8aaf7b36a04a050ea537cd63737775705a82ec3edacf835",
+        "vnnlib": "28200a57c82e42e79768322603ca66ce9e5442b85c1d5d73b1a7d99296442435"
+      },
+      "args": {
+        "seed": 2,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.999,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s2_b/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s2_b/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/milp_s2_b/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s2_b/spec.vnnlib",
+        "seed": 2,
+        "y": 1,
+        "r_star": 0.08245525832646576,
+        "epsilon": 0.0823728030681393,
+        "epsilon_mode": "safe"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "exact-radius MILP: eps < r*"
+      }
+    },
+    {
+      "id": "milp_s3_a",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 3,
+      "paths": {
+        "onnx": "instances/milp_s3_a/model.onnx",
+        "vnnlib": "instances/milp_s3_a/spec.vnnlib",
+        "meta": "instances/milp_s3_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "2408bfc1ea0cf4d9fb57e6f8ae5d9acd82382c9e335fe053f8811e8fb199f151",
+        "vnnlib": "7093aebe9183e4c8e89090c38f0e3d137f3f763c626ded7d1bcef7cc213016fd"
+      },
+      "args": {
+        "seed": 3,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.5,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s3_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s3_a/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/milp_s3_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s3_a/spec.vnnlib",
+        "seed": 3,
+        "y": 0,
+        "r_star": 0.011622367000045042,
+        "epsilon": 0.005811183500022521,
+        "epsilon_mode": "safe"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "exact-radius MILP: eps < r*"
+      }
+    },
+    {
+      "id": "milp_s3_b",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 3,
+      "paths": {
+        "onnx": "instances/milp_s3_b/model.onnx",
+        "vnnlib": "instances/milp_s3_b/spec.vnnlib",
+        "meta": "instances/milp_s3_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "2408bfc1ea0cf4d9fb57e6f8ae5d9acd82382c9e335fe053f8811e8fb199f151",
+        "vnnlib": "ecad93c46244b824f1f151af7c26b11015dddcc078a1feabd99bf5998679034e"
+      },
+      "args": {
+        "seed": 3,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.9999,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s3_b/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s3_b/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/milp_s3_b/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s3_b/spec.vnnlib",
+        "seed": 3,
+        "y": 0,
+        "r_star": 0.011622367000045042,
+        "epsilon": 0.011621204763345038,
+        "epsilon_mode": "safe"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "exact-radius MILP: eps < r*"
+      }
+    },
+    {
+      "id": "meap_01",
+      "construction": "mlp_relu.meap",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/meap_01/model.onnx",
+        "vnnlib": "instances/meap_01/spec.vnnlib",
+        "meta": "instances/meap_01/meta.json"
+      },
+      "sha256": {
+        "onnx": "3bbf1442e10eedd7cf7f99643c146bd754367bcf2c3f66756255c79468c81323",
+        "vnnlib": "394247a6d91ffb065ba490f79bf3ee49aeb809ef04a91b36669013a01a44ce51"
+      },
+      "args": {
+        "seed": 0,
+        "input_dim": 100,
+        "num_classes": 10,
+        "num_pairs": 2,
+        "epsilon": 0.1,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "label": 0,
+        "onnx_path": "thrust1_bench/instances/meap_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/meap_01/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/meap_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/meap_01/spec.vnnlib",
+        "x0": "[ 0.17640524  0.04001572  0.0978738   0.22408931  0.1867558  -0.09772779\n  0.09500884 -0.01513572 -0.01032189  0.04105985  0.01440436  0.14542735\n  0.07610377  0.0121675   0.04438632  0.03336744  0.14940791 -0.02051583\n  0.03130677 -0.08540957 -0.25529897  0.06536186  0.08644363 -0.07421651\n  0.22697547 -0.14543657  0.00457585 -0.01871839  0.15327792  0.14693588\n  0.01549474  0.03781625 -0.08877858 -0.19807965 -0.03479122  0.0156349\n  0.12302907  0.12023798 -0.03873268 -0.03023027 -0.1048553  -0.1420018\n -0.17062703  0.19507754 -0.05096522 -0.04380743 -0.12527953  0.07774904\n -0.16138978 -0.02127403 -0.08954666  0.03869025 -0.05108051 -0.11806323\n -0.00281822  0.04283319  0.00665172  0.03024719 -0.06343221 -0.03627412\n -0.06724604 -0.03595532 -0.08131463 -0.17262827  0.01774262 -0.04017809\n -0.16301984  0.04627823 -0.09072984  0.00519454  0.07290906  0.01289829\n  0.11394008 -0.12348258  0.04023416 -0.06848101 -0.08707972 -0.05788497\n -0.03115525  0.00561653 -0.11651498  0.09008265  0.04656624 -0.15362437\n  0.14882521  0.18958892  0.11787796 -0.01799248 -0.10707527  0.10544517\n -0.0403177   0.1222445   0.0208275   0.0976639   0.03563664  0.07065732\n  0.00105     0.17858706  0.01269121  0.04019894]",
+        "epsilon": 0.1,
+        "label": 0,
+        "num_pairs": 2,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "gt_margin_lower_bound": 0.001,
+        "is_robust": true
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: paired preactivations sum to 2*gamma (Prop. A.2)"
+      }
+    },
+    {
+      "id": "meap_02",
+      "construction": "mlp_relu.meap",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/meap_02/model.onnx",
+        "vnnlib": "instances/meap_02/spec.vnnlib",
+        "meta": "instances/meap_02/meta.json"
+      },
+      "sha256": {
+        "onnx": "88b7f543a01e5361897e3550582a779beecf3d35d77f59c6f2e7227516dfdb6d",
+        "vnnlib": "394247a6d91ffb065ba490f79bf3ee49aeb809ef04a91b36669013a01a44ce51"
+      },
+      "args": {
+        "seed": 0,
+        "input_dim": 100,
+        "num_classes": 10,
+        "num_pairs": 8,
+        "epsilon": 0.1,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "label": 0,
+        "onnx_path": "thrust1_bench/instances/meap_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/meap_02/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/meap_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/meap_02/spec.vnnlib",
+        "x0": "[ 0.17640524  0.04001572  0.0978738   0.22408931  0.1867558  -0.09772779\n  0.09500884 -0.01513572 -0.01032189  0.04105985  0.01440436  0.14542735\n  0.07610377  0.0121675   0.04438632  0.03336744  0.14940791 -0.02051583\n  0.03130677 -0.08540957 -0.25529897  0.06536186  0.08644363 -0.07421651\n  0.22697547 -0.14543657  0.00457585 -0.01871839  0.15327792  0.14693588\n  0.01549474  0.03781625 -0.08877858 -0.19807965 -0.03479122  0.0156349\n  0.12302907  0.12023798 -0.03873268 -0.03023027 -0.1048553  -0.1420018\n -0.17062703  0.19507754 -0.05096522 -0.04380743 -0.12527953  0.07774904\n -0.16138978 -0.02127403 -0.08954666  0.03869025 -0.05108051 -0.11806323\n -0.00281822  0.04283319  0.00665172  0.03024719 -0.06343221 -0.03627412\n -0.06724604 -0.03595532 -0.08131463 -0.17262827  0.01774262 -0.04017809\n -0.16301984  0.04627823 -0.09072984  0.00519454  0.07290906  0.01289829\n  0.11394008 -0.12348258  0.04023416 -0.06848101 -0.08707972 -0.05788497\n -0.03115525  0.00561653 -0.11651498  0.09008265  0.04656624 -0.15362437\n  0.14882521  0.18958892  0.11787796 -0.01799248 -0.10707527  0.10544517\n -0.0403177   0.1222445   0.0208275   0.0976639   0.03563664  0.07065732\n  0.00105     0.17858706  0.01269121  0.04019894]",
+        "epsilon": 0.1,
+        "label": 0,
+        "num_pairs": 8,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "gt_margin_lower_bound": 0.001,
+        "is_robust": true
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: paired preactivations sum to 2*gamma (Prop. A.2)"
+      }
+    },
+    {
+      "id": "meap_03",
+      "construction": "mlp_relu.meap",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/meap_03/model.onnx",
+        "vnnlib": "instances/meap_03/spec.vnnlib",
+        "meta": "instances/meap_03/meta.json"
+      },
+      "sha256": {
+        "onnx": "1899f0ee56bb0eb694f0c4b66fc4b130f3163b81b2493c119a44c18900c38f4e",
+        "vnnlib": "4f46219c44845a6f9645e460b96a988019b4b96874ffc3dbea5ebb77cecede14"
+      },
+      "args": {
+        "seed": 0,
+        "input_dim": 100,
+        "num_classes": 10,
+        "num_pairs": 16,
+        "epsilon": 0.5,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "label": 0,
+        "onnx_path": "thrust1_bench/instances/meap_03/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/meap_03/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/meap_03/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/meap_03/spec.vnnlib",
+        "x0": "[ 0.17640524  0.04001572  0.0978738   0.22408931  0.1867558  -0.09772779\n  0.09500884 -0.01513572 -0.01032189  0.04105985  0.01440436  0.14542735\n  0.07610377  0.0121675   0.04438632  0.03336744  0.14940791 -0.02051583\n  0.03130677 -0.08540957 -0.25529897  0.06536186  0.08644363 -0.07421651\n  0.22697547 -0.14543657  0.00457585 -0.01871839  0.15327792  0.14693588\n  0.01549474  0.03781625 -0.08877858 -0.19807965 -0.03479122  0.0156349\n  0.12302907  0.12023798 -0.03873268 -0.03023027 -0.1048553  -0.1420018\n -0.17062703  0.19507754 -0.05096522 -0.04380743 -0.12527953  0.07774904\n -0.16138978 -0.02127403 -0.08954666  0.03869025 -0.05108051 -0.11806323\n -0.00281822  0.04283319  0.00665172  0.03024719 -0.06343221 -0.03627412\n -0.06724604 -0.03595532 -0.08131463 -0.17262827  0.01774262 -0.04017809\n -0.16301984  0.04627823 -0.09072984  0.00519454  0.07290906  0.01289829\n  0.11394008 -0.12348258  0.04023416 -0.06848101 -0.08707972 -0.05788497\n -0.03115525  0.00561653 -0.11651498  0.09008265  0.04656624 -0.15362437\n  0.14882521  0.18958892  0.11787796 -0.01799248 -0.10707527  0.10544517\n -0.0403177   0.1222445   0.0208275   0.0976639   0.03563664  0.07065732\n  0.00105     0.17858706  0.01269121  0.04019894]",
+        "epsilon": 0.5,
+        "label": 0,
+        "num_pairs": 16,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "gt_margin_lower_bound": 0.001,
+        "is_robust": true
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: paired preactivations sum to 2*gamma (Prop. A.2)"
+      }
+    },
+    {
+      "id": "corners_01",
+      "construction": "mlp_relu.corners",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/corners_01/model.onnx",
+        "vnnlib": "instances/corners_01/spec.vnnlib",
+        "meta": "instances/corners_01/meta.json"
+      },
+      "sha256": {
+        "onnx": "c4e21272c5c3445d38b9f1676e2a17665edbb2be690e6e31058bd7532e7fcff7",
+        "vnnlib": "7aaa77b1c2457b7ef3e613cb6f1152ddf8a06a20858c384f1f9f24a33d29bd32"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 100,
+        "num_outputs": 10,
+        "hinge_l1": 0.0001,
+        "num_hinges": 16,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust1_bench/instances/corners_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/corners_01/spec.vnnlib"
+      },
+      "gt": {
+        "label": 0,
+        "competitors": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "active_dim": 8,
+        "num_hinges": 16,
+        "tau": 0.0001,
+        "BIG_M": 2.0
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: convex competitor logits maximised at box corners (Prop. 3)"
+      }
+    },
+    {
+      "id": "corners_02",
+      "construction": "mlp_relu.corners",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/corners_02/model.onnx",
+        "vnnlib": "instances/corners_02/spec.vnnlib",
+        "meta": "instances/corners_02/meta.json"
+      },
+      "sha256": {
+        "onnx": "e2e0a18352ba8dcc7752cc0d1fde460b352e9d653a724566110aa98d2645a3ee",
+        "vnnlib": "7aaa77b1c2457b7ef3e613cb6f1152ddf8a06a20858c384f1f9f24a33d29bd32"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 100,
+        "num_outputs": 10,
+        "hinge_l1": 0.01,
+        "num_hinges": 64,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust1_bench/instances/corners_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/corners_02/spec.vnnlib"
+      },
+      "gt": {
+        "label": 0,
+        "competitors": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "active_dim": 8,
+        "num_hinges": 64,
+        "tau": 0.0001,
+        "BIG_M": 2.0
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: convex competitor logits maximised at box corners (Prop. 3)"
+      }
+    },
+    {
+      "id": "corners_03",
+      "construction": "mlp_relu.corners",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/corners_03/model.onnx",
+        "vnnlib": "instances/corners_03/spec.vnnlib",
+        "meta": "instances/corners_03/meta.json"
+      },
+      "sha256": {
+        "onnx": "7d5446e28b63af51b0ad15617b391d324ad691a9872f5e55013203508eb4c6e1",
+        "vnnlib": "7aaa77b1c2457b7ef3e613cb6f1152ddf8a06a20858c384f1f9f24a33d29bd32"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 100,
+        "num_outputs": 10,
+        "hinge_l1": 100,
+        "num_hinges": 16,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust1_bench/instances/corners_03/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/corners_03/spec.vnnlib"
+      },
+      "gt": {
+        "label": 0,
+        "competitors": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "active_dim": 8,
+        "num_hinges": 16,
+        "tau": 0.0001,
+        "BIG_M": 2.0
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: convex competitor logits maximised at box corners (Prop. 3)"
+      }
+    },
+    {
+      "id": "pb_cnn_01",
+      "construction": "cnn.cnn_paired_bias",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/pb_cnn_01/model.onnx",
+        "vnnlib": "instances/pb_cnn_01/spec.vnnlib",
+        "meta": "instances/pb_cnn_01/meta.json"
+      },
+      "sha256": {
+        "onnx": "4fcac829ba2fd0e0afe01270d5019d1ed2509074023f758f653b9928b12894f0",
+        "vnnlib": "b978a4393d276dbe2a3f95cf7b52404e9766092ff721b3061024befcb39b0069"
+      },
+      "args": {
+        "seed": 0,
+        "num_pairs": 2,
+        "margin": 0.1,
+        "delta": 0.025,
+        "in_channels": 3,
+        "height": 4,
+        "width": 4,
+        "backbone_channels": 2,
+        "num_backbone_layers": 2,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "epsilon": 0.05,
+        "onnx_path": "thrust1_bench/instances/pb_cnn_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/pb_cnn_01/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/pb_cnn_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/pb_cnn_01/spec.vnnlib",
+        "is_robust": true,
+        "label": 0,
+        "epsilon": 0.05,
+        "margin": 0.1,
+        "delta": 0.025,
+        "actual_margin_x0": 0.143163800239563,
+        "ibp_worst_margin": -0.7332541942596436,
+        "unstable_relus": {
+          "total": 128,
+          "unstable": 110,
+          "fraction": 0.859375
+        },
+        "num_pairs": 2,
+        "spatial_pairs": 32,
+        "seed": 0
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: ReLU monotonicity, global margin (Prop. 5)"
+      }
+    },
+    {
+      "id": "pb_cnn_02",
+      "construction": "cnn.cnn_paired_bias",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/pb_cnn_02/model.onnx",
+        "vnnlib": "instances/pb_cnn_02/spec.vnnlib",
+        "meta": "instances/pb_cnn_02/meta.json"
+      },
+      "sha256": {
+        "onnx": "500f3374a6f7d90b1d9e9417bc6cd6a7c991a4ecf3ba29d1f19d644673182c7d",
+        "vnnlib": "9763be8c53000786fefafc98a4520ca6f16f34fcb691fe53f7a6b1270704d3a2"
+      },
+      "args": {
+        "seed": 0,
+        "num_pairs": 8,
+        "margin": 0.1,
+        "delta": 0.025,
+        "in_channels": 3,
+        "height": 4,
+        "width": 4,
+        "backbone_channels": 2,
+        "num_backbone_layers": 2,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "epsilon": 0.05,
+        "onnx_path": "thrust1_bench/instances/pb_cnn_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/pb_cnn_02/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/pb_cnn_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/pb_cnn_02/spec.vnnlib",
+        "is_robust": true,
+        "label": 0,
+        "epsilon": 0.05,
+        "margin": 0.1,
+        "delta": 0.025,
+        "actual_margin_x0": 0.11897225677967072,
+        "ibp_worst_margin": -0.7363941073417664,
+        "unstable_relus": {
+          "total": 320,
+          "unstable": 296,
+          "fraction": 0.925
+        },
+        "num_pairs": 8,
+        "spatial_pairs": 128,
+        "seed": 0
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: ReLU monotonicity, global margin (Prop. 5)"
+      }
+    },
+    {
+      "id": "pb_cnn_03",
+      "construction": "cnn.cnn_paired_bias",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/pb_cnn_03/model.onnx",
+        "vnnlib": "instances/pb_cnn_03/spec.vnnlib",
+        "meta": "instances/pb_cnn_03/meta.json"
+      },
+      "sha256": {
+        "onnx": "dd079552a01763fe5609fc603e2e9a69f74837295232b20e8a22c8ec36634ad5",
+        "vnnlib": "9763be8c53000786fefafc98a4520ca6f16f34fcb691fe53f7a6b1270704d3a2"
+      },
+      "args": {
+        "seed": 0,
+        "num_pairs": 8,
+        "margin": 0.1,
+        "delta": 0.1,
+        "in_channels": 3,
+        "height": 4,
+        "width": 4,
+        "backbone_channels": 2,
+        "num_backbone_layers": 2,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "epsilon": 0.05,
+        "onnx_path": "thrust1_bench/instances/pb_cnn_03/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/pb_cnn_03/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/pb_cnn_03/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/pb_cnn_03/spec.vnnlib",
+        "is_robust": true,
+        "label": 0,
+        "epsilon": 0.05,
+        "margin": 0.1,
+        "delta": 0.1,
+        "actual_margin_x0": 0.17637401819229126,
+        "ibp_worst_margin": -0.662057101726532,
+        "unstable_relus": {
+          "total": 320,
+          "unstable": 289,
+          "fraction": 0.903125
+        },
+        "num_pairs": 8,
+        "spatial_pairs": 128,
+        "seed": 0
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: ReLU monotonicity, global margin (Prop. 5)"
+      }
+    },
+    {
+      "id": "dc_cnn_01",
+      "construction": "cnn.deep_contractive_cnn",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/dc_cnn_01/model.onnx",
+        "vnnlib": "instances/dc_cnn_01/spec.vnnlib",
+        "meta": "instances/dc_cnn_01/meta.json"
+      },
+      "sha256": {
+        "onnx": "04ec56564d0d7e9ea8de7d54d5cf889979a35ac853e6a5bc5f35faf538bd0526",
+        "vnnlib": "1bde69c930b4f303a584f65b6182ed1eaf3d00535b6fed4fd6c308a65ee702f7"
+      },
+      "args": {
+        "seed": 0,
+        "depth": 2,
+        "channels": 16,
+        "contraction_rate": 0.9,
+        "margin": 0.001,
+        "bias_instability_frac": 0.4,
+        "epsilon": 0.02,
+        "in_channels": 1,
+        "height": 8,
+        "width": 8,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "n_verify_samples": 20000,
+        "onnx_path": "thrust1_bench/instances/dc_cnn_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/dc_cnn_01/spec.vnnlib"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: Lipschitz contraction (Prop. 4)"
+      }
+    },
+    {
+      "id": "dc_cnn_02",
+      "construction": "cnn.deep_contractive_cnn",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/dc_cnn_02/model.onnx",
+        "vnnlib": "instances/dc_cnn_02/spec.vnnlib",
+        "meta": "instances/dc_cnn_02/meta.json"
+      },
+      "sha256": {
+        "onnx": "1ee5da382dc6e4bf1094237beb11e6dc739b0c56be01bdfd916ed97f04fb894b",
+        "vnnlib": "9998d74f26493fa883478939e1fa3e9be04b13b6a1846592ab128dde7e4bb830"
+      },
+      "args": {
+        "seed": 0,
+        "depth": 4,
+        "channels": 16,
+        "contraction_rate": 0.9,
+        "margin": 0.001,
+        "bias_instability_frac": 0.4,
+        "epsilon": 0.02,
+        "in_channels": 1,
+        "height": 8,
+        "width": 8,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "n_verify_samples": 20000,
+        "onnx_path": "thrust1_bench/instances/dc_cnn_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/dc_cnn_02/spec.vnnlib"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: Lipschitz contraction (Prop. 4)"
+      }
+    },
+    {
+      "id": "dc_cnn_03",
+      "construction": "cnn.deep_contractive_cnn",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/dc_cnn_03/model.onnx",
+        "vnnlib": "instances/dc_cnn_03/spec.vnnlib",
+        "meta": "instances/dc_cnn_03/meta.json"
+      },
+      "sha256": {
+        "onnx": "2267cd3fd24eb791f337f110597e7b5f7e85469fe14f872f710d0c97d2493573",
+        "vnnlib": "fedc2406aa9ffd7057ff741277360e5278bed96838cb1f7be684546e02e5c32c"
+      },
+      "args": {
+        "seed": 0,
+        "depth": 6,
+        "channels": 16,
+        "contraction_rate": 0.9,
+        "margin": 0.001,
+        "bias_instability_frac": 0.4,
+        "epsilon": 0.02,
+        "in_channels": 1,
+        "height": 8,
+        "width": 8,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "n_verify_samples": 20000,
+        "onnx_path": "thrust1_bench/instances/dc_cnn_03/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/dc_cnn_03/spec.vnnlib"
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: Lipschitz contraction (Prop. 4)"
+      }
+    },
+    {
+      "id": "ld_01",
+      "construction": "attention.linear_dominance",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/ld_01/model.onnx",
+        "vnnlib": "instances/ld_01/spec.vnnlib",
+        "meta": "instances/ld_01/meta.json"
+      },
+      "sha256": {
+        "onnx": "d226b1393b023b6ac67a86c8152c425e988d7b6c15de37db1f2ab5ca9d6b0584",
+        "vnnlib": "199127b34c3e3dafbe7e45440f67d6388b695862f6a237aacf2735c472e796f2"
+      },
+      "args": {
+        "seed": 1,
+        "n": 4,
+        "d": 4,
+        "d_v": 4,
+        "num_classes": 10,
+        "gate_scale": 0.5,
+        "noise_scale": 0.2,
+        "epsilon": 0.02,
+        "margin_factor": 2.0,
+        "onnx_path": "thrust1_bench/instances/ld_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/ld_01/spec.vnnlib"
+      },
+      "gt": {
+        "construction": "attention.linear_dominance",
+        "seed": 1,
+        "n": 4,
+        "d": 4,
+        "d_k": 4,
+        "d_v": 4,
+        "num_classes": 10,
+        "gate_scale": 0.5,
+        "noise_scale": 0.2,
+        "epsilon": 0.02,
+        "margin_factor": 2.0,
+        "label": 0,
+        "is_robust": true,
+        "ground_truth": "UNSAT",
+        "sv_V": 1.0000000000000007,
+        "L_h": 1.0000000000000004,
+        "dw": 0.020800000000000003,
+        "dV": 0.04000000000000003,
+        "B_max": 0.02348414606302031,
+        "cert_rhs": 0.09393658425208128,
+        "nominal_margin": 0.18787316850416255,
+        "margin_over_cert": 2.0
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: dominant key + Lipschitz head (Prop. 10)"
+      }
+    },
+    {
+      "id": "ld_02",
+      "construction": "attention.linear_dominance",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/ld_02/model.onnx",
+        "vnnlib": "instances/ld_02/spec.vnnlib",
+        "meta": "instances/ld_02/meta.json"
+      },
+      "sha256": {
+        "onnx": "3ec0ff92aca5990d35a4dc189e85c00019c980b610eb2b01861ee4b8a6305b21",
+        "vnnlib": "a26bfa7196cd39dee3700b8d1daae6e08918205c98f98269022bd2cacefd0783"
+      },
+      "args": {
+        "seed": 2,
+        "n": 4,
+        "d": 4,
+        "d_v": 4,
+        "num_classes": 10,
+        "gate_scale": 0.5,
+        "noise_scale": 0.2,
+        "epsilon": 0.05,
+        "margin_factor": 1.1,
+        "onnx_path": "thrust1_bench/instances/ld_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/ld_02/spec.vnnlib"
+      },
+      "gt": {
+        "construction": "attention.linear_dominance",
+        "seed": 2,
+        "n": 4,
+        "d": 4,
+        "d_k": 4,
+        "d_v": 4,
+        "num_classes": 10,
+        "gate_scale": 0.5,
+        "noise_scale": 0.2,
+        "epsilon": 0.05,
+        "margin_factor": 1.1,
+        "label": 0,
+        "is_robust": true,
+        "ground_truth": "UNSAT",
+        "sv_V": 1.0000000000000004,
+        "L_h": 1.0000000000000004,
+        "dw": 0.05500000000000001,
+        "dV": 0.10000000000000005,
+        "B_max": 0.06395519391664024,
+        "cert_rhs": 0.2558207756665611,
+        "nominal_margin": 0.28140285323321723,
+        "margin_over_cert": 1.1
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: dominant key + Lipschitz head (Prop. 10)"
+      }
+    },
+    {
+      "id": "fp_01",
+      "construction": "attention.fixed_pattern",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/fp_01/model.onnx",
+        "vnnlib": "instances/fp_01/spec.vnnlib",
+        "meta": "instances/fp_01/meta.json"
+      },
+      "sha256": {
+        "onnx": "1d74bc61b3fe55d1413bf0662a0d9101bf704d8e7baca4f6138ec0833b5ca88f",
+        "vnnlib": "7b204ad5281ba655a9077a8838bb682b3ce18cf306494394921fa4519621fb74"
+      },
+      "args": {
+        "seed": 1,
+        "n": 16,
+        "d": 4,
+        "d_v": 8,
+        "num_classes": 50,
+        "alpha": 5.0,
+        "epsilon": 0.0005,
+        "margin_slack": 1.05,
+        "onnx_path": "thrust1_bench/instances/fp_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/fp_01/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/fp_01/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/fp_01/spec.vnnlib",
+        "label": 0,
+        "epsilon": 0.0005,
+        "certificate": {
+          "mu": 0.8611798882484436,
+          "delta_min": 0.694100558757782,
+          "C_max": 40.019999999999996,
+          "lhs_gap": 0.1388201117515564,
+          "rhs_gap": 0.004002,
+          "gap_ok_simplified": true,
+          "gap_ok_actual": true,
+          "B_S": 20.009999999999998,
+          "V0_2inf": 0.9658879637718201,
+          "sigma_WV": 1.0,
+          "L_attn": 79.38971262029646,
+          "L_h": 1.0,
+          "logits": "[ 0.66031075  0.18936446 -0.08361761  0.07971184  0.2997678  -0.01144689\n -0.05687287 -0.16046229  0.24389938 -0.08616482 -0.03825574  0.06581514\n  0.07584186 -0.07133855  0.19041662 -0.09519307 -0.07894651  0.21962148\n  0.02604475 -0.08908562  0.25732225  0.32687396  0.0195857   0.06395468\n  0.10084648 -0.14394192  0.02481148  0.16268528  0.11950701  0.17214647\n -0.09463384 -0.19314125  0.15746161 -0.19069405  0.0369221   0.08208334\n -0.10256682 -0.15900472  0.2513457  -0.13564031 -0.1480838   0.1269688\n  0.06490077 -0.05974114 -0.0461693  -0.03012299 -0.05044634  0.0844132\n -0.1098652   0.12029216]",
+          "label": 0,
+          "margin": 0.3334367871284485,
+          "rhs_margin": 0.3175588504811859,
+          "margin_ok": true,
+          "valid": true
+        }
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: fixed score ordering + Lipschitz head (Prop. 7)"
+      }
+    },
+    {
+      "id": "fp_02",
+      "construction": "attention.fixed_pattern",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/fp_02/model.onnx",
+        "vnnlib": "instances/fp_02/spec.vnnlib",
+        "meta": "instances/fp_02/meta.json"
+      },
+      "sha256": {
+        "onnx": "d792737accf46ee504ca71c7835ffa878764a681911f86ec58e843e256db2c32",
+        "vnnlib": "fbaf35b16dad956ff0c4ebf5df2c7127968433c5644fe4cf574bdad439c6ab66"
+      },
+      "args": {
+        "seed": 1,
+        "n": 8,
+        "d": 4,
+        "d_v": 8,
+        "num_classes": 50,
+        "alpha": 5.0,
+        "epsilon": 0.001,
+        "margin_slack": 1.05,
+        "onnx_path": "thrust1_bench/instances/fp_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/fp_02/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust1_bench/instances/fp_02/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/fp_02/spec.vnnlib",
+        "label": 0,
+        "epsilon": 0.001,
+        "certificate": {
+          "mu": 0.6686192750930786,
+          "delta_min": 1.656903624534607,
+          "C_max": 40.03999999999999,
+          "lhs_gap": 0.3313807249069214,
+          "rhs_gap": 0.008008,
+          "gap_ok_simplified": true,
+          "gap_ok_actual": true,
+          "B_S": 20.019999999999996,
+          "V0_2inf": 0.8967335820198059,
+          "sigma_WV": 1.0,
+          "L_attn": 37.985292624073026,
+          "L_h": 1.0,
+          "logits": "[ 0.58504677  0.14306845 -0.03934561 -0.12039954 -0.04280848  0.1530474\n -0.14299671 -0.16109909 -0.1732311  -0.03345805 -0.14147939 -0.04588834\n -0.07370322  0.04436792  0.19913052  0.05842562  0.15869442 -0.1957305\n  0.04000621  0.11829314  0.05062611 -0.03012822 -0.09105643  0.3594256\n  0.05232247  0.2329314  -0.20953977 -0.01067384  0.03066189  0.077846\n  0.05009132 -0.3393363  -0.11778091  0.18539315 -0.0456011  -0.04328028\n  0.18667737 -0.05130224  0.14022827 -0.00255177  0.09623083 -0.19085678\n -0.1109499   0.26314372 -0.05116023  0.0034451  -0.12533785  0.10673063\n -0.08795162  0.06911784]",
+          "label": 0,
+          "margin": 0.22562116384506226,
+          "rhs_margin": 0.21487726399869908,
+          "margin_ok": true,
+          "valid": true
+        }
+      },
+      "ground_truth": {
+        "label": "unsat",
+        "certificate": "analytic: fixed score ordering + Lipschitz head (Prop. 7)"
+      }
+    },
+    {
+      "id": "milp_s0_a_sat_near",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/milp_s0_a_sat_near/model.onnx",
+        "vnnlib": "instances/milp_s0_a_sat_near/spec.vnnlib",
+        "meta": "instances/milp_s0_a_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "89bf47c9c5ecc881281fa3331e5a02047e85f5f178b41ad943b959e73e7a6ff4",
+        "vnnlib": "0c825dc248d9ff72edacf5cafb483c78f340913a2443a21a4c1069d25486921e"
+      },
+      "args": {
+        "seed": 0,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.5,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s0_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s0_a/spec.vnnlib",
+        "epsilon_scale_vs_base": 2.0108598022256055
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/milp_s0_a_sat_near/witness.json",
+        "witness_margin_f64": -0.0004453543979490715,
+        "witness_margin_f32": -0.00044533610343933105,
+        "violated_classes": [
+          3
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "milp_s0_a",
+        "eps_scale": 2.0108598022256055,
+        "threshold_bracket": [
+          2.0,
+          2.0108598022256055
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "milp_s0_a_sat_far",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/milp_s0_a_sat_far/model.onnx",
+        "vnnlib": "instances/milp_s0_a_sat_far/spec.vnnlib",
+        "meta": "instances/milp_s0_a_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "89bf47c9c5ecc881281fa3331e5a02047e85f5f178b41ad943b959e73e7a6ff4",
+        "vnnlib": "edbf7ca5e23de7c80724b9c1d4c747f86e78d6ba49aede09968d177ec968a010"
+      },
+      "args": {
+        "seed": 0,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.5,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s0_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s0_a/spec.vnnlib",
+        "epsilon_scale_vs_base": 4.021719604451211
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/milp_s0_a_sat_far/witness.json",
+        "witness_margin_f64": -0.0024969857241965987,
+        "witness_margin_f32": -0.0024970173835754395,
+        "violated_classes": [
+          3
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "milp_s0_a",
+        "eps_scale": 4.021719604451211,
+        "threshold_bracket": [
+          2.0,
+          2.0108598022256055
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "milp_s1_a_sat_near",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/milp_s1_a_sat_near/model.onnx",
+        "vnnlib": "instances/milp_s1_a_sat_near/spec.vnnlib",
+        "meta": "instances/milp_s1_a_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "ebbf99c94f360d7286d1e3c19fbaee12b26adaa8f1b32a2319d0d072d770884a",
+        "vnnlib": "5deda6a89fca834916e57c0c85fb0b6088587d5d82691eb52ffc4cce735292b6"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.9,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s1_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s1_a/spec.vnnlib",
+        "epsilon_scale_vs_base": 1.1143867425958924
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/milp_s1_a_sat_near/witness.json",
+        "witness_margin_f64": -0.0004495240595095429,
+        "witness_margin_f32": -0.0004495084285736084,
+        "violated_classes": [
+          2
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "milp_s1_a",
+        "eps_scale": 1.1143867425958924,
+        "threshold_bracket": [
+          1.1083684117236785,
+          1.1143867425958924
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "milp_s1_a_sat_far",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/milp_s1_a_sat_far/model.onnx",
+        "vnnlib": "instances/milp_s1_a_sat_far/spec.vnnlib",
+        "meta": "instances/milp_s1_a_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "ebbf99c94f360d7286d1e3c19fbaee12b26adaa8f1b32a2319d0d072d770884a",
+        "vnnlib": "9d96b91242cf5049d9adca8f027a01b48d279d10690664e179e4c8c68c053cdf"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.9,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s1_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s1_a/spec.vnnlib",
+        "epsilon_scale_vs_base": 2.228773485191785
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/milp_s1_a_sat_far/witness.json",
+        "witness_margin_f64": -0.0020451261308918056,
+        "witness_margin_f32": -0.0020451247692108154,
+        "violated_classes": [
+          2
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "milp_s1_a",
+        "eps_scale": 2.228773485191785,
+        "threshold_bracket": [
+          1.1083684117236785,
+          1.1143867425958924
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "milp_s2_a_sat_near",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/milp_s2_a_sat_near/model.onnx",
+        "vnnlib": "instances/milp_s2_a_sat_near/spec.vnnlib",
+        "meta": "instances/milp_s2_a_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "2ccf65a5af3b7f5ad8aaf7b36a04a050ea537cd63737775705a82ec3edacf835",
+        "vnnlib": "3fce5f100791d37993ddc5c3d470c2c434d13d2efb26a3cb224029d3b87999d2"
+      },
+      "args": {
+        "seed": 2,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.99,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s2_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s2_a/spec.vnnlib",
+        "epsilon_scale_vs_base": 1.0108892860517005
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/milp_s2_a_sat_near/witness.json",
+        "witness_margin_f64": -4.2833451450147164e-05,
+        "witness_margin_f32": -4.2825937271118164e-05,
+        "violated_classes": [
+          0
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "milp_s2_a",
+        "eps_scale": 1.0108892860517005,
+        "threshold_bracket": [
+          1.0054299011128027,
+          1.0108892860517005
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "milp_s2_a_sat_far",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/milp_s2_a_sat_far/model.onnx",
+        "vnnlib": "instances/milp_s2_a_sat_far/spec.vnnlib",
+        "meta": "instances/milp_s2_a_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "2ccf65a5af3b7f5ad8aaf7b36a04a050ea537cd63737775705a82ec3edacf835",
+        "vnnlib": "a8e3f2bc2bc200839aa6a0a1ad4a5e005a895e76f66612c2613e808f177f642e"
+      },
+      "args": {
+        "seed": 2,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.99,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s2_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s2_a/spec.vnnlib",
+        "epsilon_scale_vs_base": 2.021778572103401
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/milp_s2_a_sat_far/witness.json",
+        "witness_margin_f64": -0.0010748552560392866,
+        "witness_margin_f32": -0.0010748803615570068,
+        "violated_classes": [
+          4
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "milp_s2_a",
+        "eps_scale": 2.021778572103401,
+        "threshold_bracket": [
+          1.0054299011128027,
+          1.0108892860517005
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "milp_s3_a_sat_near",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 3,
+      "paths": {
+        "onnx": "instances/milp_s3_a_sat_near/model.onnx",
+        "vnnlib": "instances/milp_s3_a_sat_near/spec.vnnlib",
+        "meta": "instances/milp_s3_a_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "2408bfc1ea0cf4d9fb57e6f8ae5d9acd82382c9e335fe053f8811e8fb199f151",
+        "vnnlib": "e4d26e7a8f154cf457f9c9876f4aaf5f2970e27fe852b53c1a3f59e915ebcb3d"
+      },
+      "args": {
+        "seed": 3,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.5,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s3_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s3_a/spec.vnnlib",
+        "epsilon_scale_vs_base": 2.0108598022256055
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/milp_s3_a_sat_near/witness.json",
+        "witness_margin_f64": -4.543387817207423e-05,
+        "witness_margin_f32": -4.5433640480041504e-05,
+        "violated_classes": [
+          3
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "milp_s3_a",
+        "eps_scale": 2.0108598022256055,
+        "threshold_bracket": [
+          2.0,
+          2.0108598022256055
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "milp_s3_a_sat_far",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 3,
+      "paths": {
+        "onnx": "instances/milp_s3_a_sat_far/model.onnx",
+        "vnnlib": "instances/milp_s3_a_sat_far/spec.vnnlib",
+        "meta": "instances/milp_s3_a_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "2408bfc1ea0cf4d9fb57e6f8ae5d9acd82382c9e335fe053f8811e8fb199f151",
+        "vnnlib": "1829e1e7e03304bfee462b4e1a40c086770a43bc09f51206031e8973bb76c0c6"
+      },
+      "args": {
+        "seed": 3,
+        "input_dim": 50,
+        "h1": 20,
+        "h2": 10,
+        "num_outputs": 5,
+        "epsilon_frac": 0.5,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust1_bench/instances/milp_s3_a/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/milp_s3_a/spec.vnnlib",
+        "epsilon_scale_vs_base": 4.021719604451211
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/milp_s3_a_sat_far/witness.json",
+        "witness_margin_f64": -0.00013660337821236324,
+        "witness_margin_f32": -0.0001366138458251953,
+        "violated_classes": [
+          3
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "milp_s3_a",
+        "eps_scale": 4.021719604451211,
+        "threshold_bracket": [
+          2.0,
+          2.0108598022256055
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "corners_03_sat_near",
+      "construction": "mlp_relu.corners",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/corners_03_sat_near/model.onnx",
+        "vnnlib": "instances/corners_03_sat_near/spec.vnnlib",
+        "meta": "instances/corners_03_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "7d5446e28b63af51b0ad15617b391d324ad691a9872f5e55013203508eb4c6e1",
+        "vnnlib": "cb792e1da23e9407cae4bebd256c759f51d57704ea406ea9c7a5484183ab0713"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 100,
+        "num_outputs": 10,
+        "hinge_l1": 100,
+        "num_hinges": 16,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust1_bench/instances/corners_03/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/corners_03/spec.vnnlib",
+        "epsilon_scale_vs_base": 1.055645178360557
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/corners_03_sat_near/witness.json",
+        "witness_margin_f64": -0.026638992796051753,
+        "witness_margin_f32": -0.026641845703125,
+        "violated_classes": [
+          2
+        ],
+        "last_disjunct_class": 9,
+        "base_instance": "corners_03",
+        "eps_scale": 1.055645178360557,
+        "threshold_bracket": [
+          1.0499440858006872,
+          1.055645178360557
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "corners_03_sat_far",
+      "construction": "mlp_relu.corners",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/corners_03_sat_far/model.onnx",
+        "vnnlib": "instances/corners_03_sat_far/spec.vnnlib",
+        "meta": "instances/corners_03_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "7d5446e28b63af51b0ad15617b391d324ad691a9872f5e55013203508eb4c6e1",
+        "vnnlib": "07b04d80b2938a641f185eb87824124a67b8cf4141a29587ba81b528bea58155"
+      },
+      "args": {
+        "seed": 1,
+        "input_dim": 100,
+        "num_outputs": 10,
+        "hinge_l1": 100,
+        "num_hinges": 16,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust1_bench/instances/corners_03/model.onnx",
+        "vnnlib_path": "thrust1_bench/instances/corners_03/spec.vnnlib",
+        "epsilon_scale_vs_base": 2.111290356721114
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/corners_03_sat_far/witness.json",
+        "witness_margin_f64": -7.531260362810997,
+        "witness_margin_f32": -7.531257629394531,
+        "violated_classes": [
+          1,
+          4
+        ],
+        "last_disjunct_class": 9,
+        "base_instance": "corners_03",
+        "eps_scale": 2.111290356721114,
+        "threshold_bracket": [
+          1.0499440858006872,
+          1.055645178360557
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "rcnn_0_sat_near",
+      "construction": "cnn.random_witness",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/rcnn_0_sat_near/model.onnx",
+        "vnnlib": "instances/rcnn_0_sat_near/spec.vnnlib",
+        "meta": "instances/rcnn_0_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "b77281b705be1f615a180c4ecc41ab507e46c0f89f7a4db4c41bfc44c3249e72",
+        "vnnlib": "1ed4a0adf341481e137bceea6e53ef805075a678e3f953ad43947bd7629446b7"
+      },
+      "args": {
+        "arch": "conv(2->4,3x3)-relu-conv(4->4,3x3)-relu-fc(100->5)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 7.828576496701601
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/rcnn_0_sat_near/witness.json",
+        "witness_margin_f64": -2.7970534477561593e-05,
+        "witness_margin_f32": -2.7924776077270508e-05,
+        "violated_classes": [
+          4
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "rcnn_0",
+        "eps_scale": 7.828576496701601,
+        "threshold_bracket": [
+          7.823279114292888,
+          7.828576496701601
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "rcnn_0_sat_far",
+      "construction": "cnn.random_witness",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/rcnn_0_sat_far/model.onnx",
+        "vnnlib": "instances/rcnn_0_sat_far/spec.vnnlib",
+        "meta": "instances/rcnn_0_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "b77281b705be1f615a180c4ecc41ab507e46c0f89f7a4db4c41bfc44c3249e72",
+        "vnnlib": "7f8b9b9911041290a9673ea46285b5179a8f9e563a19631d82aff550f2da3c72"
+      },
+      "args": {
+        "arch": "conv(2->4,3x3)-relu-conv(4->4,3x3)-relu-fc(100->5)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 15.657152993403201
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/rcnn_0_sat_far/witness.json",
+        "witness_margin_f64": -0.0006935078674482342,
+        "witness_margin_f32": -0.0006934851408004761,
+        "violated_classes": [
+          4
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "rcnn_0",
+        "eps_scale": 15.657152993403201,
+        "threshold_bracket": [
+          7.823279114292888,
+          7.828576496701601
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "rcnn_1_sat_near",
+      "construction": "cnn.random_witness",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/rcnn_1_sat_near/model.onnx",
+        "vnnlib": "instances/rcnn_1_sat_near/spec.vnnlib",
+        "meta": "instances/rcnn_1_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "6a7f42c27212a000048d78e440ea66acfda69a476048ca8e4b6968e3e20258fd",
+        "vnnlib": "f0c4885fb25a993aaead12385e21834ab99460fac3390b211c2c3b64a1404537"
+      },
+      "args": {
+        "arch": "conv(2->4,3x3)-relu-conv(4->4,3x3)-relu-fc(100->5)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 5.599707858454251
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/rcnn_1_sat_near/witness.json",
+        "witness_margin_f64": -1.7953221567196254e-05,
+        "witness_margin_f32": -1.7911195755004883e-05,
+        "violated_classes": [
+          1
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "rcnn_1",
+        "eps_scale": 5.599707858454251,
+        "threshold_bracket": [
+          5.595918690153245,
+          5.599707858454251
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "rcnn_1_sat_far",
+      "construction": "cnn.random_witness",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/rcnn_1_sat_far/model.onnx",
+        "vnnlib": "instances/rcnn_1_sat_far/spec.vnnlib",
+        "meta": "instances/rcnn_1_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "6a7f42c27212a000048d78e440ea66acfda69a476048ca8e4b6968e3e20258fd",
+        "vnnlib": "498809fc09859cf6ef6caa9b25ade84f963e99cab911ccbeebd23c1dbe5883e2"
+      },
+      "args": {
+        "arch": "conv(2->4,3x3)-relu-conv(4->4,3x3)-relu-fc(100->5)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 11.199415716908502
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/rcnn_1_sat_far/witness.json",
+        "witness_margin_f64": -0.00573719968423228,
+        "witness_margin_f32": -0.005737170577049255,
+        "violated_classes": [
+          1
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "rcnn_1",
+        "eps_scale": 11.199415716908502,
+        "threshold_bracket": [
+          5.595918690153245,
+          5.599707858454251
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "rcnn_2_sat_near",
+      "construction": "cnn.random_witness",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/rcnn_2_sat_near/model.onnx",
+        "vnnlib": "instances/rcnn_2_sat_near/spec.vnnlib",
+        "meta": "instances/rcnn_2_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "05fa90ee0f0e413d6702d5de1bb745a5a9114bb24e7249658028443d6b3d0f9a",
+        "vnnlib": "80808c37468e1165eea431168cab5b13bbb3d8118c9a228b68319e3f18e493f9"
+      },
+      "args": {
+        "arch": "conv(2->4,3x3)-relu-conv(4->4,3x3)-relu-fc(100->5)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 2.1285098257689286
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/rcnn_2_sat_near/witness.json",
+        "witness_margin_f64": -7.0250288004211625e-06,
+        "witness_margin_f32": -7.031485438346863e-06,
+        "violated_classes": [
+          4
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "rcnn_2",
+        "eps_scale": 2.1285098257689286,
+        "threshold_bracket": [
+          2.127069521709493,
+          2.1285098257689286
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "rcnn_2_sat_far",
+      "construction": "cnn.random_witness",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/rcnn_2_sat_far/model.onnx",
+        "vnnlib": "instances/rcnn_2_sat_far/spec.vnnlib",
+        "meta": "instances/rcnn_2_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "05fa90ee0f0e413d6702d5de1bb745a5a9114bb24e7249658028443d6b3d0f9a",
+        "vnnlib": "45a1874efcbd8bcd71a2d70f278c5d30d60dff13b330c235f6889ba5c4f8274c"
+      },
+      "args": {
+        "arch": "conv(2->4,3x3)-relu-conv(4->4,3x3)-relu-fc(100->5)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 4.257019651537857
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/rcnn_2_sat_far/witness.json",
+        "witness_margin_f64": -0.001540977230134407,
+        "witness_margin_f32": -0.0015409663319587708,
+        "violated_classes": [
+          4
+        ],
+        "last_disjunct_class": 4,
+        "base_instance": "rcnn_2",
+        "eps_scale": 4.257019651537857,
+        "threshold_bracket": [
+          2.127069521709493,
+          2.1285098257689286
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "tcnn_0_sat_near",
+      "construction": "cnn.random_witness",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/tcnn_0_sat_near/model.onnx",
+        "vnnlib": "instances/tcnn_0_sat_near/spec.vnnlib",
+        "meta": "instances/tcnn_0_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "ddb8ae62fb91ab4e32711cbe986eeb095733ebe79498b9cf5af6588718f33d1b",
+        "vnnlib": "4869a5823456deb2658e24a7b2552fcbab64ab83232975f6e41d190d111372d9"
+      },
+      "args": {
+        "arch": "conv(1->2,3x3)-relu-conv(2->2,3x3,s2)-relu-fc(8->4)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 7.860436203646975
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/tcnn_0_sat_near/witness.json",
+        "witness_margin_f64": -1.601154011360295e-05,
+        "witness_margin_f32": -1.5974044799804688e-05,
+        "violated_classes": [
+          2
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "tcnn_0",
+        "eps_scale": 7.860436203646975,
+        "threshold_bracket": [
+          7.855117262650799,
+          7.860436203646975
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "tcnn_0_sat_far",
+      "construction": "cnn.random_witness",
+      "seed": 0,
+      "paths": {
+        "onnx": "instances/tcnn_0_sat_far/model.onnx",
+        "vnnlib": "instances/tcnn_0_sat_far/spec.vnnlib",
+        "meta": "instances/tcnn_0_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "ddb8ae62fb91ab4e32711cbe986eeb095733ebe79498b9cf5af6588718f33d1b",
+        "vnnlib": "b5aaf6b67413c20b0d30d4033198a63755a2902dfbd48f884d44729e626596f1"
+      },
+      "args": {
+        "arch": "conv(1->2,3x3)-relu-conv(2->2,3x3,s2)-relu-fc(8->4)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 15.72087240729395
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/tcnn_0_sat_far/witness.json",
+        "witness_margin_f64": -0.010355599947915517,
+        "witness_margin_f32": -0.010355591773986816,
+        "violated_classes": [
+          2
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "tcnn_0",
+        "eps_scale": 15.72087240729395,
+        "threshold_bracket": [
+          7.855117262650799,
+          7.860436203646975
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "tcnn_1_sat_near",
+      "construction": "cnn.random_witness",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/tcnn_1_sat_near/model.onnx",
+        "vnnlib": "instances/tcnn_1_sat_near/spec.vnnlib",
+        "meta": "instances/tcnn_1_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "b1d3da805fba0322cc9f7ae41f9ee863dec00c111cdd0acdaf0612c65ecb627a",
+        "vnnlib": "6edb83e4a88489dddafec92a3f6a0584ab1aa435a36d8ce47c82a0ee7055229d"
+      },
+      "args": {
+        "arch": "conv(1->2,3x3)-relu-conv(2->2,3x3,s2)-relu-fc(8->4)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 30.088344243945617
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/tcnn_1_sat_near/witness.json",
+        "witness_margin_f64": -8.230361295608057e-05,
+        "witness_margin_f32": -8.230656385421753e-05,
+        "violated_classes": [
+          3
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "tcnn_1",
+        "eps_scale": 30.088344243945617,
+        "threshold_bracket": [
+          30.067984288904963,
+          30.088344243945617
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "tcnn_1_sat_far",
+      "construction": "cnn.random_witness",
+      "seed": 1,
+      "paths": {
+        "onnx": "instances/tcnn_1_sat_far/model.onnx",
+        "vnnlib": "instances/tcnn_1_sat_far/spec.vnnlib",
+        "meta": "instances/tcnn_1_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "b1d3da805fba0322cc9f7ae41f9ee863dec00c111cdd0acdaf0612c65ecb627a",
+        "vnnlib": "13bddd746239406c324d84bbc80d4ee5200dcc28cba02ab2c478336c207d446d"
+      },
+      "args": {
+        "arch": "conv(1->2,3x3)-relu-conv(2->2,3x3,s2)-relu-fc(8->4)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 60.176688487891234
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/tcnn_1_sat_far/witness.json",
+        "witness_margin_f64": -0.003697446947686256,
+        "witness_margin_f32": -0.0036974474787712097,
+        "violated_classes": [
+          3
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "tcnn_1",
+        "eps_scale": 60.176688487891234,
+        "threshold_bracket": [
+          30.067984288904963,
+          30.088344243945617
+        ]
+      },
+      "variant": "sat_far"
+    },
+    {
+      "id": "tcnn_2_sat_near",
+      "construction": "cnn.random_witness",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/tcnn_2_sat_near/model.onnx",
+        "vnnlib": "instances/tcnn_2_sat_near/spec.vnnlib",
+        "meta": "instances/tcnn_2_sat_near/meta.json"
+      },
+      "sha256": {
+        "onnx": "a01b670a62e253f7255583d2b4098cec807cd551e25b6a7dbef10ac316a63c98",
+        "vnnlib": "e0d1418746d63f6f248a1c3ec58a5a41b2789930711fb931e42ef574335e1ad0"
+      },
+      "args": {
+        "arch": "conv(1->2,3x3)-relu-conv(2->2,3x3,s2)-relu-fc(8->4)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 51.67541805455555
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/tcnn_2_sat_near/witness.json",
+        "witness_margin_f64": -2.987755949770965e-06,
+        "witness_margin_f32": -3.0025839805603027e-06,
+        "violated_classes": [
+          0
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "tcnn_2",
+        "eps_scale": 51.67541805455555,
+        "threshold_bracket": [
+          51.640450720369,
+          51.67541805455555
+        ]
+      },
+      "variant": "sat_near"
+    },
+    {
+      "id": "tcnn_2_sat_far",
+      "construction": "cnn.random_witness",
+      "seed": 2,
+      "paths": {
+        "onnx": "instances/tcnn_2_sat_far/model.onnx",
+        "vnnlib": "instances/tcnn_2_sat_far/spec.vnnlib",
+        "meta": "instances/tcnn_2_sat_far/meta.json"
+      },
+      "sha256": {
+        "onnx": "a01b670a62e253f7255583d2b4098cec807cd551e25b6a7dbef10ac316a63c98",
+        "vnnlib": "37a2c857b88452b21bf3255c0d61a2dd7e38098926d13975d0cdd2e7cccf1622"
+      },
+      "args": {
+        "arch": "conv(1->2,3x3)-relu-conv(2->2,3x3,s2)-relu-fc(8->4)",
+        "epsilon_base": 0.02,
+        "epsilon_scale_vs_base": 103.3508361091111
+      },
+      "ground_truth": {
+        "label": "sat",
+        "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+        "witness": "instances/tcnn_2_sat_far/witness.json",
+        "witness_margin_f64": -0.0072327666625804365,
+        "witness_margin_f32": -0.007232740521430969,
+        "violated_classes": [
+          0
+        ],
+        "last_disjunct_class": 3,
+        "base_instance": "tcnn_2",
+        "eps_scale": 103.3508361091111,
+        "threshold_bracket": [
+          51.640450720369,
+          51.67541805455555
+        ]
+      },
+      "variant": "sat_far"
+    }
+  ],
+  "spec_path": "src/VeriStressGT/configs/thrust1.yaml",
+  "spec": {
+    "defaults": {
+      "seed": 0
+    }
+  }
+}

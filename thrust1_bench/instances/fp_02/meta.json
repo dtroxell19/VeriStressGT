@@ -1,0 +1,56 @@
+{
+  "id": "fp_02",
+  "construction": "attention.fixed_pattern",
+  "seed": 1,
+  "paths": {
+    "onnx": "instances/fp_02/model.onnx",
+    "vnnlib": "instances/fp_02/spec.vnnlib",
+    "meta": "instances/fp_02/meta.json"
+  },
+  "sha256": {
+    "onnx": "d792737accf46ee504ca71c7835ffa878764a681911f86ec58e843e256db2c32",
+    "vnnlib": "fbaf35b16dad956ff0c4ebf5df2c7127968433c5644fe4cf574bdad439c6ab66"
+  },
+  "args": {
+    "seed": 1,
+    "n": 8,
+    "d": 4,
+    "d_v": 8,
+    "num_classes": 50,
+    "alpha": 5.0,
+    "epsilon": 0.001,
+    "margin_slack": 1.05,
+    "onnx_path": "thrust1_bench/instances/fp_02/model.onnx",
+    "vnnlib_path": "thrust1_bench/instances/fp_02/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "thrust1_bench/instances/fp_02/model.onnx",
+    "vnnlib_path": "thrust1_bench/instances/fp_02/spec.vnnlib",
+    "label": 0,
+    "epsilon": 0.001,
+    "certificate": {
+      "mu": 0.6686192750930786,
+      "delta_min": 1.656903624534607,
+      "C_max": 40.03999999999999,
+      "lhs_gap": 0.3313807249069214,
+      "rhs_gap": 0.008008,
+      "gap_ok_simplified": true,
+      "gap_ok_actual": true,
+      "B_S": 20.019999999999996,
+      "V0_2inf": 0.8967335820198059,
+      "sigma_WV": 1.0,
+      "L_attn": 37.985292624073026,
+      "L_h": 1.0,
+      "logits": "[ 0.58504677  0.14306845 -0.03934561 -0.12039954 -0.04280848  0.1530474\n -0.14299671 -0.16109909 -0.1732311  -0.03345805 -0.14147939 -0.04588834\n -0.07370322  0.04436792  0.19913052  0.05842562  0.15869442 -0.1957305\n  0.04000621  0.11829314  0.05062611 -0.03012822 -0.09105643  0.3594256\n  0.05232247  0.2329314  -0.20953977 -0.01067384  0.03066189  0.077846\n  0.05009132 -0.3393363  -0.11778091  0.18539315 -0.0456011  -0.04328028\n  0.18667737 -0.05130224  0.14022827 -0.00255177  0.09623083 -0.19085678\n -0.1109499   0.26314372 -0.05116023  0.0034451  -0.12533785  0.10673063\n -0.08795162  0.06911784]",
+      "label": 0,
+      "margin": 0.22562116384506226,
+      "rhs_margin": 0.21487726399869908,
+      "margin_ok": true,
+      "valid": true
+    }
+  },
+  "ground_truth": {
+    "label": "unsat",
+    "certificate": "analytic: fixed score ordering + Lipschitz head (Prop. 7)"
+  }
+}

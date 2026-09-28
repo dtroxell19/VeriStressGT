@@ -1,0 +1,76 @@
+# UCLA TA1 -- Thrust 1 (primary metric): detecting unsound verifiers with ground-truth labels.
+#
+# Benchmark (thrust1_bench, pre-built): 24 instances that are UNSAT by analytic construction
+# (MILP exact-radius, MEAP, corners, paired-bias CNN, contractive CNN, attention) and 22 SAT
+# instances, each shipping a concrete counterexample confirmed in float64 and onnxruntime float32.
+#
+# Verifier pool:
+#   sound controls    reference (in-house: attack + CROWN + exact MILP / BaB), ibp_only
+#   planted, tier (b) 8 reference mutants, one injected bug each (VeriStressGT.soundness.bugs)
+#   real              abcrown, pyrat (skipped if not installed)
+#   planted, tier (a) 4 output-level fault wrappers around each real verifier
+#
+# A verifier is flagged when any SAT/UNSAT verdict contradicts the instance label. The same
+# verdicts are also scored against VNN-COMP-style majority-vote labels as the baseline.
+#
+# Claim: ground-truth labels flag >= detection_threshold of the planted buggy verifiers while
+# flagging no sound control.
+
+title: "VeriStressGT Thrust 1: Bug Detection with Ground-Truth Labels"
+description: |
+  Runs a pool of sound, real, and deliberately buggy neural-network verifiers on a benchmark
+  whose robustness labels are known a priori (analytic UNSAT certificates and witness-certified
+  SAT instances). Reports the fraction of planted buggy verifiers exposed by ground truth, and
+  compares with majority voting, which both misses bugs and penalizes sound verifiers.
+
+version: 1.0
+
+organizations:
+  - UCLA
+
+submitter:
+  name: UCLA TA1 Team
+  email: davidtroxell@g.ucla.edu
+
+tags:
+  - ucla
+  - soundness
+  - ground-truth
+  - bug-detection
+  - cross-verifier
+
+links:
+  - title: "VeriStressGT"
+    url: "https://github.com/dtroxell19/VeriStressGT"
+    type: "software"
+
+symbols:
+  detection_threshold:
+    type: float
+    value: 0.75
+
+claim:
+  python: |
+    gt = summary["ground_truth"]
+    assert gt["detection_rate"] is not None, "no planted buggy verifiers were run"
+    assert gt["controls_flagged"] == [], (
+      f"ground truth flagged a sound control verifier: {gt['controls_flagged']}"
+    )
+    assert gt["detection_rate"] >= detection_threshold, (
+      f"ground truth exposed only {len(gt['detected'])}/{n_planted} planted buggy verifiers "
+      f"(rate={gt['detection_rate']:.2f}, required >= {detection_threshold:.2f}); "
+      f"missed: {gt['missed']}"
+    )
+
+pipeline:
+  thrust1:
+    executable: 'python -u aiq/thrust1_runner.py'
+    algo_params:
+      bench_dir: 'thrust1_bench'
+      run_dir: 'thrust1_run'
+      timeout: 60
+      jobs: 4
+      real_jobs: 2
+      abcrown_config: 'src/VeriStressGT/configs/abcrown_thrust1.yaml'
+    out_paths:
+      results_fpath: 'results.json'

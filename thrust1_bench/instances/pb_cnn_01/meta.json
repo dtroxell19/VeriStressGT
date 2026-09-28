@@ -1,0 +1,54 @@
+{
+  "id": "pb_cnn_01",
+  "construction": "cnn.cnn_paired_bias",
+  "seed": 0,
+  "paths": {
+    "onnx": "instances/pb_cnn_01/model.onnx",
+    "vnnlib": "instances/pb_cnn_01/spec.vnnlib",
+    "meta": "instances/pb_cnn_01/meta.json"
+  },
+  "sha256": {
+    "onnx": "4fcac829ba2fd0e0afe01270d5019d1ed2509074023f758f653b9928b12894f0",
+    "vnnlib": "b978a4393d276dbe2a3f95cf7b52404e9766092ff721b3061024befcb39b0069"
+  },
+  "args": {
+    "seed": 0,
+    "num_pairs": 2,
+    "margin": 0.1,
+    "delta": 0.025,
+    "in_channels": 3,
+    "height": 4,
+    "width": 4,
+    "backbone_channels": 2,
+    "num_backbone_layers": 2,
+    "kernel_size": 3,
+    "num_classes": 10,
+    "label": 0,
+    "epsilon": 0.05,
+    "onnx_path": "thrust1_bench/instances/pb_cnn_01/model.onnx",
+    "vnnlib_path": "thrust1_bench/instances/pb_cnn_01/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "thrust1_bench/instances/pb_cnn_01/model.onnx",
+    "vnnlib_path": "thrust1_bench/instances/pb_cnn_01/spec.vnnlib",
+    "is_robust": true,
+    "label": 0,
+    "epsilon": 0.05,
+    "margin": 0.1,
+    "delta": 0.025,
+    "actual_margin_x0": 0.143163800239563,
+    "ibp_worst_margin": -0.7332541942596436,
+    "unstable_relus": {
+      "total": 128,
+      "unstable": 110,
+      "fraction": 0.859375
+    },
+    "num_pairs": 2,
+    "spatial_pairs": 32,
+    "seed": 0
+  },
+  "ground_truth": {
+    "label": "unsat",
+    "certificate": "analytic: ReLU monotonicity, global margin (Prop. 5)"
+  }
+}

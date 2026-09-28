@@ -1,0 +1,49 @@
+{
+  "id": "milp_s2_a_sat_far",
+  "construction": "mlp_relu.milp.exact_radius",
+  "seed": 2,
+  "variant": "sat_far",
+  "paths": {
+    "onnx": "instances/milp_s2_a_sat_far/model.onnx",
+    "vnnlib": "instances/milp_s2_a_sat_far/spec.vnnlib",
+    "meta": "instances/milp_s2_a_sat_far/meta.json"
+  },
+  "sha256": {
+    "onnx": "2ccf65a5af3b7f5ad8aaf7b36a04a050ea537cd63737775705a82ec3edacf835",
+    "vnnlib": "a8e3f2bc2bc200839aa6a0a1ad4a5e005a895e76f66612c2613e808f177f642e"
+  },
+  "args": {
+    "seed": 2,
+    "input_dim": 50,
+    "h1": 20,
+    "h2": 10,
+    "num_outputs": 5,
+    "epsilon_frac": 0.99,
+    "rmax": 2.0,
+    "time_limit": 240.0,
+    "mip_gap": null,
+    "epsilon_mode": "safe",
+    "save_x0": false,
+    "save_json": false,
+    "onnx_path": "thrust1_bench/instances/milp_s2_a/model.onnx",
+    "vnnlib_path": "thrust1_bench/instances/milp_s2_a/spec.vnnlib",
+    "epsilon_scale_vs_base": 2.021778572103401
+  },
+  "ground_truth": {
+    "label": "sat",
+    "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+    "witness": "instances/milp_s2_a_sat_far/witness.json",
+    "witness_margin_f64": -0.0010748552560392866,
+    "witness_margin_f32": -0.0010748803615570068,
+    "violated_classes": [
+      4
+    ],
+    "last_disjunct_class": 4,
+    "base_instance": "milp_s2_a",
+    "eps_scale": 2.021778572103401,
+    "threshold_bracket": [
+      1.0054299011128027,
+      1.0108892860517005
+    ]
+  }
+}

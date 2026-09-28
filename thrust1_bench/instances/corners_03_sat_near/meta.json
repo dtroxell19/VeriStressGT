@@ -1,0 +1,51 @@
+{
+  "id": "corners_03_sat_near",
+  "construction": "mlp_relu.corners",
+  "seed": 1,
+  "variant": "sat_near",
+  "paths": {
+    "onnx": "instances/corners_03_sat_near/model.onnx",
+    "vnnlib": "instances/corners_03_sat_near/spec.vnnlib",
+    "meta": "instances/corners_03_sat_near/meta.json"
+  },
+  "sha256": {
+    "onnx": "7d5446e28b63af51b0ad15617b391d324ad691a9872f5e55013203508eb4c6e1",
+    "vnnlib": "cb792e1da23e9407cae4bebd256c759f51d57704ea406ea9c7a5484183ab0713"
+  },
+  "args": {
+    "seed": 1,
+    "input_dim": 100,
+    "num_outputs": 10,
+    "hinge_l1": 100,
+    "num_hinges": 16,
+    "epsilon": 0.2,
+    "label": 0,
+    "active_dim": 8,
+    "hinge_density": 1.0,
+    "pattern_density": 0.5,
+    "coeff_scale": 1.0,
+    "tau": 0.0001,
+    "big_m": 2.0,
+    "quiet": false,
+    "onnx_path": "thrust1_bench/instances/corners_03/model.onnx",
+    "vnnlib_path": "thrust1_bench/instances/corners_03/spec.vnnlib",
+    "epsilon_scale_vs_base": 1.055645178360557
+  },
+  "ground_truth": {
+    "label": "sat",
+    "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+    "witness": "instances/corners_03_sat_near/witness.json",
+    "witness_margin_f64": -0.026638992796051753,
+    "witness_margin_f32": -0.026641845703125,
+    "violated_classes": [
+      2
+    ],
+    "last_disjunct_class": 9,
+    "base_instance": "corners_03",
+    "eps_scale": 1.055645178360557,
+    "threshold_bracket": [
+      1.0499440858006872,
+      1.055645178360557
+    ]
+  }
+}

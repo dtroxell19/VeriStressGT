@@ -1,0 +1,37 @@
+{
+  "id": "rcnn_0_sat_far",
+  "construction": "cnn.random_witness",
+  "seed": 0,
+  "variant": "sat_far",
+  "paths": {
+    "onnx": "instances/rcnn_0_sat_far/model.onnx",
+    "vnnlib": "instances/rcnn_0_sat_far/spec.vnnlib",
+    "meta": "instances/rcnn_0_sat_far/meta.json"
+  },
+  "sha256": {
+    "onnx": "b77281b705be1f615a180c4ecc41ab507e46c0f89f7a4db4c41bfc44c3249e72",
+    "vnnlib": "7f8b9b9911041290a9673ea46285b5179a8f9e563a19631d82aff550f2da3c72"
+  },
+  "args": {
+    "arch": "conv(2->4,3x3)-relu-conv(4->4,3x3)-relu-fc(100->5)",
+    "epsilon_base": 0.02,
+    "epsilon_scale_vs_base": 15.657152993403201
+  },
+  "ground_truth": {
+    "label": "sat",
+    "certificate": "witness (float64 and onnxruntime float32 margins < 0)",
+    "witness": "instances/rcnn_0_sat_far/witness.json",
+    "witness_margin_f64": -0.0006935078674482342,
+    "witness_margin_f32": -0.0006934851408004761,
+    "violated_classes": [
+      4
+    ],
+    "last_disjunct_class": 4,
+    "base_instance": "rcnn_0",
+    "eps_scale": 15.657152993403201,
+    "threshold_bracket": [
+      7.823279114292888,
+      7.828576496701601
+    ]
+  }
+}

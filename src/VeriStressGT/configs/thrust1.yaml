@@ -1,0 +1,50 @@
+# Thrust 1 (soundness) benchmark -- base instances.
+#
+# Every instance here is UNSAT by construction. `python -m VeriStressGT.soundness.ground_truth`
+# then attaches ground-truth labels and adds witness-certified SAT twins (suffix _sat_near /
+# _sat_far) for the MILP, corners and contractive-CNN networks listed in aiq/thrust1_runner.py.
+#
+# Near-boundary robust MILP instances (eps = 0.999 r*, 0.9999 r*) are included on purpose: they
+# are where numerical-tolerance bugs produce false SAT claims (paper, Sec. 4 takeaway 1).
+
+name: thrust1
+
+defaults:
+  seed: 0
+
+instances:
+  # ── mlp_relu.milp.exact_radius: 4 networks, easy and near-boundary radii ──────────────
+  - { id: milp_s0_a, construction: mlp_relu.milp.exact_radius, seed: 0, args: { input_dim: 50, h1: 20, h2: 10, num_outputs: 5, epsilon_frac: 0.5    } }
+  - { id: milp_s0_b, construction: mlp_relu.milp.exact_radius, seed: 0, args: { input_dim: 50, h1: 20, h2: 10, num_outputs: 5, epsilon_frac: 0.999  } }
+  - { id: milp_s1_a, construction: mlp_relu.milp.exact_radius, seed: 1, args: { input_dim: 50, h1: 20, h2: 10, num_outputs: 5, epsilon_frac: 0.9    } }
+  - { id: milp_s1_b, construction: mlp_relu.milp.exact_radius, seed: 1, args: { input_dim: 50, h1: 20, h2: 10, num_outputs: 5, epsilon_frac: 0.9999 } }
+  - { id: milp_s2_a, construction: mlp_relu.milp.exact_radius, seed: 2, args: { input_dim: 50, h1: 20, h2: 10, num_outputs: 5, epsilon_frac: 0.99   } }
+  - { id: milp_s2_b, construction: mlp_relu.milp.exact_radius, seed: 2, args: { input_dim: 50, h1: 20, h2: 10, num_outputs: 5, epsilon_frac: 0.999  } }
+  - { id: milp_s3_a, construction: mlp_relu.milp.exact_radius, seed: 3, args: { input_dim: 50, h1: 20, h2: 10, num_outputs: 5, epsilon_frac: 0.5    } }
+  - { id: milp_s3_b, construction: mlp_relu.milp.exact_radius, seed: 3, args: { input_dim: 50, h1: 20, h2: 10, num_outputs: 5, epsilon_frac: 0.9999 } }
+
+  # ── mlp_relu.meap (robust for every radius: no SAT twin) ──────────────────────────────
+  - { id: meap_01, construction: mlp_relu.meap, seed: 0, args: { input_dim: 100, num_classes: 10, num_pairs: 2,  epsilon: 0.1, gamma: 0.001 } }
+  - { id: meap_02, construction: mlp_relu.meap, seed: 0, args: { input_dim: 100, num_classes: 10, num_pairs: 8,  epsilon: 0.1, gamma: 0.001 } }
+  - { id: meap_03, construction: mlp_relu.meap, seed: 0, args: { input_dim: 100, num_classes: 10, num_pairs: 16, epsilon: 0.5, gamma: 0.001 } }
+
+  # ── mlp_relu.corners ──────────────────────────────────────────────────────────────────
+  - { id: corners_01, construction: mlp_relu.corners, seed: 1, args: { input_dim: 100, num_outputs: 10, hinge_l1: 0.0001, num_hinges: 16, epsilon: 0.2 } }
+  - { id: corners_02, construction: mlp_relu.corners, seed: 1, args: { input_dim: 100, num_outputs: 10, hinge_l1: 0.01,   num_hinges: 64, epsilon: 0.2 } }
+  - { id: corners_03, construction: mlp_relu.corners, seed: 1, args: { input_dim: 100, num_outputs: 10, hinge_l1: 100,    num_hinges: 16, epsilon: 0.2 } }
+
+  # ── cnn.cnn_paired_bias (robust for every radius: no SAT twin) ────────────────────────
+  - { id: pb_cnn_01, construction: cnn.cnn_paired_bias, seed: 0, args: { num_pairs: 2, margin: 0.1, delta: 0.025 } }
+  - { id: pb_cnn_02, construction: cnn.cnn_paired_bias, seed: 0, args: { num_pairs: 8, margin: 0.1, delta: 0.025 } }
+  - { id: pb_cnn_03, construction: cnn.cnn_paired_bias, seed: 0, args: { num_pairs: 8, margin: 0.1, delta: 0.1   } }
+
+  # ── cnn.deep_contractive_cnn ──────────────────────────────────────────────────────────
+  - { id: dc_cnn_01, construction: cnn.deep_contractive_cnn, seed: 0, args: { depth: 2, channels: 16, contraction_rate: 0.90, margin: 0.001, bias_instability_frac: 0.40 } }
+  - { id: dc_cnn_02, construction: cnn.deep_contractive_cnn, seed: 0, args: { depth: 4, channels: 16, contraction_rate: 0.90, margin: 0.001, bias_instability_frac: 0.40 } }
+  - { id: dc_cnn_03, construction: cnn.deep_contractive_cnn, seed: 0, args: { depth: 6, channels: 16, contraction_rate: 0.90, margin: 0.001, bias_instability_frac: 0.40 } }
+
+  # ── attention (real verifiers only; the in-house reference reports them unsupported) ──
+  - { id: ld_01, construction: attention.linear_dominance, seed: 1, args: { n: 4, d: 4, d_v: 4, num_classes: 10, gate_scale: 0.5, noise_scale: 0.2, epsilon: 0.02, margin_factor: 2.0 } }
+  - { id: ld_02, construction: attention.linear_dominance, seed: 2, args: { n: 4, d: 4, d_v: 4, num_classes: 10, gate_scale: 0.5, noise_scale: 0.2, epsilon: 0.05, margin_factor: 1.1 } }
+  - { id: fp_01, construction: attention.fixed_pattern, seed: 1, args: { n: 16, d: 4, d_v: 8, num_classes: 50, alpha: 5.0, epsilon: 0.0005, margin_slack: 1.05 } }
+  - { id: fp_02, construction: attention.fixed_pattern, seed: 1, args: { n: 8,  d: 4, d_v: 8, num_classes: 50, alpha: 5.0, epsilon: 0.001,  margin_slack: 1.05 } }

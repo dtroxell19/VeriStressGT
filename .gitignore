@@ -29,6 +29,11 @@ results.json
 !mini_sweep_bench/
 !mini_sweep_bench/**
 
+# Pre-built Thrust 1 ground-truth benchmark (analytic UNSAT + witness-certified SAT)
+!thrust1_bench/
+!thrust1_bench/**
+thrust1_bench/**/*.compiled
+
 # Track committed benchmark models (needed to actually run the benchmarks); never commit the
 # stale external-data blobs the older exporter left behind.
 !src/VeriStressGT/benchmarks/**/*.onnx
