@@ -57,7 +57,7 @@ claim:
       f"ground truth flagged a sound control verifier: {gt['controls_flagged']}"
     )
     assert gt["detection_rate"] >= detection_threshold, (
-      f"ground truth exposed only {len(gt['detected'])}/{n_planted} planted buggy verifiers "
+      f"ground truth exposed only {len(gt['detected'])}/{n_planted_exercised} exercised planted bugs "
       f"(rate={gt['detection_rate']:.2f}, required >= {detection_threshold:.2f}); "
       f"missed: {gt['missed']}"
     )

@@ -9,6 +9,10 @@ instance nobody decides is assumed robust. Two pools are scored:
   * one_buggy: the candidate joined by every non-planted verifier (sound controls + real tools) --
                a competition with a single faulty entrant;
   * full:      every verifier at once.
+
+Detection rates are computed over *exercised* planted bugs only: a planted verifier whose verdicts
+are identical to its base verifier's on every instance (e.g. a crash-handling fault on a verifier
+that never crashed) gave the benchmark nothing to catch and is listed as ``not_exercised``.
 """
 from __future__ import annotations
 
@@ -75,9 +79,11 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
         mv1_bad = attributable(v, disagreements(verdicts[v], mv1))
         mvf_bad = attributable(v, disagreements(verdicts[v], full_mv))
         n_def = sum(1 for s in verdicts[v].values() if s in DEFINITIVE)
+        b = base_of.get(v)
         per[v] = {
             "role": "planted" if v in planted else ("control" if v in controls else "real"),
             "fails_as": planted.get(v),
+            "exercised": (v in planted) and (b is None or any(verdicts[v][i] != verdicts[b][i] for i in iids)),
             "definitive": n_def,
             "gt_flagged": bool(gt_bad), "gt_evidence": gt_bad,
             "gt_inherited": [e for e in gt_all if e not in gt_bad],
@@ -92,13 +98,15 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
         keys = list(keys)
         return (sum(per[k][flag] for k in keys) / len(keys)) if keys else None
 
+    exercised = [v for v in planted if per[v]["exercised"]]
     summary = {}
     for method, flag in (("ground_truth", "gt_flagged"), ("majority_one_buggy", "mv_one_buggy_flagged"),
                          ("majority_full", "mv_full_flagged")):
         summary[method] = {
-            "detection_rate": rate(planted, flag),
-            "detected": sorted(v for v in planted if per[v][flag]),
-            "missed": sorted(v for v in planted if not per[v][flag]),
+            "detection_rate": rate(exercised, flag),
+            "detected": sorted(v for v in exercised if per[v][flag]),
+            "missed": sorted(v for v in exercised if not per[v][flag]),
+            "not_exercised": sorted(v for v in planted if not per[v]["exercised"]),
             "control_false_flag_rate": rate(controls, flag),
             "controls_flagged": sorted(v for v in controls if per[v][flag]),
             "real_flagged": sorted(v for v in others if per[v][flag]),

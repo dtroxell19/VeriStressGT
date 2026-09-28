@@ -228,10 +228,7 @@ class Thrust1RunnerCLI(scfg.DataConfig):
         controls = ["reference", "ibp_only"]
         res = score(verdicts, gt, planted, controls, real_run, base_of=base_of)
         per, summ = res["per_verifier"], res["summary"]
-        for v, base in base_of.items():   # did the bug change any verdict at all on this benchmark?
-            per[v]["manifested"] = any(verdicts[v][i] != verdicts[base][i] for i in iids)
-
-        manifested = [v for v in planted if per[v]["manifested"]]
+        exercised = [v for v in planted if per[v]["exercised"]]
         gt_s, mv1, mvf = summ["ground_truth"], summ["majority_one_buggy"], summ["majority_full"]
         result = {
             "summary": summ,
@@ -242,13 +239,11 @@ class Thrust1RunnerCLI(scfg.DataConfig):
             "n_unsat": sum(v == "unsat" for v in gt.values()),
             "n_sat": sum(v == "sat" for v in gt.values()),
             "n_planted": len(planted),
-            "n_planted_manifested": len(manifested),
+            "n_planted_exercised": len(exercised),
             "real_verifiers_run": real_run,
             "real_verifiers_skipped": real_skipped,
             # flat scalars for the MAGNET dashboard
             "gt_detection_rate": gt_s["detection_rate"],
-            "gt_detection_rate_manifested": (sum(per[v]["gt_flagged"] for v in manifested) / len(manifested))
-                                            if manifested else None,
             "gt_control_false_flags": len(gt_s["controls_flagged"]),
             "mv_one_buggy_detection_rate": mv1["detection_rate"],
             "mv_full_detection_rate": mvf["detection_rate"],
@@ -265,10 +260,10 @@ class Thrust1RunnerCLI(scfg.DataConfig):
         out_dir = Path(out_fpath.parent)
         with open(out_dir / "thrust1_verifiers.csv", "w", newline="") as f:
             w = csv.writer(f)
-            w.writerow(["verifier", "role", "fails_as", "manifested", "definitive", "gt_flagged", "gt_wrong",
+            w.writerow(["verifier", "role", "fails_as", "exercised", "definitive", "gt_flagged", "gt_wrong",
                         "mv_one_buggy_flagged", "mv_full_flagged", "mv_full_wrongful"])
             for v, d in per.items():
-                w.writerow([v, d["role"], d["fails_as"] or "", d.get("manifested", ""), d["definitive"],
+                w.writerow([v, d["role"], d["fails_as"] or "", d.get("exercised", ""), d["definitive"],
                             d["gt_flagged"], len(d["gt_evidence"]), d["mv_one_buggy_flagged"],
                             d["mv_full_flagged"], len(d["mv_full_wrongful"])])
         (out_dir / "thrust1_evidence.json").write_text(json.dumps(
@@ -281,7 +276,7 @@ class Thrust1RunnerCLI(scfg.DataConfig):
         print("\n── Bug detection ──────────────────────────────────────────────", flush=True)
         for label, s in (("ground truth", gt_s), ("majority (one buggy)", mv1), ("majority (full pool)", mvf)):
             dr = s["detection_rate"]
-            print(f"  {label:<22s} detected {len(s['detected'])}/{len(planted)}"
+            print(f"  {label:<22s} detected {len(s['detected'])}/{len(exercised)}"
                   f" ({dr:.0%})  controls flagged: {s['controls_flagged'] or 'none'}"
                   if dr is not None else f"  {label}: n/a", flush=True)
         print(f"  majority (full pool) label errors: {mvf['label_errors'] or 'none'}", flush=True)

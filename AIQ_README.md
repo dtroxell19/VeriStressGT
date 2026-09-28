@@ -79,7 +79,9 @@ flags no sound control.
 
 For planted verifiers, a flag counts only on instances where the planted bug changed the verdict
 of the verifier it was derived from. Disagreements it merely inherits from that verifier are listed
-separately as `gt_inherited`.
+separately as `gt_inherited`. Detection rates count only *exercised* planted bugs, meaning ones
+that changed at least one verdict. A fault that never fires (for example a crash handler on a
+verifier that never crashed) gives the benchmark nothing to catch and is listed as `not_exercised`.
 
 The real verifiers run with counterexample search enabled (`configs/abcrown_thrust1.yaml` sets
 `pgd_order: before`, and pyrat gets `--check both --attack pgd`). With the repo's default settings
@@ -96,14 +98,18 @@ both only try to prove UNSAT and never report SAT.
 
 | Labels used for scoring | Planted bugs detected | Sound controls flagged |
 |---|---|---|
-| Ground truth | **13/16 (81%)**; 13/14 of the bugs that changed any verdict | none |
-| Majority vote, one buggy verifier in the pool | 11/16 (69%) | none |
-| Majority vote, full pool | 12/16 (75%) | **both** (`reference`, `ibp_only`) |
+| Ground truth | **13/14 (93%)** | none |
+| Majority vote, one buggy verifier in the pool | 11/14 (79%) | none |
+| Majority vote, full pool | 12/14 (86%) | **both** (`reference`, `ibp_only`) |
 
-- **Ground truth missed 3:** `mutant:conv_bias_dropped` never produced a wrong verdict (it only
-  turned proofs into UNKNOWN). `abcrown+attention_unsat_to_sat` and `pyrat+crash_as_sat` never
-  fired, because abcrown's attack crashes on the attention models and pyrat never errored. No
-  output-based method can catch these three on this benchmark.
+16 bugs were planted. Two were not exercised, so the rates above are out of 14:
+`pyrat+crash_as_sat` (pyrat never crashed) and `abcrown+attention_unsat_to_sat` (abcrown crashes
+on every attention model, so it never produced an UNSAT to flip).
+
+- **Ground truth missed 1:** `mutant:conv_bias_dropped` changed verdicts, but only from proofs to
+  UNKNOWN; it never gave a wrong answer on this benchmark. Ground truth catches every wrong verdict
+  by construction, so this miss means the benchmark has no instance that turns this bug into a
+  wrong answer.
 - **Majority vote, one buggy verifier:** it also misses `abcrown+crash_as_sat` and
   `pyrat+attention_unsat_to_sat`. Their false SATs land on attention instances where the only
   other decisive verifier is the one real tool that supports them, so the vote ties and nobody is
