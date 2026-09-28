@@ -1,0 +1,51 @@
+{
+  "id": "ld_b",
+  "construction": "attention.linear_dominance",
+  "seed": 12,
+  "paths": {
+    "onnx": "instances/ld_b/model.onnx",
+    "vnnlib": "instances/ld_b/spec.vnnlib",
+    "meta": "instances/ld_b/meta.json"
+  },
+  "sha256": {
+    "onnx": "8b7c9dc568b7b1c727104d630d9ee2af4b2679b39b1aaa8186fdae8a0fcc480b",
+    "vnnlib": "c37a60c240a3f7f61d60982f4ae0b0814967370536f78144125c10ea81b68cf1"
+  },
+  "args": {
+    "seed": 12,
+    "n": 5,
+    "d": 10,
+    "d_v": 6,
+    "num_classes": 10,
+    "gate_scale": 0.6,
+    "noise_scale": 0.2,
+    "epsilon": 0.06,
+    "margin_factor": 1.2,
+    "onnx_path": "thrust2_ood_bench/instances/ld_b/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/ld_b/spec.vnnlib"
+  },
+  "gt": {
+    "construction": "attention.linear_dominance",
+    "seed": 12,
+    "n": 5,
+    "d": 10,
+    "d_k": 5,
+    "d_v": 6,
+    "num_classes": 10,
+    "gate_scale": 0.6,
+    "noise_scale": 0.2,
+    "epsilon": 0.06,
+    "margin_factor": 1.2,
+    "label": 0,
+    "is_robust": true,
+    "ground_truth": "UNSAT",
+    "sv_V": 1.0000000000000007,
+    "L_h": 1.0000000000000007,
+    "dw": 0.07919999999999999,
+    "dV": 0.18973665961010291,
+    "B_max": 0.13750232382367716,
+    "cert_rhs": 0.6149290862678622,
+    "nominal_margin": 0.7379149035214347,
+    "margin_over_cert": 1.2000000000000002
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "fp_c",
+  "construction": "attention.fixed_pattern",
+  "seed": 13,
+  "paths": {
+    "onnx": "instances/fp_c/model.onnx",
+    "vnnlib": "instances/fp_c/spec.vnnlib",
+    "meta": "instances/fp_c/meta.json"
+  },
+  "sha256": {
+    "onnx": "ddae40d5a54a30f52175aacd190093600b5329b099711334666eee66e3e19e3b",
+    "vnnlib": "6311d199aca6d7b855237ca8276fde657166bf4ad74c3b0cf0948b68cd95ad65"
+  },
+  "args": {
+    "seed": 13,
+    "n": 24,
+    "d": 12,
+    "d_v": 8,
+    "num_classes": 50,
+    "alpha": 7.0,
+    "epsilon": 0.005,
+    "margin_slack": 1.5,
+    "onnx_path": "thrust2_ood_bench/instances/fp_c/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/fp_c/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "thrust2_ood_bench/instances/fp_c/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/fp_c/spec.vnnlib",
+    "label": 0,
+    "epsilon": 0.005,
+    "certificate": {
+      "mu": 0.6175365447998047,
+      "delta_min": 2.677244186401367,
+      "C_max": 97.83484522385712,
+      "lhs_gap": 0.3824634552001953,
+      "rhs_gap": 0.0698820323027551,
+      "gap_ok_simplified": true,
+      "gap_ok_actual": true,
+      "B_S": 48.91742261192856,
+      "V0_2inf": 0.8191917538642883,
+      "sigma_WV": 1.0,
+      "L_attn": 248.98424463940663,
+      "L_h": 1.0,
+      "logits": "[ 1.86133881e+01 -2.22462058e-01  9.73794907e-02 -3.16258669e-01\n  9.93006118e-03  2.28740215e-01  1.13648400e-02 -4.54177968e-02\n  1.13470085e-01  4.62138802e-02  7.79900700e-04 -3.15613568e-01\n -8.66355300e-02  2.31094092e-01  3.16858411e-01  1.45735890e-01\n  2.53271610e-01  1.40876651e-01 -2.50378370e-01 -4.72755283e-02\n  7.09239766e-03 -6.70835376e-04  2.20085904e-02  3.70269865e-02\n -4.58498299e-02  1.44292772e-01  5.08304983e-02  1.69553876e-01\n -1.66442990e-02 -6.25122860e-02  6.31656721e-02 -2.15592250e-01\n  3.88102941e-02 -1.07735038e-01  8.96999314e-02  1.79131702e-03\n  1.00367218e-01  1.33097932e-01  5.94761781e-02  4.27177399e-02\n -2.21729606e-01  1.14646181e-01  8.35161731e-02 -4.79305349e-03\n -1.15025669e-01 -3.90320942e-02 -3.23225319e-01 -4.35978062e-02\n  5.74124604e-02  2.88841426e-01]",
+      "label": 0,
+      "margin": 18.29652976989746,
+      "rhs_margin": 12.197687067176881,
+      "margin_ok": true,
+      "valid": true
+    }
+  }
+}

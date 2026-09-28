@@ -1,0 +1,1310 @@
+{
+  "name": "thrust2_ood",
+  "created_at": "2026-09-28T08:36:51.955138Z",
+  "git_commit": "ce11beb080ea54079ffdb48f4cbdbf2892ed16a9",
+  "common": {
+    "onnx_name": "model.onnx",
+    "vnnlib_name": "spec.vnnlib",
+    "meta_name": "meta.json"
+  },
+  "mode": "spec",
+  "instances": [
+    {
+      "id": "meap_a",
+      "construction": "mlp_relu.meap",
+      "seed": 11,
+      "paths": {
+        "onnx": "instances/meap_a/model.onnx",
+        "vnnlib": "instances/meap_a/spec.vnnlib",
+        "meta": "instances/meap_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "b54e0738a47f7a9a9f562e128886fd11d8f4b9234ff39e8cfaeb3bf19966f620",
+        "vnnlib": "f98678726bfa3e68d46206cc43493838ae14b223bafefd7cfdb7b1080161197b"
+      },
+      "args": {
+        "seed": 11,
+        "input_dim": 80,
+        "num_classes": 10,
+        "num_pairs": 32,
+        "epsilon": 0.3,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "label": 0,
+        "onnx_path": "thrust2_ood_bench/instances/meap_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_a/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/meap_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_a/spec.vnnlib",
+        "x0": "[ 0.17494547 -0.0286073  -0.04845652 -0.26533186 -0.00082846 -0.03196314\n -0.05366294  0.03154027  0.04210507 -0.1065603  -0.08862396 -0.04757335\n  0.06896823  0.05611921 -0.13055485 -0.11194753  0.07368374  0.15746342\n -0.00310751 -0.06834467  0.10956297 -0.03095766  0.07257523  0.15490717\n  0.06300798  0.00734932  0.07322714 -0.06425754 -0.01780932 -0.05739546\n -0.02043753 -0.04864951 -0.01857753 -0.03805364  0.00889776  0.00636717\n  0.02963471  0.14027712 -0.15468626  0.12956186 -0.02372505 -0.12323462\n -0.01724198  0.00918384  0.10675585 -0.10616344  0.02173482  0.01178195\n -0.16841109 -0.11857553  0.0600102   0.06955673  0.10877109  0.05338217\n  0.0395212   0.01228675  0.12091017 -0.08430661 -0.01418936  0.03853541\n -0.15774943  0.13109437 -0.0792865  -0.00717494  0.21566744 -0.08294373\n -0.05293721  0.15617037 -0.10801939 -0.04320576  0.0516084   0.04553929\n  0.05936862  0.03705063  0.1345378   0.10159421  0.05952784 -0.06828016\n -0.07135599 -0.19082896]",
+        "epsilon": 0.3,
+        "label": 0,
+        "num_pairs": 32,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "gt_margin_lower_bound": 0.001,
+        "is_robust": true
+      }
+    },
+    {
+      "id": "meap_b",
+      "construction": "mlp_relu.meap",
+      "seed": 12,
+      "paths": {
+        "onnx": "instances/meap_b/model.onnx",
+        "vnnlib": "instances/meap_b/spec.vnnlib",
+        "meta": "instances/meap_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "6e4ddd10fd0ae90eb5b26a92fab99bfd154a4a7d5b9c56b2948c067d9db92b46",
+        "vnnlib": "0d441f31834467f165a188115943d74aac9acca2768b57cb2446f45d9654e68d"
+      },
+      "args": {
+        "seed": 12,
+        "input_dim": 80,
+        "num_classes": 10,
+        "num_pairs": 64,
+        "epsilon": 0.3,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "label": 0,
+        "onnx_path": "thrust2_ood_bench/instances/meap_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_b/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/meap_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_b/spec.vnnlib",
+        "x0": "[ 0.04729858 -0.06814259  0.02424395 -0.17007357  0.07531428 -0.15347214\n  0.00051271 -0.01202277 -0.08069818  0.28718194 -0.05978229  0.0472457\n  0.10959561 -0.12151688  0.13423564 -0.01221498  0.10125154 -0.09138691\n -0.10295302  0.12097964  0.05018723  0.01388462  0.06407612  0.05273327\n -0.11543603 -0.22133334 -0.16817565 -0.17880943 -0.2218535  -0.06474308\n -0.05284043 -0.00392092  0.0214976  -0.03843588 -0.02539041  0.00732521\n -0.09972038 -0.07138563  0.00354163 -0.06779454 -0.0571881  -0.01058623\n  0.13358313  0.03186653 -0.03375953 -0.05852683 -0.01149199  0.22418177\n -0.31474167  0.05351359  0.02324904  0.0867612  -0.11482127  0.21143444\n  0.10009427 -0.0051415   0.01597877 -0.07162636  0.00505228 -0.01433374\n  0.09435754  0.03576442 -0.00834492  0.06778061  0.05560604  0.02227195\n -0.15289855  0.10292112 -0.11662588 -0.10095616 -0.0105268   0.05120222\n  0.14077277 -0.16876964  0.1471234   0.1636463  -0.04613949 -0.02013623\n -0.05718167 -0.06032991]",
+        "epsilon": 0.3,
+        "label": 0,
+        "num_pairs": 64,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "gt_margin_lower_bound": 0.001,
+        "is_robust": true
+      }
+    },
+    {
+      "id": "meap_c",
+      "construction": "mlp_relu.meap",
+      "seed": 13,
+      "paths": {
+        "onnx": "instances/meap_c/model.onnx",
+        "vnnlib": "instances/meap_c/spec.vnnlib",
+        "meta": "instances/meap_c/meta.json"
+      },
+      "sha256": {
+        "onnx": "ef620aa10f34631a9cad21a66d88de151d42d30482d1b35a6bf9a17507060401",
+        "vnnlib": "50c33caf60e2eba58216af441c11edd643eaee23432be03e1fabf62fd2e445ea"
+      },
+      "args": {
+        "seed": 13,
+        "input_dim": 120,
+        "num_classes": 10,
+        "num_pairs": 128,
+        "epsilon": 0.3,
+        "gamma": 0.01,
+        "weight_scale": 2.0,
+        "label": 0,
+        "onnx_path": "thrust2_ood_bench/instances/meap_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_c/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/meap_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_c/spec.vnnlib",
+        "x0": "[-0.07123907  0.07537664 -0.00445031  0.04518123  0.13451017  0.05323379\n  0.1350188   0.08612113  0.14786857 -0.10453772 -0.0788989  -0.1261606\n  0.05628468 -0.02433263  0.09137407  0.03173509  0.01273033  0.2150383\n  0.06062887 -0.00267716 -0.09841608  0.11907053  0.09528306 -0.10871816\n -0.01452113  0.02378578 -0.16390935 -0.02781345  0.13992386 -0.16151081\n  0.04908719  0.18927424 -0.06209797 -0.04537524  0.02174517  0.05143289\n  0.03972413 -0.15128452 -0.0764034   0.01012698 -0.0317266   0.11383331\n -0.03221237 -0.03701161  0.18496126 -0.00816516 -0.09802743 -0.0002389\n -0.02324259  0.07109749  0.04531586 -0.03326758 -0.03844577 -0.05303274\n  0.13503061  0.2015221  -0.00575324  0.05646543  0.03595323 -0.05119651\n -0.05231642 -0.04813714 -0.19241594 -0.07574532  0.0453481   0.09223442\n -0.02073497 -0.037592    0.0639884   0.20536934 -0.09283353 -0.077466\n -0.04371456  0.05479183 -0.0854143   0.0465658  -0.07209997  0.05622617\n -0.03148581 -0.04298971  0.08149955 -0.11854189 -0.07686271  0.07291655\n  0.0765911   0.02078001 -0.21871153  0.07219651  0.03487506 -0.03386183\n -0.19453907  0.08309057  0.17492418  0.05011373  0.1330317  -0.06575172\n  0.0184946  -0.06510565 -0.11205069 -0.03466068 -0.09113448 -0.07461353\n -0.07709686 -0.04139537 -0.02918114  0.01267727 -0.12473362  0.0317171\n -0.18184213  0.00556922  0.00808662 -0.23198476 -0.03411212  0.10898461\n  0.04505312 -0.04942986 -0.05465768  0.02920265  0.01542046  0.08173055]",
+        "epsilon": 0.3,
+        "label": 0,
+        "num_pairs": 128,
+        "gamma": 0.01,
+        "weight_scale": 2.0,
+        "gt_margin_lower_bound": 0.01,
+        "is_robust": true
+      }
+    },
+    {
+      "id": "meap_d",
+      "construction": "mlp_relu.meap",
+      "seed": 14,
+      "paths": {
+        "onnx": "instances/meap_d/model.onnx",
+        "vnnlib": "instances/meap_d/spec.vnnlib",
+        "meta": "instances/meap_d/meta.json"
+      },
+      "sha256": {
+        "onnx": "129e1fa4de4aa966a783c7843ac0abafc3bdf5aa4e43ca276234a8a67e4dbd2b",
+        "vnnlib": "56bf06301fe32cf657caf18e0b4892b0fecb1f35f234a1793ecd1f3cd46ddbdf"
+      },
+      "args": {
+        "seed": 14,
+        "input_dim": 120,
+        "num_classes": 10,
+        "num_pairs": 256,
+        "epsilon": 0.3,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "label": 0,
+        "onnx_path": "thrust2_ood_bench/instances/meap_d/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_d/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/meap_d/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_d/spec.vnnlib",
+        "x0": "[ 0.15513392  0.0079186   0.01739765 -0.00723366 -0.20043294  0.01446778\n -0.15011686  0.02111094 -0.05582051  0.10845291 -0.01862891  0.00146614\n -0.10755695  0.06422521 -0.01803367  0.06203002  0.08109744  0.07779359\n -0.02374897 -0.18919124 -0.11721218  0.0836207   0.10092735  0.12930994\n -0.05493312 -0.09817129  0.09146728  0.08730704  0.00221111 -0.00041436\n -0.13491261 -0.02082179  0.13265403 -0.09162606 -0.04700131 -0.01494425\n -0.03252601 -0.18057235 -0.05003702 -0.05647806 -0.03144286 -0.03966772\n  0.00059331 -0.09971382  0.16910976 -0.03164409  0.14651345  0.14636014\n  0.01289113 -0.11782428 -0.21665092 -0.1521813  -0.02928878  0.01604883\n -0.07828511 -0.05174023  0.2696569   0.02752039 -0.12115926  0.05872427\n -0.09818365 -0.24385498  0.01361175 -0.08075882  0.00200811  0.17598604\n  0.00528975 -0.08998103  0.15884498 -0.21761616 -0.12172154  0.13544694\n  0.14772275 -0.03262205 -0.07838688  0.02509311  0.02335722  0.0075555\n -0.05678679 -0.13924474 -0.08162491 -0.05113764 -0.05098079 -0.07734609\n -0.02485163 -0.1900692   0.07998202  0.12759739 -0.07009943 -0.14711508\n  0.02611857  0.04585085 -0.02095168  0.09320041 -0.05869732 -0.11331135\n  0.14847688 -0.05106628 -0.04482189 -0.23299134 -0.03934392 -0.06387638\n -0.00386074  0.0671203   0.01761816 -0.11742953  0.10404891  0.0359729\n  0.05431161 -0.00846901  0.00766011 -0.14051503 -0.15562344 -0.06923771\n -0.07362195  0.01823167 -0.33719596 -0.06310185 -0.09004407  0.10280092]",
+        "epsilon": 0.3,
+        "label": 0,
+        "num_pairs": 256,
+        "gamma": 0.001,
+        "weight_scale": 2.0,
+        "gt_margin_lower_bound": 0.001,
+        "is_robust": true
+      }
+    },
+    {
+      "id": "meap_e",
+      "construction": "mlp_relu.meap",
+      "seed": 15,
+      "paths": {
+        "onnx": "instances/meap_e/model.onnx",
+        "vnnlib": "instances/meap_e/spec.vnnlib",
+        "meta": "instances/meap_e/meta.json"
+      },
+      "sha256": {
+        "onnx": "26bb1ae8a50d6f3c057b33844b3e2131c3c22979b33ad84e43f6917a32f2dfa3",
+        "vnnlib": "1236a505b4e212c4c3a0199ad4b9444d5aac9e7a3acb1f9bee70ecb98c4cde60"
+      },
+      "args": {
+        "seed": 15,
+        "input_dim": 60,
+        "num_classes": 10,
+        "num_pairs": 4,
+        "epsilon": 0.3,
+        "gamma": 0.1,
+        "weight_scale": 2.0,
+        "label": 0,
+        "onnx_path": "thrust2_ood_bench/instances/meap_e/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_e/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/meap_e/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/meap_e/spec.vnnlib",
+        "x0": "[-3.1232849e-02  3.3928473e-02 -1.5590854e-02 -5.0178971e-02\n  2.3556890e-02 -1.7636053e-01 -1.0958620e-01 -1.0877657e-01\n -3.0517006e-02 -4.7374841e-02 -2.0059455e-02  3.5519678e-02\n  6.8951778e-02  4.1058969e-02 -5.6497842e-02  5.9939068e-02\n -1.6293630e-02  1.6002145e-01  6.8162724e-02  1.4880102e-03\n -8.7779639e-03 -9.8211788e-02  1.2169048e-02 -1.1374374e-01\n  3.4900259e-02 -1.8585132e-01 -1.1671819e-01  1.4248969e-01\n  1.4965653e-01  1.2899320e-01 -1.8117453e-01 -1.4983073e-01\n -1.4501433e-01 -1.6939069e-01  2.2726404e-02 -4.8973471e-02\n -5.2850653e-05 -4.9025264e-02 -7.9320945e-02  2.0488988e-01\n  6.0318541e-02 -9.9820212e-02  1.2150415e-01 -6.6751651e-02\n -2.7250579e-02  1.4167745e-01 -7.8260899e-02 -2.5032071e-02\n -3.0831447e-02  1.7296880e-01  1.9782723e-01  2.1968802e-02\n  1.8948199e-01 -1.3680995e-01 -1.9130539e-02  1.2872575e-01\n -2.4688395e-02  3.4255110e-02  2.2271706e-02  6.8159372e-02]",
+        "epsilon": 0.3,
+        "label": 0,
+        "num_pairs": 4,
+        "gamma": 0.1,
+        "weight_scale": 2.0,
+        "gt_margin_lower_bound": 0.1,
+        "is_robust": true
+      }
+    },
+    {
+      "id": "milp_a",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 11,
+      "paths": {
+        "onnx": "instances/milp_a/model.onnx",
+        "vnnlib": "instances/milp_a/spec.vnnlib",
+        "meta": "instances/milp_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "f96677047898890de855ceed88b57ad3defad3031bbf884b74547037e3f884c6",
+        "vnnlib": "cb3b66463b09c7caa7cb1c22f277a8f4aae899e0db02d17219f57390dd7172d9"
+      },
+      "args": {
+        "seed": 11,
+        "input_dim": 40,
+        "h1": 30,
+        "h2": 15,
+        "num_outputs": 6,
+        "epsilon_frac": 0.7,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust2_ood_bench/instances/milp_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_a/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/milp_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_a/spec.vnnlib",
+        "seed": 11,
+        "y": 5,
+        "r_star": 0.019570310656073082,
+        "epsilon": 0.013699217459251156,
+        "epsilon_mode": "safe"
+      }
+    },
+    {
+      "id": "milp_b",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 12,
+      "paths": {
+        "onnx": "instances/milp_b/model.onnx",
+        "vnnlib": "instances/milp_b/spec.vnnlib",
+        "meta": "instances/milp_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "743fc8f0674034acc36f59aea878db01e8663f32fad8d41907160398e0082dfd",
+        "vnnlib": "ee4fe70409cdbe4270acb22a6eb2597b001071f3762c6962612602100ca21149"
+      },
+      "args": {
+        "seed": 12,
+        "input_dim": 40,
+        "h1": 30,
+        "h2": 15,
+        "num_outputs": 6,
+        "epsilon_frac": 0.995,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust2_ood_bench/instances/milp_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_b/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/milp_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_b/spec.vnnlib",
+        "seed": 12,
+        "y": 1,
+        "r_star": 0.32914218290483743,
+        "epsilon": 0.32749647199031323,
+        "epsilon_mode": "safe"
+      }
+    },
+    {
+      "id": "milp_c",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 13,
+      "paths": {
+        "onnx": "instances/milp_c/model.onnx",
+        "vnnlib": "instances/milp_c/spec.vnnlib",
+        "meta": "instances/milp_c/meta.json"
+      },
+      "sha256": {
+        "onnx": "24d41deb8ca610a27acb9fd4efa5009a6d867bf0abf9a7e0ab4f77ff82e58d9a",
+        "vnnlib": "1228006fca13b1476846ab5629bfb04eaa0ba7e911620c2113d62b6882c1c14c"
+      },
+      "args": {
+        "seed": 13,
+        "input_dim": 40,
+        "h1": 30,
+        "h2": 15,
+        "num_outputs": 6,
+        "epsilon_frac": 0.9995,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust2_ood_bench/instances/milp_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_c/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/milp_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_c/spec.vnnlib",
+        "seed": 13,
+        "y": 0,
+        "r_star": 0.3782888598384592,
+        "epsilon": 0.37809971540854004,
+        "epsilon_mode": "safe"
+      }
+    },
+    {
+      "id": "milp_d",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 14,
+      "paths": {
+        "onnx": "instances/milp_d/model.onnx",
+        "vnnlib": "instances/milp_d/spec.vnnlib",
+        "meta": "instances/milp_d/meta.json"
+      },
+      "sha256": {
+        "onnx": "3a51d32a050c44bbc89e3a1322638f4fcb9a256fe98d60a1856e0ef338f7da5e",
+        "vnnlib": "9d3c4e5cb12447ecddee0131f7491c230013545b2d144ff0a6fb9b1ccb0577d9"
+      },
+      "args": {
+        "seed": 14,
+        "input_dim": 45,
+        "h1": 35,
+        "h2": 20,
+        "num_outputs": 6,
+        "epsilon_frac": 0.8,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust2_ood_bench/instances/milp_d/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_d/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/milp_d/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_d/spec.vnnlib",
+        "seed": 14,
+        "y": 5,
+        "r_star": 0.025480756242921013,
+        "epsilon": 0.02038460499433681,
+        "epsilon_mode": "safe"
+      }
+    },
+    {
+      "id": "milp_e",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 15,
+      "paths": {
+        "onnx": "instances/milp_e/model.onnx",
+        "vnnlib": "instances/milp_e/spec.vnnlib",
+        "meta": "instances/milp_e/meta.json"
+      },
+      "sha256": {
+        "onnx": "058ad9db819a28a41c31f792657a39dbdbc3c6410dd89992c7d635a7acf59437",
+        "vnnlib": "c33b1b60217c3b1f7ff9e13ad207784463e11aa523e3f639155400b4a00adbba"
+      },
+      "args": {
+        "seed": 15,
+        "input_dim": 45,
+        "h1": 35,
+        "h2": 20,
+        "num_outputs": 6,
+        "epsilon_frac": 0.995,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust2_ood_bench/instances/milp_e/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_e/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/milp_e/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_e/spec.vnnlib",
+        "seed": 15,
+        "y": 2,
+        "r_star": 0.21668313857975208,
+        "epsilon": 0.2155997228868533,
+        "epsilon_mode": "safe"
+      }
+    },
+    {
+      "id": "milp_f",
+      "construction": "mlp_relu.milp.exact_radius",
+      "seed": 16,
+      "paths": {
+        "onnx": "instances/milp_f/model.onnx",
+        "vnnlib": "instances/milp_f/spec.vnnlib",
+        "meta": "instances/milp_f/meta.json"
+      },
+      "sha256": {
+        "onnx": "796b7ea81d2546e7b346f2ba0aa7c325768fa4f19c4cc827d9c22380aef0baf1",
+        "vnnlib": "d4c471c914eeb55857b016a327cc638228a53a5bd804667b017d91c762e1eaf5"
+      },
+      "args": {
+        "seed": 16,
+        "input_dim": 30,
+        "h1": 40,
+        "h2": 20,
+        "num_outputs": 6,
+        "epsilon_frac": 0.95,
+        "rmax": 2.0,
+        "time_limit": 240.0,
+        "mip_gap": null,
+        "epsilon_mode": "safe",
+        "save_x0": false,
+        "save_json": false,
+        "onnx_path": "thrust2_ood_bench/instances/milp_f/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_f/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/milp_f/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/milp_f/spec.vnnlib",
+        "seed": 16,
+        "y": 4,
+        "r_star": 0.22405354998113697,
+        "epsilon": 0.21285087248208012,
+        "epsilon_mode": "safe"
+      }
+    },
+    {
+      "id": "corners_a",
+      "construction": "mlp_relu.corners",
+      "seed": 11,
+      "paths": {
+        "onnx": "instances/corners_a/model.onnx",
+        "vnnlib": "instances/corners_a/spec.vnnlib",
+        "meta": "instances/corners_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "45f3fcf28dfc3c788108d911b1195e0dc6369fbcab0542534d1acada809b0153",
+        "vnnlib": "737687e832a9ef84ec0c1010af45118a431404e695e043771f4f21eb9762128d"
+      },
+      "args": {
+        "seed": 11,
+        "input_dim": 80,
+        "num_outputs": 10,
+        "hinge_l1": 0.1,
+        "num_hinges": 128,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust2_ood_bench/instances/corners_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/corners_a/spec.vnnlib"
+      },
+      "gt": {
+        "label": 0,
+        "competitors": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "active_dim": 8,
+        "num_hinges": 128,
+        "tau": 0.0001,
+        "BIG_M": 2.0
+      }
+    },
+    {
+      "id": "corners_b",
+      "construction": "mlp_relu.corners",
+      "seed": 12,
+      "paths": {
+        "onnx": "instances/corners_b/model.onnx",
+        "vnnlib": "instances/corners_b/spec.vnnlib",
+        "meta": "instances/corners_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "e06f67e7c0ae77ce7bd885fffb9ad5d0777a8b7633f958d9d65326db5a7653d8",
+        "vnnlib": "dbb87c5113ca54f2254c367a6d166dc73b8522eec06086561f2c4c67f3c8fa90"
+      },
+      "args": {
+        "seed": 12,
+        "input_dim": 80,
+        "num_outputs": 10,
+        "hinge_l1": 10,
+        "num_hinges": 512,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust2_ood_bench/instances/corners_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/corners_b/spec.vnnlib"
+      },
+      "gt": {
+        "label": 0,
+        "competitors": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "active_dim": 8,
+        "num_hinges": 512,
+        "tau": 0.0001,
+        "BIG_M": 2.0
+      }
+    },
+    {
+      "id": "corners_c",
+      "construction": "mlp_relu.corners",
+      "seed": 13,
+      "paths": {
+        "onnx": "instances/corners_c/model.onnx",
+        "vnnlib": "instances/corners_c/spec.vnnlib",
+        "meta": "instances/corners_c/meta.json"
+      },
+      "sha256": {
+        "onnx": "aa79849487b199cbc805127086031b50bb4ce074c3ad3c3d4faf4f52367ab307",
+        "vnnlib": "e52c22262f1a16e78bb65504288ac17dede8bfd8b2a6fbb1d5f982ee41196b83"
+      },
+      "args": {
+        "seed": 13,
+        "input_dim": 80,
+        "num_outputs": 10,
+        "hinge_l1": 1000,
+        "num_hinges": 2048,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust2_ood_bench/instances/corners_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/corners_c/spec.vnnlib"
+      },
+      "gt": {
+        "label": 0,
+        "competitors": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "active_dim": 8,
+        "num_hinges": 2048,
+        "tau": 0.0001,
+        "BIG_M": 2.0
+      }
+    },
+    {
+      "id": "corners_d",
+      "construction": "mlp_relu.corners",
+      "seed": 14,
+      "paths": {
+        "onnx": "instances/corners_d/model.onnx",
+        "vnnlib": "instances/corners_d/spec.vnnlib",
+        "meta": "instances/corners_d/meta.json"
+      },
+      "sha256": {
+        "onnx": "95d56433ef20922abe274ec959ef07f80b51e7381a22a377fcf6cf7e4cb384c3",
+        "vnnlib": "c60136e112b23b4c4e4305b2f278032eca8ec174b9aecbd5e9226a4d029056bf"
+      },
+      "args": {
+        "seed": 14,
+        "input_dim": 80,
+        "num_outputs": 10,
+        "hinge_l1": 1000,
+        "num_hinges": 64,
+        "epsilon": 0.2,
+        "label": 0,
+        "active_dim": 8,
+        "hinge_density": 1.0,
+        "pattern_density": 0.5,
+        "coeff_scale": 1.0,
+        "tau": 0.0001,
+        "big_m": 2.0,
+        "quiet": false,
+        "onnx_path": "thrust2_ood_bench/instances/corners_d/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/corners_d/spec.vnnlib"
+      },
+      "gt": {
+        "label": 0,
+        "competitors": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "active_dim": 8,
+        "num_hinges": 64,
+        "tau": 0.0001,
+        "BIG_M": 2.0
+      }
+    },
+    {
+      "id": "pb_a",
+      "construction": "cnn.cnn_paired_bias",
+      "seed": 11,
+      "paths": {
+        "onnx": "instances/pb_a/model.onnx",
+        "vnnlib": "instances/pb_a/spec.vnnlib",
+        "meta": "instances/pb_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "d7f08b504baa01de7433fac203ba9d04693e14a761847d0ea044a62fadd4a258",
+        "vnnlib": "20e441a2b4483d394dcb459d5c67958a1015615c6f3299a690adc32817eb0435"
+      },
+      "args": {
+        "seed": 11,
+        "num_pairs": 6,
+        "margin": 0.1,
+        "delta": 0.02,
+        "height": 6,
+        "width": 6,
+        "num_backbone_layers": 2,
+        "in_channels": 3,
+        "backbone_channels": 2,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "epsilon": 0.05,
+        "onnx_path": "thrust2_ood_bench/instances/pb_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_a/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/pb_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_a/spec.vnnlib",
+        "is_robust": true,
+        "label": 0,
+        "epsilon": 0.05,
+        "margin": 0.1,
+        "delta": 0.02,
+        "actual_margin_x0": 0.11466707289218903,
+        "ibp_worst_margin": -0.7509251236915588,
+        "unstable_relus": {
+          "total": 576,
+          "unstable": 459,
+          "fraction": 0.796875
+        },
+        "num_pairs": 6,
+        "spatial_pairs": 216,
+        "seed": 11
+      }
+    },
+    {
+      "id": "pb_b",
+      "construction": "cnn.cnn_paired_bias",
+      "seed": 12,
+      "paths": {
+        "onnx": "instances/pb_b/model.onnx",
+        "vnnlib": "instances/pb_b/spec.vnnlib",
+        "meta": "instances/pb_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "e713afe9a09d2d9e9afd8d89a6f5873cf8723adad09c45d221db4f1eeb75ddce",
+        "vnnlib": "7596588e2ed0c180bed5ec7a9395eb7f8a29bb6a51e41fe237d6b80fb5100c86"
+      },
+      "args": {
+        "seed": 12,
+        "num_pairs": 12,
+        "margin": 0.1,
+        "delta": 0.02,
+        "height": 6,
+        "width": 6,
+        "num_backbone_layers": 2,
+        "in_channels": 3,
+        "backbone_channels": 2,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "epsilon": 0.05,
+        "onnx_path": "thrust2_ood_bench/instances/pb_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_b/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/pb_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_b/spec.vnnlib",
+        "is_robust": true,
+        "label": 0,
+        "epsilon": 0.05,
+        "margin": 0.1,
+        "delta": 0.02,
+        "actual_margin_x0": 0.12033994495868683,
+        "ibp_worst_margin": -0.3732384741306305,
+        "unstable_relus": {
+          "total": 1008,
+          "unstable": 877,
+          "fraction": 0.8700396825396826
+        },
+        "num_pairs": 12,
+        "spatial_pairs": 432,
+        "seed": 12
+      }
+    },
+    {
+      "id": "pb_c",
+      "construction": "cnn.cnn_paired_bias",
+      "seed": 13,
+      "paths": {
+        "onnx": "instances/pb_c/model.onnx",
+        "vnnlib": "instances/pb_c/spec.vnnlib",
+        "meta": "instances/pb_c/meta.json"
+      },
+      "sha256": {
+        "onnx": "0b67a6f7b0fe791b1d54b734cb8e1aa5a38f3bd732f2e866adfa39cf34fd29d5",
+        "vnnlib": "893420344e9b00e2bbb0da1e9edf70ae39a8c3adff39e6cec7bf40437e972511"
+      },
+      "args": {
+        "seed": 13,
+        "num_pairs": 24,
+        "margin": 0.05,
+        "delta": 0.02,
+        "height": 6,
+        "width": 6,
+        "num_backbone_layers": 3,
+        "in_channels": 3,
+        "backbone_channels": 2,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "epsilon": 0.05,
+        "onnx_path": "thrust2_ood_bench/instances/pb_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_c/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/pb_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_c/spec.vnnlib",
+        "is_robust": true,
+        "label": 0,
+        "epsilon": 0.05,
+        "margin": 0.05,
+        "delta": 0.02,
+        "actual_margin_x0": 0.07508199661970139,
+        "ibp_worst_margin": -0.3116125464439392,
+        "unstable_relus": {
+          "total": 1944,
+          "unstable": 1776,
+          "fraction": 0.9135802469135802
+        },
+        "num_pairs": 24,
+        "spatial_pairs": 864,
+        "seed": 13
+      }
+    },
+    {
+      "id": "pb_d",
+      "construction": "cnn.cnn_paired_bias",
+      "seed": 14,
+      "paths": {
+        "onnx": "instances/pb_d/model.onnx",
+        "vnnlib": "instances/pb_d/spec.vnnlib",
+        "meta": "instances/pb_d/meta.json"
+      },
+      "sha256": {
+        "onnx": "306916d6c80ddb0532674eedceebc34e1efd6153ba4a0dff78d75d426a674c9a",
+        "vnnlib": "9c89895b809541304085fb2c0b48aba21d7ab78051995ab4a2deef4137d61492"
+      },
+      "args": {
+        "seed": 14,
+        "num_pairs": 12,
+        "margin": 0.05,
+        "delta": 0.02,
+        "height": 10,
+        "width": 10,
+        "num_backbone_layers": 2,
+        "in_channels": 3,
+        "backbone_channels": 2,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "epsilon": 0.05,
+        "onnx_path": "thrust2_ood_bench/instances/pb_d/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_d/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/pb_d/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_d/spec.vnnlib",
+        "is_robust": true,
+        "label": 0,
+        "epsilon": 0.05,
+        "margin": 0.05,
+        "delta": 0.02,
+        "actual_margin_x0": 0.07021069526672363,
+        "ibp_worst_margin": -3.710526704788208,
+        "unstable_relus": {
+          "total": 2800,
+          "unstable": 2424,
+          "fraction": 0.8657142857142858
+        },
+        "num_pairs": 12,
+        "spatial_pairs": 1200,
+        "seed": 14
+      }
+    },
+    {
+      "id": "pb_e",
+      "construction": "cnn.cnn_paired_bias",
+      "seed": 15,
+      "paths": {
+        "onnx": "instances/pb_e/model.onnx",
+        "vnnlib": "instances/pb_e/spec.vnnlib",
+        "meta": "instances/pb_e/meta.json"
+      },
+      "sha256": {
+        "onnx": "afb10a7b799f83c819bbf9bac08d208c2132db35338ce4dd5b39e682bc9c9eeb",
+        "vnnlib": "3b87241214c23b2895d64580bb65283ba9f93207d65ccece4167d15148eab5ec"
+      },
+      "args": {
+        "seed": 15,
+        "num_pairs": 3,
+        "margin": 0.5,
+        "delta": 0.05,
+        "height": 10,
+        "width": 10,
+        "num_backbone_layers": 1,
+        "in_channels": 3,
+        "backbone_channels": 2,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "epsilon": 0.05,
+        "onnx_path": "thrust2_ood_bench/instances/pb_e/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_e/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/pb_e/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/pb_e/spec.vnnlib",
+        "is_robust": true,
+        "label": 0,
+        "epsilon": 0.05,
+        "margin": 0.5,
+        "delta": 0.05,
+        "actual_margin_x0": 0.5532568097114563,
+        "ibp_worst_margin": -0.6677067279815674,
+        "unstable_relus": {
+          "total": 800,
+          "unstable": 614,
+          "fraction": 0.7675
+        },
+        "num_pairs": 3,
+        "spatial_pairs": 300,
+        "seed": 15
+      }
+    },
+    {
+      "id": "dc_a",
+      "construction": "cnn.deep_contractive_cnn",
+      "seed": 11,
+      "paths": {
+        "onnx": "instances/dc_a/model.onnx",
+        "vnnlib": "instances/dc_a/spec.vnnlib",
+        "meta": "instances/dc_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "53227774551212c66039f6547058f7a991d4090ec8d7394666ec051bbd660592",
+        "vnnlib": "aa2210119cfb279b2b285b4af8db1da32925005add2b5b39e40384ebcd34feff"
+      },
+      "args": {
+        "seed": 11,
+        "depth": 3,
+        "channels": 12,
+        "contraction_rate": 0.85,
+        "margin": 0.001,
+        "bias_instability_frac": 0.3,
+        "epsilon": 0.02,
+        "in_channels": 1,
+        "height": 8,
+        "width": 8,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "n_verify_samples": 20000,
+        "onnx_path": "thrust2_ood_bench/instances/dc_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/dc_a/spec.vnnlib"
+      }
+    },
+    {
+      "id": "dc_b",
+      "construction": "cnn.deep_contractive_cnn",
+      "seed": 12,
+      "paths": {
+        "onnx": "instances/dc_b/model.onnx",
+        "vnnlib": "instances/dc_b/spec.vnnlib",
+        "meta": "instances/dc_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "aaba5aeb2add7d5812184802b6cb739ddb0ecebf08ba0354ef92a22d35c80ad3",
+        "vnnlib": "7ddfdc05d8d781e03211435d494fa694516966784e4aea0a6e3a51c944a9f863"
+      },
+      "args": {
+        "seed": 12,
+        "depth": 5,
+        "channels": 24,
+        "contraction_rate": 0.93,
+        "margin": 0.001,
+        "bias_instability_frac": 0.5,
+        "epsilon": 0.02,
+        "in_channels": 1,
+        "height": 8,
+        "width": 8,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "n_verify_samples": 20000,
+        "onnx_path": "thrust2_ood_bench/instances/dc_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/dc_b/spec.vnnlib"
+      }
+    },
+    {
+      "id": "dc_c",
+      "construction": "cnn.deep_contractive_cnn",
+      "seed": 13,
+      "paths": {
+        "onnx": "instances/dc_c/model.onnx",
+        "vnnlib": "instances/dc_c/spec.vnnlib",
+        "meta": "instances/dc_c/meta.json"
+      },
+      "sha256": {
+        "onnx": "bdf7f4f61ee7fb3cec50d43d039069867449346e8cb95d3805475063394e159f",
+        "vnnlib": "4cc756a0d1d5e234cc84b46284b134565298cac29fe873d3cb330d0ffcbf1a9d"
+      },
+      "args": {
+        "seed": 13,
+        "depth": 7,
+        "channels": 24,
+        "contraction_rate": 0.93,
+        "margin": 0.0003,
+        "bias_instability_frac": 0.6,
+        "epsilon": 0.02,
+        "in_channels": 1,
+        "height": 8,
+        "width": 8,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "n_verify_samples": 20000,
+        "onnx_path": "thrust2_ood_bench/instances/dc_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/dc_c/spec.vnnlib"
+      }
+    },
+    {
+      "id": "dc_d",
+      "construction": "cnn.deep_contractive_cnn",
+      "seed": 14,
+      "paths": {
+        "onnx": "instances/dc_d/model.onnx",
+        "vnnlib": "instances/dc_d/spec.vnnlib",
+        "meta": "instances/dc_d/meta.json"
+      },
+      "sha256": {
+        "onnx": "0ba8563105c703a24d0fb1b3ef549bdeee3b0fe119f27564aaf0a19ad776393e",
+        "vnnlib": "ad014e188bedbcca1325e6eb0bb1effcc482546bea2d1fda5d499294dec8b5e0"
+      },
+      "args": {
+        "seed": 14,
+        "depth": 9,
+        "channels": 48,
+        "contraction_rate": 0.97,
+        "margin": 0.0003,
+        "bias_instability_frac": 0.6,
+        "epsilon": 0.02,
+        "in_channels": 1,
+        "height": 8,
+        "width": 8,
+        "kernel_size": 3,
+        "num_classes": 10,
+        "label": 0,
+        "n_verify_samples": 20000,
+        "onnx_path": "thrust2_ood_bench/instances/dc_d/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/dc_d/spec.vnnlib"
+      }
+    },
+    {
+      "id": "ld_a",
+      "construction": "attention.linear_dominance",
+      "seed": 11,
+      "paths": {
+        "onnx": "instances/ld_a/model.onnx",
+        "vnnlib": "instances/ld_a/spec.vnnlib",
+        "meta": "instances/ld_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "f67b8ecac5d17b6a561dc21295d3cc7be708010b435a46383246690858a676b8",
+        "vnnlib": "6551b78495aec516357190d54b4f5d99dcf444f83fa2872858c40e0f494ef94d"
+      },
+      "args": {
+        "seed": 11,
+        "n": 3,
+        "d": 5,
+        "d_v": 4,
+        "num_classes": 10,
+        "gate_scale": 0.5,
+        "noise_scale": 0.2,
+        "epsilon": 0.03,
+        "margin_factor": 1.3,
+        "onnx_path": "thrust2_ood_bench/instances/ld_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/ld_a/spec.vnnlib"
+      },
+      "gt": {
+        "construction": "attention.linear_dominance",
+        "seed": 11,
+        "n": 3,
+        "d": 5,
+        "d_k": 3,
+        "d_v": 4,
+        "num_classes": 10,
+        "gate_scale": 0.5,
+        "noise_scale": 0.2,
+        "epsilon": 0.03,
+        "margin_factor": 1.3,
+        "label": 0,
+        "is_robust": true,
+        "ground_truth": "UNSAT",
+        "sv_V": 1.0000000000000002,
+        "L_h": 1.0000000000000009,
+        "dw": 0.0318,
+        "dV": 0.06708203932499371,
+        "B_max": 0.03760101903402582,
+        "cert_rhs": 0.13025375076659443,
+        "nominal_margin": 0.16932987599657276,
+        "margin_over_cert": 1.3
+      }
+    },
+    {
+      "id": "ld_b",
+      "construction": "attention.linear_dominance",
+      "seed": 12,
+      "paths": {
+        "onnx": "instances/ld_b/model.onnx",
+        "vnnlib": "instances/ld_b/spec.vnnlib",
+        "meta": "instances/ld_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "8b7c9dc568b7b1c727104d630d9ee2af4b2679b39b1aaa8186fdae8a0fcc480b",
+        "vnnlib": "c37a60c240a3f7f61d60982f4ae0b0814967370536f78144125c10ea81b68cf1"
+      },
+      "args": {
+        "seed": 12,
+        "n": 5,
+        "d": 10,
+        "d_v": 6,
+        "num_classes": 10,
+        "gate_scale": 0.6,
+        "noise_scale": 0.2,
+        "epsilon": 0.06,
+        "margin_factor": 1.2,
+        "onnx_path": "thrust2_ood_bench/instances/ld_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/ld_b/spec.vnnlib"
+      },
+      "gt": {
+        "construction": "attention.linear_dominance",
+        "seed": 12,
+        "n": 5,
+        "d": 10,
+        "d_k": 5,
+        "d_v": 6,
+        "num_classes": 10,
+        "gate_scale": 0.6,
+        "noise_scale": 0.2,
+        "epsilon": 0.06,
+        "margin_factor": 1.2,
+        "label": 0,
+        "is_robust": true,
+        "ground_truth": "UNSAT",
+        "sv_V": 1.0000000000000007,
+        "L_h": 1.0000000000000007,
+        "dw": 0.07919999999999999,
+        "dV": 0.18973665961010291,
+        "B_max": 0.13750232382367716,
+        "cert_rhs": 0.6149290862678622,
+        "nominal_margin": 0.7379149035214347,
+        "margin_over_cert": 1.2000000000000002
+      }
+    },
+    {
+      "id": "ld_c",
+      "construction": "attention.linear_dominance",
+      "seed": 13,
+      "paths": {
+        "onnx": "instances/ld_c/model.onnx",
+        "vnnlib": "instances/ld_c/spec.vnnlib",
+        "meta": "instances/ld_c/meta.json"
+      },
+      "sha256": {
+        "onnx": "6aa4179db9acd43b68278539c07c57fa778abc4082a2ba8df6a13d3e19c1cd2c",
+        "vnnlib": "4e8ca76e5278f367caf3f548b670d769acc3f4b794f39b1a69bbc761c71b685a"
+      },
+      "args": {
+        "seed": 13,
+        "n": 5,
+        "d": 10,
+        "d_v": 6,
+        "num_classes": 10,
+        "gate_scale": 0.4,
+        "noise_scale": 0.25,
+        "epsilon": 0.04,
+        "margin_factor": 2.5,
+        "onnx_path": "thrust2_ood_bench/instances/ld_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/ld_c/spec.vnnlib"
+      },
+      "gt": {
+        "construction": "attention.linear_dominance",
+        "seed": 13,
+        "n": 5,
+        "d": 10,
+        "d_k": 5,
+        "d_v": 6,
+        "num_classes": 10,
+        "gate_scale": 0.4,
+        "noise_scale": 0.25,
+        "epsilon": 0.04,
+        "margin_factor": 2.5,
+        "label": 0,
+        "is_robust": true,
+        "ground_truth": "UNSAT",
+        "sv_V": 1.0000000000000009,
+        "L_h": 1.0000000000000004,
+        "dw": 0.0352,
+        "dV": 0.1264911064067353,
+        "B_max": 0.04750066204564468,
+        "cert_rhs": 0.21242941862061154,
+        "nominal_margin": 0.5310735465515288,
+        "margin_over_cert": 2.5
+      }
+    },
+    {
+      "id": "fp_a",
+      "construction": "attention.fixed_pattern",
+      "seed": 11,
+      "paths": {
+        "onnx": "instances/fp_a/model.onnx",
+        "vnnlib": "instances/fp_a/spec.vnnlib",
+        "meta": "instances/fp_a/meta.json"
+      },
+      "sha256": {
+        "onnx": "a17e96647f8d8442481cf2c45ef5f1539fb2641d36db511de3ab40465db128b9",
+        "vnnlib": "6309e471a6d8b3b59bd4ecbf08b491209253a813c3edfbc7b9e8550d7fc43fd6"
+      },
+      "args": {
+        "seed": 11,
+        "n": 12,
+        "d": 6,
+        "d_v": 8,
+        "num_classes": 50,
+        "alpha": 4.0,
+        "epsilon": 0.002,
+        "margin_slack": 1.02,
+        "onnx_path": "thrust2_ood_bench/instances/fp_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/fp_a/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/fp_a/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/fp_a/spec.vnnlib",
+        "label": 0,
+        "epsilon": 0.002,
+        "certificate": {
+          "mu": 0.6518504023551941,
+          "delta_min": 1.3925983905792236,
+          "C_max": 39.28783588453084,
+          "lhs_gap": 0.3481495976448059,
+          "rhs_gap": 0.019643917942265422,
+          "gap_ok_simplified": true,
+          "gap_ok_actual": true,
+          "B_S": 19.64391794226542,
+          "V0_2inf": 0.9003790616989136,
+          "sigma_WV": 0.9999999403953552,
+          "L_attn": 55.79911224746213,
+          "L_h": 1.0,
+          "logits": "[ 0.97090244 -0.14518446 -0.06435518 -0.03092285  0.06622252 -0.0809423\n  0.03410868  0.12154144  0.00360232 -0.10205893  0.10634303 -0.09745234\n  0.1822637  -0.05008544  0.07466526  0.00158539  0.03659061 -0.05256559\n -0.08785516  0.02438743  0.15530111 -0.08669909 -0.10681725  0.0192502\n -0.0984411  -0.02662909  0.05532041  0.17339846 -0.04477046  0.04718862\n  0.01673589 -0.14246008  0.10385662 -0.18179023 -0.07547504 -0.1762105\n  0.15990776  0.08666886 -0.09748302  0.10276596 -0.04281809  0.14748225\n -0.12165534  0.05586542 -0.01575187  0.03033768 -0.21834572 -0.16041234\n -0.09642349 -0.07462122]",
+          "label": 0,
+          "margin": 0.788638710975647,
+          "rhs_margin": 0.7731751794387457,
+          "margin_ok": true,
+          "valid": true
+        }
+      }
+    },
+    {
+      "id": "fp_b",
+      "construction": "attention.fixed_pattern",
+      "seed": 12,
+      "paths": {
+        "onnx": "instances/fp_b/model.onnx",
+        "vnnlib": "instances/fp_b/spec.vnnlib",
+        "meta": "instances/fp_b/meta.json"
+      },
+      "sha256": {
+        "onnx": "397811593f2147030772f27c024302b08db756906f69c99413ffdc20a3abe19d",
+        "vnnlib": "a898259b2fc64c90a57ca648e14538af8cbbfd0a1c5fa3a403becce9b8b382eb"
+      },
+      "args": {
+        "seed": 12,
+        "n": 24,
+        "d": 6,
+        "d_v": 8,
+        "num_classes": 50,
+        "alpha": 4.0,
+        "epsilon": 0.002,
+        "margin_slack": 1.02,
+        "onnx_path": "thrust2_ood_bench/instances/fp_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/fp_b/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/fp_b/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/fp_b/spec.vnnlib",
+        "label": 0,
+        "epsilon": 0.002,
+        "certificate": {
+          "mu": 0.8158579468727112,
+          "delta_min": 0.7365682125091553,
+          "C_max": 39.28783588453084,
+          "lhs_gap": 0.18414205312728882,
+          "rhs_gap": 0.019643917942265422,
+          "gap_ok_simplified": true,
+          "gap_ok_actual": true,
+          "B_S": 19.64391794226542,
+          "V0_2inf": 0.9462910890579224,
+          "sigma_WV": 1.0,
+          "L_attn": 114.56008766657986,
+          "L_h": 1.0,
+          "logits": "[ 2.555487   -0.03561262 -0.02926507  0.24219957 -0.0244594   0.09846858\n -0.01935104 -0.07865929  0.01654935  0.24785858 -0.02795915  0.0755669\n  0.07589699  0.02351857  0.26567864 -0.0449029  -0.03671304 -0.22182745\n  0.02328286 -0.07700023  0.03528426  0.14762768  0.08844928  0.13358513\n -0.03388961  0.06114225 -0.05207077 -0.1089097  -0.06633871  0.23206893\n -0.11536002  0.07879702 -0.14510432 -0.00963552 -0.24085152 -0.13817441\n -0.06819636 -0.08019501  0.02870001  0.1019734  -0.07209966  0.03105512\n -0.02676402  0.03751678  0.16494197 -0.00752994  0.10874975 -0.08204766\n -0.09603362 -0.01457205]",
+          "label": 0,
+          "margin": 2.2898082733154297,
+          "rhs_margin": 2.244910077373032,
+          "margin_ok": true,
+          "valid": true
+        }
+      }
+    },
+    {
+      "id": "fp_c",
+      "construction": "attention.fixed_pattern",
+      "seed": 13,
+      "paths": {
+        "onnx": "instances/fp_c/model.onnx",
+        "vnnlib": "instances/fp_c/spec.vnnlib",
+        "meta": "instances/fp_c/meta.json"
+      },
+      "sha256": {
+        "onnx": "ddae40d5a54a30f52175aacd190093600b5329b099711334666eee66e3e19e3b",
+        "vnnlib": "6311d199aca6d7b855237ca8276fde657166bf4ad74c3b0cf0948b68cd95ad65"
+      },
+      "args": {
+        "seed": 13,
+        "n": 24,
+        "d": 12,
+        "d_v": 8,
+        "num_classes": 50,
+        "alpha": 7.0,
+        "epsilon": 0.005,
+        "margin_slack": 1.5,
+        "onnx_path": "thrust2_ood_bench/instances/fp_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/fp_c/spec.vnnlib"
+      },
+      "gt": {
+        "onnx_path": "thrust2_ood_bench/instances/fp_c/model.onnx",
+        "vnnlib_path": "thrust2_ood_bench/instances/fp_c/spec.vnnlib",
+        "label": 0,
+        "epsilon": 0.005,
+        "certificate": {
+          "mu": 0.6175365447998047,
+          "delta_min": 2.677244186401367,
+          "C_max": 97.83484522385712,
+          "lhs_gap": 0.3824634552001953,
+          "rhs_gap": 0.0698820323027551,
+          "gap_ok_simplified": true,
+          "gap_ok_actual": true,
+          "B_S": 48.91742261192856,
+          "V0_2inf": 0.8191917538642883,
+          "sigma_WV": 1.0,
+          "L_attn": 248.98424463940663,
+          "L_h": 1.0,
+          "logits": "[ 1.86133881e+01 -2.22462058e-01  9.73794907e-02 -3.16258669e-01\n  9.93006118e-03  2.28740215e-01  1.13648400e-02 -4.54177968e-02\n  1.13470085e-01  4.62138802e-02  7.79900700e-04 -3.15613568e-01\n -8.66355300e-02  2.31094092e-01  3.16858411e-01  1.45735890e-01\n  2.53271610e-01  1.40876651e-01 -2.50378370e-01 -4.72755283e-02\n  7.09239766e-03 -6.70835376e-04  2.20085904e-02  3.70269865e-02\n -4.58498299e-02  1.44292772e-01  5.08304983e-02  1.69553876e-01\n -1.66442990e-02 -6.25122860e-02  6.31656721e-02 -2.15592250e-01\n  3.88102941e-02 -1.07735038e-01  8.96999314e-02  1.79131702e-03\n  1.00367218e-01  1.33097932e-01  5.94761781e-02  4.27177399e-02\n -2.21729606e-01  1.14646181e-01  8.35161731e-02 -4.79305349e-03\n -1.15025669e-01 -3.90320942e-02 -3.23225319e-01 -4.35978062e-02\n  5.74124604e-02  2.88841426e-01]",
+          "label": 0,
+          "margin": 18.29652976989746,
+          "rhs_margin": 12.197687067176881,
+          "margin_ok": true,
+          "valid": true
+        }
+      }
+    }
+  ],
+  "spec_path": "src/VeriStressGT/configs/thrust2_ood.yaml",
+  "spec": {
+    "defaults": {
+      "seed": 11
+    }
+  }
+}

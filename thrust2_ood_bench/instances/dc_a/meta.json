@@ -1,0 +1,32 @@
+{
+  "id": "dc_a",
+  "construction": "cnn.deep_contractive_cnn",
+  "seed": 11,
+  "paths": {
+    "onnx": "instances/dc_a/model.onnx",
+    "vnnlib": "instances/dc_a/spec.vnnlib",
+    "meta": "instances/dc_a/meta.json"
+  },
+  "sha256": {
+    "onnx": "53227774551212c66039f6547058f7a991d4090ec8d7394666ec051bbd660592",
+    "vnnlib": "aa2210119cfb279b2b285b4af8db1da32925005add2b5b39e40384ebcd34feff"
+  },
+  "args": {
+    "seed": 11,
+    "depth": 3,
+    "channels": 12,
+    "contraction_rate": 0.85,
+    "margin": 0.001,
+    "bias_instability_frac": 0.3,
+    "epsilon": 0.02,
+    "in_channels": 1,
+    "height": 8,
+    "width": 8,
+    "kernel_size": 3,
+    "num_classes": 10,
+    "label": 0,
+    "n_verify_samples": 20000,
+    "onnx_path": "thrust2_ood_bench/instances/dc_a/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/dc_a/spec.vnnlib"
+  }
+}

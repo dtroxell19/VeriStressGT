@@ -1,0 +1,39 @@
+{
+  "id": "milp_c",
+  "construction": "mlp_relu.milp.exact_radius",
+  "seed": 13,
+  "paths": {
+    "onnx": "instances/milp_c/model.onnx",
+    "vnnlib": "instances/milp_c/spec.vnnlib",
+    "meta": "instances/milp_c/meta.json"
+  },
+  "sha256": {
+    "onnx": "24d41deb8ca610a27acb9fd4efa5009a6d867bf0abf9a7e0ab4f77ff82e58d9a",
+    "vnnlib": "1228006fca13b1476846ab5629bfb04eaa0ba7e911620c2113d62b6882c1c14c"
+  },
+  "args": {
+    "seed": 13,
+    "input_dim": 40,
+    "h1": 30,
+    "h2": 15,
+    "num_outputs": 6,
+    "epsilon_frac": 0.9995,
+    "rmax": 2.0,
+    "time_limit": 240.0,
+    "mip_gap": null,
+    "epsilon_mode": "safe",
+    "save_x0": false,
+    "save_json": false,
+    "onnx_path": "thrust2_ood_bench/instances/milp_c/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/milp_c/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "thrust2_ood_bench/instances/milp_c/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/milp_c/spec.vnnlib",
+    "seed": 13,
+    "y": 0,
+    "r_star": 0.3782888598384592,
+    "epsilon": 0.37809971540854004,
+    "epsilon_mode": "safe"
+  }
+}

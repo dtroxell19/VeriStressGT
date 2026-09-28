@@ -1,0 +1,52 @@
+{
+  "id": "fp_b",
+  "construction": "attention.fixed_pattern",
+  "seed": 12,
+  "paths": {
+    "onnx": "instances/fp_b/model.onnx",
+    "vnnlib": "instances/fp_b/spec.vnnlib",
+    "meta": "instances/fp_b/meta.json"
+  },
+  "sha256": {
+    "onnx": "397811593f2147030772f27c024302b08db756906f69c99413ffdc20a3abe19d",
+    "vnnlib": "a898259b2fc64c90a57ca648e14538af8cbbfd0a1c5fa3a403becce9b8b382eb"
+  },
+  "args": {
+    "seed": 12,
+    "n": 24,
+    "d": 6,
+    "d_v": 8,
+    "num_classes": 50,
+    "alpha": 4.0,
+    "epsilon": 0.002,
+    "margin_slack": 1.02,
+    "onnx_path": "thrust2_ood_bench/instances/fp_b/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/fp_b/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "thrust2_ood_bench/instances/fp_b/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/fp_b/spec.vnnlib",
+    "label": 0,
+    "epsilon": 0.002,
+    "certificate": {
+      "mu": 0.8158579468727112,
+      "delta_min": 0.7365682125091553,
+      "C_max": 39.28783588453084,
+      "lhs_gap": 0.18414205312728882,
+      "rhs_gap": 0.019643917942265422,
+      "gap_ok_simplified": true,
+      "gap_ok_actual": true,
+      "B_S": 19.64391794226542,
+      "V0_2inf": 0.9462910890579224,
+      "sigma_WV": 1.0,
+      "L_attn": 114.56008766657986,
+      "L_h": 1.0,
+      "logits": "[ 2.555487   -0.03561262 -0.02926507  0.24219957 -0.0244594   0.09846858\n -0.01935104 -0.07865929  0.01654935  0.24785858 -0.02795915  0.0755669\n  0.07589699  0.02351857  0.26567864 -0.0449029  -0.03671304 -0.22182745\n  0.02328286 -0.07700023  0.03528426  0.14762768  0.08844928  0.13358513\n -0.03388961  0.06114225 -0.05207077 -0.1089097  -0.06633871  0.23206893\n -0.11536002  0.07879702 -0.14510432 -0.00963552 -0.24085152 -0.13817441\n -0.06819636 -0.08019501  0.02870001  0.1019734  -0.07209966  0.03105512\n -0.02676402  0.03751678  0.16494197 -0.00752994  0.10874975 -0.08204766\n -0.09603362 -0.01457205]",
+      "label": 0,
+      "margin": 2.2898082733154297,
+      "rhs_margin": 2.244910077373032,
+      "margin_ok": true,
+      "valid": true
+    }
+  }
+}

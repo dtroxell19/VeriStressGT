@@ -1,0 +1,52 @@
+{
+  "id": "fp_a",
+  "construction": "attention.fixed_pattern",
+  "seed": 11,
+  "paths": {
+    "onnx": "instances/fp_a/model.onnx",
+    "vnnlib": "instances/fp_a/spec.vnnlib",
+    "meta": "instances/fp_a/meta.json"
+  },
+  "sha256": {
+    "onnx": "a17e96647f8d8442481cf2c45ef5f1539fb2641d36db511de3ab40465db128b9",
+    "vnnlib": "6309e471a6d8b3b59bd4ecbf08b491209253a813c3edfbc7b9e8550d7fc43fd6"
+  },
+  "args": {
+    "seed": 11,
+    "n": 12,
+    "d": 6,
+    "d_v": 8,
+    "num_classes": 50,
+    "alpha": 4.0,
+    "epsilon": 0.002,
+    "margin_slack": 1.02,
+    "onnx_path": "thrust2_ood_bench/instances/fp_a/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/fp_a/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "thrust2_ood_bench/instances/fp_a/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/fp_a/spec.vnnlib",
+    "label": 0,
+    "epsilon": 0.002,
+    "certificate": {
+      "mu": 0.6518504023551941,
+      "delta_min": 1.3925983905792236,
+      "C_max": 39.28783588453084,
+      "lhs_gap": 0.3481495976448059,
+      "rhs_gap": 0.019643917942265422,
+      "gap_ok_simplified": true,
+      "gap_ok_actual": true,
+      "B_S": 19.64391794226542,
+      "V0_2inf": 0.9003790616989136,
+      "sigma_WV": 0.9999999403953552,
+      "L_attn": 55.79911224746213,
+      "L_h": 1.0,
+      "logits": "[ 0.97090244 -0.14518446 -0.06435518 -0.03092285  0.06622252 -0.0809423\n  0.03410868  0.12154144  0.00360232 -0.10205893  0.10634303 -0.09745234\n  0.1822637  -0.05008544  0.07466526  0.00158539  0.03659061 -0.05256559\n -0.08785516  0.02438743  0.15530111 -0.08669909 -0.10681725  0.0192502\n -0.0984411  -0.02662909  0.05532041  0.17339846 -0.04477046  0.04718862\n  0.01673589 -0.14246008  0.10385662 -0.18179023 -0.07547504 -0.1762105\n  0.15990776  0.08666886 -0.09748302  0.10276596 -0.04281809  0.14748225\n -0.12165534  0.05586542 -0.01575187  0.03033768 -0.21834572 -0.16041234\n -0.09642349 -0.07462122]",
+      "label": 0,
+      "margin": 0.788638710975647,
+      "rhs_margin": 0.7731751794387457,
+      "margin_ok": true,
+      "valid": true
+    }
+  }
+}

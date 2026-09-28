@@ -1,0 +1,69 @@
+# UCLA TA1 -- Thrust 2 (diagnostic metric): predicting verifier timeouts from Difficulty Profiles.
+#
+# One timeout predictor per verifier (elastic-net logistic regression on network size/type +
+# the five Difficulty-Profile components). Two evaluations:
+#
+#   1. Recorded (primary): trained and tested on the paper's server runs (345 instances: 225
+#      synthetic constructor instances + 120 VNN-COMP mnist_fc / oval21 instances; abcrown,
+#      neuralsat, marabou, nnenum, pyrat). Test sets are network-grouped held-out splits,
+#      repeated over 10 seeds. Labels use the same horizon as the live runs (60 s).
+#   2. Live out-of-distribution (reported): 30 fresh networks (new seeds, off-grid parameters)
+#      are featurized on the fly and run through abcrown and pyrat at a 60 s timeout; the
+#      predictors, fitted on all recorded data, rank which instances time out.
+#
+# Claim: every verifier's mean held-out AUC is >= target_auc. The plan does not align this metric
+# to the BAA's 95% accuracy goal: timeouts depend on network size, verifier strengths and problem
+# geometry, so the prediction problem is inherently noisy.
+
+title: "VeriStressGT Thrust 2: Per-Verifier Timeout Prediction"
+description: |
+  Trains one timeout predictor per verifier on recorded verifier runs using network size/type
+  and Difficulty-Profile features, and reports held-out AUC over repeated network-grouped
+  splits. Also scores the predictors on live abcrown / pyrat runs over fresh, out-of-distribution
+  networks whose features are computed on the fly.
+
+version: 1.0
+
+organizations:
+  - UCLA
+
+submitter:
+  name: UCLA TA1 Team
+  email: davidtroxell@g.ucla.edu
+
+tags:
+  - ucla
+  - difficulty-profile
+  - timeout-prediction
+  - cross-verifier
+
+links:
+  - title: "VeriStressGT"
+    url: "https://github.com/dtroxell19/VeriStressGT"
+    type: "software"
+
+symbols:
+  target_auc:
+    type: float
+    value: 0.7
+
+claim:
+  python: |
+    low = {v: round(a, 3) for v, a in per_verifier_auc.items() if a is None or a < target_auc}
+    assert not low, (
+      f"held-out timeout AUC below {target_auc} for {low} "
+      f"(all verifiers: { {v: round(a, 3) for v, a in per_verifier_auc.items()} })"
+    )
+
+pipeline:
+  thrust2:
+    executable: 'python -u aiq/thrust2_runner.py'
+    algo_params:
+      horizon: 60
+      repeats: 10
+      ood_bench_dir: 'thrust2_ood_bench'
+      run_dir: 'thrust2_run'
+      real_jobs: 2
+      abcrown_config: 'src/VeriStressGT/configs/abcrown_basic.yaml'
+    out_paths:
+      results_fpath: 'results.json'

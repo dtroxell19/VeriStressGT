@@ -1,0 +1,45 @@
+{
+  "id": "corners_b",
+  "construction": "mlp_relu.corners",
+  "seed": 12,
+  "paths": {
+    "onnx": "instances/corners_b/model.onnx",
+    "vnnlib": "instances/corners_b/spec.vnnlib",
+    "meta": "instances/corners_b/meta.json"
+  },
+  "sha256": {
+    "onnx": "e06f67e7c0ae77ce7bd885fffb9ad5d0777a8b7633f958d9d65326db5a7653d8",
+    "vnnlib": "dbb87c5113ca54f2254c367a6d166dc73b8522eec06086561f2c4c67f3c8fa90"
+  },
+  "args": {
+    "seed": 12,
+    "input_dim": 80,
+    "num_outputs": 10,
+    "hinge_l1": 10,
+    "num_hinges": 512,
+    "epsilon": 0.2,
+    "label": 0,
+    "active_dim": 8,
+    "hinge_density": 1.0,
+    "pattern_density": 0.5,
+    "coeff_scale": 1.0,
+    "tau": 0.0001,
+    "big_m": 2.0,
+    "quiet": false,
+    "onnx_path": "thrust2_ood_bench/instances/corners_b/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/corners_b/spec.vnnlib"
+  },
+  "gt": {
+    "label": 0,
+    "competitors": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "active_dim": 8,
+    "num_hinges": 512,
+    "tau": 0.0001,
+    "BIG_M": 2.0
+  }
+}

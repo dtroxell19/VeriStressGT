@@ -1,0 +1,50 @@
+{
+  "id": "pb_d",
+  "construction": "cnn.cnn_paired_bias",
+  "seed": 14,
+  "paths": {
+    "onnx": "instances/pb_d/model.onnx",
+    "vnnlib": "instances/pb_d/spec.vnnlib",
+    "meta": "instances/pb_d/meta.json"
+  },
+  "sha256": {
+    "onnx": "306916d6c80ddb0532674eedceebc34e1efd6153ba4a0dff78d75d426a674c9a",
+    "vnnlib": "9c89895b809541304085fb2c0b48aba21d7ab78051995ab4a2deef4137d61492"
+  },
+  "args": {
+    "seed": 14,
+    "num_pairs": 12,
+    "margin": 0.05,
+    "delta": 0.02,
+    "height": 10,
+    "width": 10,
+    "num_backbone_layers": 2,
+    "in_channels": 3,
+    "backbone_channels": 2,
+    "kernel_size": 3,
+    "num_classes": 10,
+    "label": 0,
+    "epsilon": 0.05,
+    "onnx_path": "thrust2_ood_bench/instances/pb_d/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/pb_d/spec.vnnlib"
+  },
+  "gt": {
+    "onnx_path": "thrust2_ood_bench/instances/pb_d/model.onnx",
+    "vnnlib_path": "thrust2_ood_bench/instances/pb_d/spec.vnnlib",
+    "is_robust": true,
+    "label": 0,
+    "epsilon": 0.05,
+    "margin": 0.05,
+    "delta": 0.02,
+    "actual_margin_x0": 0.07021069526672363,
+    "ibp_worst_margin": -3.710526704788208,
+    "unstable_relus": {
+      "total": 2800,
+      "unstable": 2424,
+      "fraction": 0.8657142857142858
+    },
+    "num_pairs": 12,
+    "spatial_pairs": 1200,
+    "seed": 14
+  }
+}

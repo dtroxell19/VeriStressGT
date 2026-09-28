@@ -34,6 +34,11 @@ results.json
 !thrust1_bench/**
 thrust1_bench/**/*.compiled
 
+# Pre-built Thrust 2 out-of-distribution benchmark (fresh networks for live timeout prediction)
+!thrust2_ood_bench/
+!thrust2_ood_bench/**
+thrust2_ood_bench/**/*.compiled
+
 # Track committed benchmark models (needed to actually run the benchmarks); never commit the
 # stale external-data blobs the older exporter left behind.
 !src/VeriStressGT/benchmarks/**/*.onnx

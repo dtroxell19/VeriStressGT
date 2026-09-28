@@ -30,8 +30,9 @@ export ABCROWN_CONDA_ENV="alpha-beta-crown"
 
 | Card | Thrust | Metric |
 |------|--------|--------|
-| `cards/thrust1_soundness.yaml` | 1 (primary) | Fraction of planted buggy verifiers exposed by ground-truth labels (vs. majority vote) |
-| `cards/evaluation.yaml` | 2 (diagnostic) | Mini sweep: per-verifier correctness + timeout AUC of Difficulty Profile components |
+| `cards/thrust1_soundness.yaml` | 1 (primary) | Buggy verifiers caught and scoring accuracy, ground-truth labels vs. majority vote |
+| `cards/thrust2_timeout_prediction.yaml` | 2 | Per-verifier timeout-prediction AUC (target >= 0.7), held-out and live out-of-distribution |
+| `cards/evaluation.yaml` | 2 (supporting) | Mini sweep: per-verifier correctness + per-component timeout AUC |
 
 ## Thrust 1: bug detection with ground-truth labels
 
@@ -141,7 +142,55 @@ is checked, not assumed.
 
 ![Thrust 1 verdict matrix](assets/thrust1_verdict_matrix.png)
 
-## Thrust 2: mini sweep
+## Thrust 2: per-verifier timeout prediction
+
+```bash
+magnet evaluate cards/thrust2_timeout_prediction.yaml
+```
+
+One predictor per verifier: elastic-net logistic regression on network size/type features plus
+the five Difficulty-Profile components (`src/VeriStressGT/prediction/`).
+
+1. **Recorded, held-out (primary).** The training data is the paper's server runs
+   (`src/VeriStressGT/prediction/data/training_rows.csv`): 345 instances (225 synthetic, 120
+   VNN-COMP mnist_fc / oval21) × abcrown, neuralsat, marabou, nnenum, pyrat. Every split is grouped
+   by network, so no network is on both sides; this matters because VNN-COMP reuses 6 networks
+   across 120 properties. Results are the mean over 10 grouped splits. Labels use a 60 s horizon
+   (timed out, or solved only after 60 s), matching the live runs.
+2. **Live out-of-distribution (reported).** `thrust2_ood_bench/` holds 30 fresh networks with
+   seeds and parameters outside the training runs. The card computes their features on the fly,
+   runs abcrown and pyrat at a 60 s timeout, and scores predictors fitted on all recorded data.
+
+**Claim.** Every verifier's mean held-out AUC is >= 0.7. Per the eval plan, this is not aligned
+to the BAA's 95% goal.
+
+Features are computed exactly as for the training table: size/type from the ONNX graph, and the
+profile via `estimate_profile(..., atau_n_samples=600)`, with `a_tau` as the log-count of distinct
+local fingerprints (paper Eq. 14). `tests/test_prediction.py` checks the recomputed features
+against the table.
+
+### Sample run results
+
+**Machine:** MacBook Pro (Apple Silicon), CPU only. **Config:** card defaults. Full run about 17 min.
+
+| Verifier | Held-out AUC, size + profile | Size only | Profile only | Live OOD AUC |
+|---|---|---|---|---|
+| abcrown | **0.770** ± 0.046 | 0.668 | 0.567 | 0.673 (4/30 timeouts) |
+| neuralsat | **0.885** ± 0.059 | 0.892 | 0.844 | not run live |
+| marabou | **0.796** ± 0.070 | 0.692 | 0.810 | not run live |
+| nnenum | **0.901** ± 0.059 | 0.763 | 0.860 | not run live |
+| pyrat | **0.939** ± 0.036 | 0.876 | 0.859 | **0.947** (11/30 timeouts) |
+
+- All five verifiers clear 0.7 on held-out networks. Adding the profile to size helps most for
+  abcrown (+0.10), marabou (+0.10) and nnenum (+0.14). For neuralsat, size alone is already as good.
+- On live runs, pyrat's predictor transfers well (0.947). abcrown's does not (0.673): the model
+  expects abcrown to time out on attention models, as it often did in the server runs, but the
+  local abcrown solves them in about 9 s. That is a change in the verifier's behaviour between
+  environments, not in the instances. With only 4 live abcrown timeouts, this AUC is also noisy.
+
+![Thrust 2 timeout AUC](assets/thrust2_auc.png)
+
+## Mini sweep (supporting card)
 
 ### Run
 ```bash
