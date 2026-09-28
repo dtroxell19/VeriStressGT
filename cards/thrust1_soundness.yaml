@@ -1,8 +1,9 @@
 # UCLA TA1 -- Thrust 1 (primary metric): detecting unsound verifiers with ground-truth labels.
 #
 # Benchmark (thrust1_bench, pre-built): 24 instances that are UNSAT by analytic construction
-# (MILP exact-radius, MEAP, corners, paired-bias CNN, contractive CNN, attention) and 22 SAT
-# instances, each shipping a concrete counterexample confirmed in float64 and onnxruntime float32.
+# (MILP exact-radius, MEAP, corners, paired-bias CNN, contractive CNN, attention) and 26 SAT
+# instances, each shipping a concrete counterexample confirmed in float64 and onnxruntime float32
+# (4 of them attack-hard: PGD fails, exact MILP finds the witness).
 #
 # Verifier pool:
 #   sound controls    reference (in-house: attack + CROWN + exact MILP / BaB), ibp_only
@@ -13,8 +14,13 @@
 # A verifier is flagged when any SAT/UNSAT verdict contradicts the instance label. The same
 # verdicts are also scored against VNN-COMP-style majority-vote labels as the baseline.
 #
-# Claim: ground-truth labels flag >= detection_threshold of the planted buggy verifiers while
-# flagging no sound control.
+# Two reported metrics:
+#   1. buggy verifiers caught: fraction of exercised planted bugs flagged
+#   2. scoring accuracy: fraction of all definitive verdicts judged correctly (no wrongful
+#      accusation of a correct verdict, no wrongful acquittal of a wrong one)
+#
+# Claim: ground-truth labels score every verdict correctly (100%), flag no sound control, and
+# catch >= detection_threshold of the exercised planted bugs.
 
 title: "VeriStressGT Thrust 1: Bug Detection with Ground-Truth Labels"
 description: |
@@ -53,6 +59,11 @@ claim:
   python: |
     gt = summary["ground_truth"]
     assert gt["detection_rate"] is not None, "no planted buggy verifiers were run"
+    sc = gt["scoring"]
+    assert sc["scoring_accuracy"] == 1.0, (
+      f"ground truth mis-scored {sc['judgments'] - sc['correctly_scored']}/{sc['judgments']} verdicts "
+      f"(wrongful accusations={sc['wrongful_accusations']}, acquittals={sc['wrongful_acquittals']})"
+    )
     assert gt["controls_flagged"] == [], (
       f"ground truth flagged a sound control verifier: {gt['controls_flagged']}"
     )

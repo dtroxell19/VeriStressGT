@@ -118,4 +118,37 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
     mv_label_errors = [iid for iid in iids if full_mv[iid] is not None and full_mv[iid] != ground_truth[iid]]
     summary["majority_full"]["label_errors"] = mv_label_errors
     summary["majority_full"]["unresolved"] = [iid for iid in iids if full_mv[iid] is None]
+
+    # Scoring accuracy: how often a labelling judges a definitive verdict correctly. Every
+    # definitive verdict of every verifier is one judgment; its true correctness comes from the
+    # certificates (ground_truth). A labelling can wrongly accuse (calls a correct verdict wrong),
+    # wrongly acquit (calls a wrong verdict correct), or leave it unscored (tie).
+    one_buggy_labels = {v: majority_labels(verdicts, honest + ([v] if v in planted else []), iids)
+                        for v in all_v}
+    labellings = {
+        "ground_truth": lambda v: ground_truth,
+        "majority_one_buggy": lambda v: one_buggy_labels[v],
+        "majority_full": lambda v: full_mv,
+    }
+    for method, labels_for in labellings.items():
+        acc = {"judgments": 0, "correctly_scored": 0, "wrongful_accusations": 0,
+               "wrongful_acquittals": 0, "unscored": 0}
+        for v in all_v:
+            labels = labels_for(v)
+            for iid, s in verdicts[v].items():
+                if s not in DEFINITIVE:
+                    continue
+                acc["judgments"] += 1
+                truly_correct = s == ground_truth[iid]
+                lab = labels.get(iid)
+                if lab is None:
+                    acc["unscored"] += 1
+                elif (s == lab) == truly_correct:
+                    acc["correctly_scored"] += 1
+                elif truly_correct:
+                    acc["wrongful_accusations"] += 1
+                else:
+                    acc["wrongful_acquittals"] += 1
+        acc["scoring_accuracy"] = acc["correctly_scored"] / acc["judgments"] if acc["judgments"] else None
+        summary[method]["scoring"] = acc
     return {"per_verifier": per, "summary": summary, "majority_full_labels": full_mv}

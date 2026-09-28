@@ -46,11 +46,14 @@ magnet evaluate cards/thrust1_soundness.yaml
 - 24 **UNSAT** instances, labelled by the constructors' analytic certificates (MILP exact radius,
   MEAP, corners, paired-bias CNN, contractive CNN, linear / softmax attention). This includes
   near-boundary MILP radii (eps = 0.999 r\*, 0.9999 r\*).
-- 22 **SAT** instances, each shipping a concrete counterexample (`witness.json`) whose margin is
+- 26 **SAT** instances, each shipping a concrete counterexample (`witness.json`) whose margin is
   negative in both float64 and onnxruntime float32, so no verifier has to be trusted for these
   labels. They are "twins" of robust networks with the radius scaled just past (`_sat_near`) or
   well past (`_sat_far`) the robustness threshold. MEAP and paired-bias networks are robust at
   every radius, so small random CNNs (`rcnn_*`, `tcnn_*`) supply the CNN counterexamples.
+  Four of them (`tcnn_*_sat_hard`) sit so close to the threshold that PGD cannot find the
+  counterexample but exact MILP can, so bugs in a verifier's proof procedure cannot hide behind a
+  successful attack.
 
 Without SAT instances, a verifier that always answers "robust" would score perfectly. They are
 what exposes false UNSAT claims, the dangerous direction.
@@ -94,29 +97,43 @@ both only try to prove UNSAT and never report SAT.
 ### Sample run results
 
 **Machine:** MacBook Pro (Apple Silicon), CPU only. **Config:** card defaults (60 s timeout,
-4 parallel in-house jobs, 2 parallel real-verifier jobs). The full card run takes roughly 15-20 min.
+4 parallel in-house jobs, 2 parallel real-verifier jobs). The full card run takes about 15 min.
 
-| Labels used for scoring | Planted bugs detected | Sound controls flagged |
+Benchmark: 50 instances (24 UNSAT, 26 SAT, including 4 attack-hard tiny-CNN SAT instances where
+PGD fails and only a completed proof procedure decides the instance).
+
+**1. Buggy verifiers caught** (16 planted; 2 never exercised, so rates are out of 14)
+
+| Labels used for scoring | Caught | Sound controls flagged |
 |---|---|---|
-| Ground truth | **13/14 (93%)** | none |
-| Majority vote, one buggy verifier in the pool | 11/14 (79%) | none |
+| Ground truth | **14/14 (100%)** | none |
+| Majority vote, one buggy verifier in the pool | 12/14 (86%) | none |
 | Majority vote, full pool | 12/14 (86%) | **both** (`reference`, `ibp_only`) |
 
-16 bugs were planted. Two were not exercised, so the rates above are out of 14:
-`pyrat+crash_as_sat` (pyrat never crashed) and `abcrown+attention_unsat_to_sat` (abcrown crashes
-on every attention model, so it never produced an UNSAT to flip).
+**2. Scoring accuracy** (each of the 844 definitive verdicts across all verifiers is one judgment)
 
-- **Ground truth missed 1:** `mutant:conv_bias_dropped` changed verdicts, but only from proofs to
-  UNKNOWN; it never gave a wrong answer on this benchmark. Ground truth catches every wrong verdict
-  by construction, so this miss means the benchmark has no instance that turns this bug into a
-  wrong answer.
-- **Majority vote, one buggy verifier:** it also misses `abcrown+crash_as_sat` and
+| Labels used for scoring | Correctly scored | Wrongful accusations | Wrongful acquittals | Unscored (ties) |
+|---|---|---|---|---|
+| Ground truth | **844/844 (100%)** | 0 | 0 | 0 |
+| Majority vote, one buggy verifier in the pool | 836/844 (99.1%) | 0 | 0 | 8 |
+| Majority vote, full pool | 739/844 (87.6%) | 36 | 69 | 0 |
+
+A wrongful accusation calls a correct verdict wrong; a wrongful acquittal calls a wrong verdict
+correct. Ground-truth SAT labels are re-certified from their witnesses on every run, so the 100%
+is checked, not assumed.
+
+- **Not exercised:** `pyrat+crash_as_sat` (pyrat never crashed) and
+  `abcrown+attention_unsat_to_sat` (abcrown crashes on every attention model, so it never produced
+  an UNSAT to flip). These faults never changed a verdict, so there was nothing to catch.
+- **`mutant:conv_bias_dropped`** only gives wrong answers when the attack fails and the proof
+  procedure has to decide. The attack-hard CNN instances expose it (false UNSAT on 3 of 4).
+- **Majority vote, one buggy verifier:** it misses `abcrown+crash_as_sat` and
   `pyrat+attention_unsat_to_sat`. Their false SATs land on attention instances where the only
-  other decisive verifier is the one real tool that supports them, so the vote ties and nobody is
+  other decisive verifier is the real tool that supports them, so the vote ties and nobody is
   flagged.
-- **Majority vote, full pool:** the planted false-UNSAT verdicts outvote the truth on 5
-  near-threshold SAT instances. Both sound controls are then flagged for correct answers, and
-  `abcrown+timeout_as_unsat` goes undetected.
+- **Majority vote, full pool:** the planted false-UNSAT verdicts outvote the truth on
+  near-threshold SAT instances. Both sound controls are flagged for correct answers, and
+  `abcrown+timeout_as_unsat` and `mutant:conv_bias_dropped` go undetected.
 - **pyrat false UNSAT (prove-only mode):** with counterexample search off, unmodified pyrat
   (`con_z`, torch float32) reported `tcnn_2_sat_near` as robust. Exact rational arithmetic on the
   model's weights confirms the stored witness lies in the box with margin -2.99e-6. With the attack

@@ -36,6 +36,7 @@ from VeriStressGT.soundness.scoring import score  # noqa: E402
 
 TWIN_BASES = ["milp_s0_a", "milp_s1_a", "milp_s2_a", "milp_s3_a", "corners_03"]
 N_RANDOM_CNN = 3
+N_HARD_CNN = 4
 
 _UNSUPPORTED_KEYWORDS = ("unsupported", "not supported", "not implement", "notimplementederror",
                          "unsupportedop", "layer type", "no support")
@@ -77,6 +78,27 @@ def _load_statuses(results_jsonl: Path, instance_ids: List[str]) -> Dict[str, st
             s = "unsupported" if any(k in preview for k in _UNSUPPORTED_KEYWORDS) else "error"
         out[iid] = s
     return out
+
+
+def _certify_sat_labels(bench: Path, instances: Dict[str, Dict]) -> int:
+    """Re-check every SAT label's witness (float64 and onnxruntime float32) before scoring."""
+    import numpy as np
+    from VeriStressGT.soundness.ground_truth import certify_witness
+    from VeriStressGT.soundness.refverify import load_problem
+
+    n = 0
+    for iid, inst in instances.items():
+        gtl = inst["ground_truth"]
+        if gtl["label"] != "sat":
+            continue
+        onnx_p = str(bench / inst["paths"]["onnx"])
+        graph, spec = load_problem(onnx_p, str(bench / inst["paths"]["vnnlib"]))
+        x = np.asarray(json.loads((bench / gtl["witness"]).read_text())["x"])
+        ok, m64, m32 = certify_witness(onnx_p, graph, spec.C, x, spec.lo, spec.hi)
+        if not ok:
+            raise RuntimeError(f"SAT label of {iid} no longer certifies (f64={m64}, f32={m32})")
+        n += 1
+    return n
 
 
 def _plot_matrix(verdicts: Dict[str, Dict[str, str]], gt: Dict[str, str], order: List[str],
@@ -163,10 +185,11 @@ class Thrust1RunnerCLI(scfg.DataConfig):
             _run([sys.executable, "-m", "VeriStressGT.cli.create_benchmark", "--spec", str(_resolve(config.spec_path)),
                   "--out_dir", str(bench), "--overwrite"])
             _run([sys.executable, "-m", "VeriStressGT.soundness.ground_truth", "--bench", str(bench),
-                  "--twins", *TWIN_BASES, "--random_cnn", str(N_RANDOM_CNN)])
+                  "--twins", *TWIN_BASES, "--random_cnn", str(N_RANDOM_CNN), "--hard_cnn", str(N_HARD_CNN)])
         manifest = json.loads((bench / "manifest.json").read_text())
         instances = {i["id"]: i for i in manifest["instances"]}
         gt = {iid: i["ground_truth"]["label"] for iid, i in instances.items()}
+        n_witness_ok = _certify_sat_labels(bench, instances)
         iids = sorted(gt)
         print(f"Benchmark: {len(iids)} instances ({sum(v == 'unsat' for v in gt.values())} UNSAT, "
               f"{sum(v == 'sat' for v in gt.values())} SAT)", flush=True)
@@ -250,6 +273,11 @@ class Thrust1RunnerCLI(scfg.DataConfig):
             "mv_full_control_false_flags": len(mvf["controls_flagged"]),
             "mv_full_sound_verifiers_penalized": len(mvf["sound_verifiers_penalized"]),
             "mv_full_label_errors": len(mvf["label_errors"]),
+            "sat_witnesses_recertified": n_witness_ok,
+            "gt_scoring_accuracy": gt_s["scoring"]["scoring_accuracy"],
+            "mv_one_buggy_scoring_accuracy": mv1["scoring"]["scoring_accuracy"],
+            "mv_full_scoring_accuracy": mvf["scoring"]["scoring_accuracy"],
+            "gt_detected": len(gt_s["detected"]),
         }
         out_fpath = ub.Path(config.results_fpath)
         out_fpath.parent.ensuredir()
@@ -273,14 +301,20 @@ class Thrust1RunnerCLI(scfg.DataConfig):
         _plot_matrix(verdicts, gt, order, roles, {v: per[v]["gt_flagged"] for v in order},
                      out_dir / "thrust1_verdict_matrix.png")
 
-        print("\n── Bug detection ──────────────────────────────────────────────", flush=True)
+        print("\n── 1. Buggy verifiers caught (exercised planted bugs) ─────────", flush=True)
         for label, s in (("ground truth", gt_s), ("majority (one buggy)", mv1), ("majority (full pool)", mvf)):
             dr = s["detection_rate"]
             print(f"  {label:<22s} detected {len(s['detected'])}/{len(exercised)}"
                   f" ({dr:.0%})  controls flagged: {s['controls_flagged'] or 'none'}"
                   if dr is not None else f"  {label}: n/a", flush=True)
-        print(f"  majority (full pool) label errors: {mvf['label_errors'] or 'none'}", flush=True)
-        print(f"  sound verifiers penalized by majority (full): {mvf['sound_verifiers_penalized'] or 'none'}", flush=True)
+        print("\n── 2. Scoring accuracy (every definitive verdict judged correctly?) ──", flush=True)
+        for label, s in (("ground truth", gt_s), ("majority (one buggy)", mv1), ("majority (full pool)", mvf)):
+            sc = s["scoring"]
+            print(f"  {label:<22s} {sc['correctly_scored']}/{sc['judgments']} ({sc['scoring_accuracy']:.1%})"
+                  f"  wrongful accusations: {sc['wrongful_accusations']}"
+                  f"  wrongful acquittals: {sc['wrongful_acquittals']}  unscored (ties): {sc['unscored']}",
+                  flush=True)
+        print(f"  (ground-truth SAT labels re-certified from witnesses: {n_witness_ok})", flush=True)
 
 
 __cli__ = Thrust1RunnerCLI

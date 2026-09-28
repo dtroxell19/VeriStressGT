@@ -151,18 +151,11 @@ def _write_twin(bench: Path, base: Dict, suffix: str, eps_scale: float, graph, s
     return meta
 
 
-def random_cnn_sat(bench: Path, n: int, budget: float, seed0: int = 0) -> List[Dict]:
-    """Witness-only SAT instances on small random CNNs (no analytic UNSAT counterpart).
-
-    The constructed CNN families are robust at every radius we can search (paired-bias) or up to
-    enormous radii (contractive), so CNN counterexamples come from random conv nets instead.
-    """
+def _cnn_archs():
     import torch.nn as nn
-    from VeriStressGT.utils.onnx_export import export_pytorch_to_onnx
-
-    # Two sizes: "rcnn" (200 ReLUs) and "tcnn" (tiny, 32 ReLUs) whose near-threshold twins stay
-    # within reach of exact methods, so they separate "cannot decide" from "decides wrongly".
-    archs = {
+    # "rcnn" (200 ReLUs) and "tcnn" (tiny, 32 ReLUs): near-threshold twins of the tiny nets stay within
+    # reach of exact methods, so they separate "cannot decide" from "decides wrongly".
+    return {
         "rcnn": ((2, 5, 5), lambda: nn.Sequential(nn.Conv2d(2, 4, 3, padding=1), nn.ReLU(),
                                                   nn.Conv2d(4, 4, 3, padding=1), nn.ReLU(),
                                                   nn.Flatten(), nn.Linear(4 * 5 * 5, 5)),
@@ -172,37 +165,54 @@ def random_cnn_sat(bench: Path, n: int, budget: float, seed0: int = 0) -> List[D
                                                   nn.Flatten(), nn.Linear(2 * 2 * 2, 4)),
                  "conv(1->2,3x3)-relu-conv(2->2,3x3,s2)-relu-fc(8->4)"),
     }
+
+
+def _random_cnn_problem(fam: str, seed: int, tmp: Path, budget: float):
+    """Random CNN + a base radius that is not already SAT. Returns (graph, spec, onnx_path, base dict)."""
+    import torch.nn as nn
+    from VeriStressGT.utils.onnx_export import export_pytorch_to_onnx
+
+    in_shape, make, arch_desc = _cnn_archs()[fam]
+    torch.manual_seed(seed)
+    net = make()
+    with torch.no_grad():
+        for m in net:
+            if isinstance(m, nn.Conv2d):
+                m.bias.uniform_(-0.5, 0.5)
+    x0 = np.random.default_rng(seed).uniform(-1, 1, size=(1,) + in_shape).astype(np.float32)
+    with torch.no_grad():
+        y = net(torch.tensor(x0))[0]
+    label, n_out = int(torch.argmax(y)), int(y.numel())
+    onnx_p = tmp / f"{fam}_{seed}.onnx"
+    export_pytorch_to_onnx(net, str(onnx_p), (1,) + in_shape, example_input=x0)
+    eps0 = 0.02
+    for _ in range(8):  # shrink until the base radius is not already SAT
+        make_box_vnnlib(center=x0.reshape(-1).astype(np.float64), eps=eps0, out=str(tmp / "base.vnnlib"),
+                        num_outputs=n_out, label=label)
+        graph, spec = load_problem(str(onnx_p), str(tmp / "base.vnnlib"))
+        if _status(graph, spec.C, spec.center, spec.radius, budget)["status"] != "sat":
+            break
+        eps0 /= 4
+    base = {"id": f"{fam}_{seed}", "construction": "cnn.random_witness", "seed": seed,
+            "args": {"arch": arch_desc, "epsilon_base": eps0}}
+    return graph, spec, onnx_p, base
+
+
+def random_cnn_sat(bench: Path, n: int, budget: float, seed0: int = 0) -> List[Dict]:
+    """Witness-only SAT instances on small random CNNs (no analytic UNSAT counterpart).
+
+    The constructed CNN families are robust at every radius we can search (paired-bias) or up to
+    enormous radii (contractive), so CNN counterexamples come from random conv nets instead.
+    """
     tmp = bench / "_tmp_rcnn"
     tmp.mkdir(parents=True, exist_ok=True)
     out: List[Dict] = []
-    for (fam, (in_shape, make, arch_desc)), i in itertools.product(archs.items(), range(n)):
-        seed = seed0 + i
-        torch.manual_seed(seed)
-        net = make()
-        with torch.no_grad():
-            for m in net:
-                if isinstance(m, nn.Conv2d):
-                    m.bias.uniform_(-0.5, 0.5)
-        x0 = np.random.default_rng(seed).uniform(-1, 1, size=(1,) + in_shape).astype(np.float32)
-        with torch.no_grad():
-            y = net(torch.tensor(x0))[0]
-        label, n_out = int(torch.argmax(y)), int(y.numel())
-        onnx_p = tmp / f"{fam}_{seed}.onnx"
-        export_pytorch_to_onnx(net, str(onnx_p), (1,) + in_shape, example_input=x0)
-        eps0 = 0.02
-        for _ in range(8):  # shrink until the base radius is not already SAT
-            make_box_vnnlib(center=x0.reshape(-1).astype(np.float64), eps=eps0, out=str(tmp / "base.vnnlib"),
-                            num_outputs=n_out, label=label)
-            graph, spec = load_problem(str(onnx_p), str(tmp / "base.vnnlib"))
-            if _status(graph, spec.C, spec.center, spec.radius, budget)["status"] != "sat":
-                break
-            eps0 /= 4
+    for fam, i in itertools.product(_cnn_archs(), range(n)):
+        graph, spec, onnx_p, base = _random_cnn_problem(fam, seed0 + i, tmp, budget)
         found = find_threshold(graph, spec.C, spec.center, spec.radius, budget=budget, bisections=10)
         if found is None:
             continue
         k_lo, k_hi, hit = found
-        base = {"id": f"{fam}_{seed}", "construction": "cnn.random_witness", "seed": seed,
-                "args": {"arch": arch_desc, "epsilon_base": eps0}}
         print(f"[twin] {base['id']}: threshold scale in ({k_lo:.5g}, {k_hi:.5g}]", flush=True)
         near = _write_twin(bench, base, "near", k_hi, graph, spec, onnx_p, np.asarray(hit["witness"]), (k_lo, k_hi), budget)
         far_hit = _status(graph, spec.C, spec.center, spec.radius * 2 * k_hi, budget)
@@ -214,7 +224,46 @@ def random_cnn_sat(bench: Path, n: int, budget: float, seed0: int = 0) -> List[D
     return out
 
 
-def label_bench(bench: Path, twin_prefixes: List[str], budget: float, n_random_cnn: int = 0) -> Dict:
+def attack_hard_cnn_sat(bench: Path, n_target: int, budget: float, seed0: int = 100,
+                        max_seeds: int = 60) -> List[Dict]:
+    """SAT instances on tiny CNNs whose counterexample PGD does not find but exact MILP does.
+
+    Placed very close to the robustness threshold (16 bisection steps), the violating region is
+    tiny: a verifier must actually complete its proof procedure to decide these, so bugs in the
+    proof machinery (bounds, MILP encoding) cannot hide behind a successful attack.
+    """
+    from VeriStressGT.soundness.refverify import pgd_attack
+
+    tmp = bench / "_tmp_hcnn"
+    tmp.mkdir(parents=True, exist_ok=True)
+    out: List[Dict] = []
+    for seed in range(seed0, seed0 + max_seeds):
+        if len(out) >= n_target:
+            break
+        graph, spec, onnx_p, base = _random_cnn_problem("tcnn", seed, tmp, budget)
+        found = find_threshold(graph, spec.C, spec.center, spec.radius, budget=budget, bisections=16)
+        if found is None:
+            continue
+        k_lo, k_hi, hit = found
+        r = spec.radius * k_hi
+        lo = torch.tensor(spec.center - r, dtype=DTYPE).reshape((1,) + graph.input_shape)
+        hi = torch.tensor(spec.center + r, dtype=DTYPE).reshape((1,) + graph.input_shape)
+        C = torch.tensor(spec.C, dtype=DTYPE)
+        if any(pgd_attack(graph, C, lo, hi, seed=s)[1] <= 0 for s in range(5)):
+            continue  # attack finds it: not attack-hard
+        t = _write_twin(bench, base, "hard", k_hi, graph, spec, onnx_p, np.asarray(hit["witness"]), (k_lo, k_hi), budget)
+        if t is not None:
+            t["ground_truth"]["attack_hard"] = True
+            (bench / t["paths"]["meta"]).write_text(json.dumps(t, indent=2))
+            out.append(t)
+            print(f"[hard] {t['id']}: PGD fails, MILP witness margin {t['ground_truth']['witness_margin_f64']:.2e}",
+                  flush=True)
+    shutil.rmtree(tmp, ignore_errors=True)
+    return out
+
+
+def label_bench(bench: Path, twin_prefixes: List[str], budget: float, n_random_cnn: int = 0,
+                n_hard_cnn: int = 0) -> Dict:
     manifest = json.loads((bench / "manifest.json").read_text())
     base_instances = [i for i in manifest["instances"] if "_sat_" not in i["id"]]
     for stale in (bench / "instances").glob("*_sat_*"):   # regenerate twins from scratch
@@ -257,6 +306,8 @@ def label_bench(bench: Path, twin_prefixes: List[str], budget: float, n_random_c
 
     if n_random_cnn:
         twins += random_cnn_sat(bench, n_random_cnn, budget)
+    if n_hard_cnn:
+        twins += attack_hard_cnn_sat(bench, n_hard_cnn, budget)
 
     manifest["instances"] = base_instances + [
         {k: t[k] for k in ("id", "construction", "seed", "paths", "sha256", "args", "ground_truth", "variant")}
@@ -275,9 +326,11 @@ def main(argv=None) -> int:
                     help="Instance-id prefixes that get SAT twins.")
     ap.add_argument("--budget", type=float, default=20.0, help="Reference-verifier budget per bracket step (s).")
     ap.add_argument("--random_cnn", type=int, default=0, help="Number of random-CNN witness-SAT networks to add.")
+    ap.add_argument("--hard_cnn", type=int, default=0,
+                    help="Number of attack-hard tiny-CNN SAT instances (PGD fails, MILP finds a witness).")
     args = ap.parse_args(argv)
     torch.set_num_threads(1)
-    label_bench(Path(args.bench), args.twins, args.budget, args.random_cnn)
+    label_bench(Path(args.bench), args.twins, args.budget, args.random_cnn, args.hard_cnn)
     return 0
 
 
