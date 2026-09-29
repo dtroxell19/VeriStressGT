@@ -8,7 +8,7 @@
 # Verifier pool:
 #   sound controls    reference (in-house: attack + CROWN + exact MILP / BaB), ibp_only
 #   planted, tier (b) 12 reference mutants, one injected bug each (VeriStressGT.soundness.bugs)
-#   real              abcrown, pyrat, nnenum (each skipped if not installed)
+#   real              abcrown, pyrat, nnenum, neuralsat, marabou (each skipped if not installed)
 #   planted, tier (a) 6 output-level fault wrappers around each real verifier
 #
 # A verifier is flagged when any SAT/UNSAT verdict contradicts the instance label. The same

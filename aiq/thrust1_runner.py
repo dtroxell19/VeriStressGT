@@ -33,6 +33,7 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from VeriStressGT.soundness.bugs import MUTANT_BUGS, SOUND_CONTROLS, WRAPPER_BUGS, apply_wrapper  # noqa: E402
 from VeriStressGT.soundness.scoring import score  # noqa: E402
+from verifier_args import verifier_extra  # noqa: E402
 
 TWIN_BASES = ["milp_s0_a", "milp_s1_a", "milp_s2_a", "milp_s3_a", "corners_03"]
 N_RANDOM_CNN = 3
@@ -158,7 +159,7 @@ class Thrust1RunnerCLI(scfg.DataConfig):
     timeout = scfg.Value(60.0, type=float, help="Per-instance wall-clock timeout (s).", tags=["algo_param"])
     jobs = scfg.Value(4, type=int, help="Parallel instances for the in-house verifiers.", tags=["algo_param"])
     real_jobs = scfg.Value(2, type=int, help="Parallel instances for each real verifier.", tags=["algo_param"])
-    real_verifiers = scfg.Value(["abcrown", "pyrat", "nnenum"], help="Real verifiers to run (skipped if missing).",
+    real_verifiers = scfg.Value(["abcrown", "pyrat", "nnenum", "neuralsat", "marabou"], help="Real verifiers to run (skipped if missing).",
                                 tags=["algo_param"])
     mutant_bugs = scfg.Value(list(MUTANT_BUGS), help="Reference-verifier mutants to run.", tags=["algo_param"])
     wrapper_bugs = scfg.Value(list(WRAPPER_BUGS), help="Output-level faults applied to each real verifier.",
@@ -208,13 +209,7 @@ class Thrust1RunnerCLI(scfg.DataConfig):
                       "--synthetic_bug", bug, "--synthetic_budget", str(max(5.0, timeout - 5.0))])
             verdicts[name] = _load_statuses(out / "results.jsonl", iids)
 
-        real_extra = {
-            "abcrown": ["--abcrown_config", str(_resolve(config.abcrown_config))],
-            # --check/--attack enable pyrat's counterexample search (off by default); must come last
-            "pyrat": ["--pyrat_domains", "con_z", "--pyrat_device", "cpu", "--pyrat_library", "torch",
-                      "--pyrat_split_relu", "--no-pyrat_split", "--pyrat_split_heuristic", "better",
-                      "--pyrat_extra", "--check", "both", "--attack", "pgd"],
-        }
+        real_extra = verifier_extra(_resolve(config.abcrown_config), falsify=True)
         real_run, real_skipped = [], []
         for v in as_list(config.real_verifiers):
             print(f"\n=== real verifier: {v} ===", flush=True)

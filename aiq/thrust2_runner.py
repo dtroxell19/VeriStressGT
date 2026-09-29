@@ -35,6 +35,8 @@ from VeriStressGT.prediction.model import (FEATURE_SETS, VERIFIERS, anchor_time_
                                            design, evaluate_recorded, fit_full, load_training_rows,
                                            select_anchors)
 
+from verifier_args import verifier_extra  # noqa: E402
+
 ANCHOR_BENCH = "src/VeriStressGT/benchmarks/sweep_all"
 
 
@@ -132,7 +134,7 @@ class Thrust2RunnerCLI(scfg.DataConfig):
     ood_spec_path = scfg.Value("src/VeriStressGT/configs/thrust2_ood.yaml",
                                help="Spec used to (re)build the OOD benchmark with --rebuild.", tags=["algo_param"])
     run_dir = scfg.Value("thrust2_run", help="Output root for live verifier runs.", tags=["algo_param"])
-    live_verifiers = scfg.Value(["abcrown", "pyrat", "nnenum"], help="Verifiers run live (skipped if missing).",
+    live_verifiers = scfg.Value(["abcrown", "pyrat", "nnenum", "neuralsat", "marabou"], help="Verifiers run live (skipped if missing).",
                                 tags=["algo_param"])
     real_jobs = scfg.Value(2, type=int, help="Parallel instances per live verifier.", tags=["algo_param"])
     abcrown_config = scfg.Value("src/VeriStressGT/configs/abcrown_basic.yaml", help="alpha-beta-CROWN config.",
@@ -184,11 +186,7 @@ class Thrust2RunnerCLI(scfg.DataConfig):
             feats[iid] = instance_features(str(bench / inst["paths"]["onnx"]), str(bench / inst["paths"]["vnnlib"]))
 
         run_dir = _resolve(config.run_dir)
-        real_extra = {
-            "abcrown": ["--abcrown_config", str(_resolve(config.abcrown_config))],
-            "pyrat": ["--pyrat_domains", "con_z", "--pyrat_device", "cpu", "--pyrat_library", "torch",
-                      "--pyrat_split_relu", "--no-pyrat_split", "--pyrat_split_heuristic", "better"],
-        }
+        real_extra = verifier_extra(_resolve(config.abcrown_config), falsify=False)
         import pandas as pd
         ood: Dict[str, Dict] = {}
         pred_rows = []
