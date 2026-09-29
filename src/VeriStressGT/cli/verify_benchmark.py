@@ -145,6 +145,16 @@ def _make_mem_preexec(mem_bytes: int):
     return _fn
 
 
+def _kill_group(proc: "subprocess.Popen") -> None:
+    """SIGKILL the verifier's whole process group. It was started with start_new_session=True, so the
+    group id equals the leader's pid, which stays valid after the leader has been reaped."""
+    import signal
+    try:
+        os.killpg(proc.pid, signal.SIGKILL)
+    except (ProcessLookupError, PermissionError, OSError):
+        pass
+
+
 def _run_one(
     job: InstanceJob,
     verifier_name: str,
@@ -184,24 +194,30 @@ def _run_one(
     stdout = ""
     stderr = ""
 
+    # The verifier runs in its own session so a timeout can kill the whole process group. Killing
+    # only the direct child (e.g. `conda run`) leaves the real verifier running as an orphan that
+    # keeps consuming CPU and skews the timing of every later run.
+    proc = None
     try:
-        proc = subprocess.run(
+        proc = subprocess.Popen(
             cmd,
             cwd=str(workdir),
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             text=True,
-            timeout=timeout_s if timeout_s and timeout_s > 0 else None,
             env=os.environ.copy(),
+            start_new_session=True,
             preexec_fn=_make_mem_preexec(max_memory_bytes) if max_memory_bytes else None,
         )
-        rc = int(proc.returncode)
-        stdout = proc.stdout or ""
-        stderr = proc.stderr or ""
-    except subprocess.TimeoutExpired as e:
-        timed_out = True
-        rc = 124
-        stdout = (e.stdout or "") if isinstance(e.stdout, str) else ""
-        stderr = (e.stderr or "") if isinstance(e.stderr, str) else ""
+        try:
+            stdout, stderr = proc.communicate(timeout=timeout_s if timeout_s and timeout_s > 0 else None)
+            rc = int(proc.returncode)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            rc = 124
+            _kill_group(proc)
+            stdout, stderr = proc.communicate()
+        stdout, stderr = stdout or "", stderr or ""
     except Exception as e:
         rc = 1
         stderr = (
@@ -213,6 +229,8 @@ def _run_one(
         )
 
     wall = time.monotonic() - t0
+    if proc is not None:
+        _kill_group(proc)  # reap any descendants still alive after a normal exit
 
     stdout_path.write_text(stdout)
     stderr_path.write_text(stderr)
