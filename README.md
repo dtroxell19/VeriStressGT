@@ -2,12 +2,16 @@
 
 Benchmark framework for neural network verification. Generates provably robust (ONNX, VNNLIB) pairs with known ground-truth properties, then runs third-party verifiers on them in a standardized way.
 
+> **DARPA AIQ Phase 1 evaluation:** the submission card is `cards/thrust1_soundness.yaml` on the
+> `evaluation-card` branch. Setup, run command and expected results are in
+> [AIQ_README.md](AIQ_README.md); a summary is in [docs/aiq_phase1_summary.pdf](docs/aiq_phase1_summary.pdf).
+
 ## Setup
 
 **Requires:** Python 3.9+, git. Optional: CUDA GPU, [Gurobi license](https://www.gurobi.com/academia/academic-program-and-licenses/) (for MILP construction), MATLAB (for NNV verifier).
 
 ```bash
-git clone --recursive https://github.com/<NeurIPSAnon12345>/VeriStressGT.git
+git clone --recursive https://github.com/dtroxell19/VeriStressGT.git
 cd VeriStressGT
 bash scripts/bootstrap.sh
 conda activate VeriStressGT

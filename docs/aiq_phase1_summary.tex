@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{UCLA TA1 --- AIQ Phase 1 Submission Summary}
+\author{UCLA TA1 Team (VeriStressGT)}
+\date{September 29, 2026}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\paragraph{Submission.}
+Evaluation card \code{cards/thrust1\_soundness.yaml}, branch \code{evaluation-card} of
+\url{https://github.com/dtroxell19/VeriStressGT}. Submitted 9/29, ahead of the 10/9 deadline,
+because the submitter is unavailable for the two weeks after submission; they are back before
+preliminary results (10/30), so the results-repair window (10/30--11/13) is covered. Setup and
+run instructions are in \code{AIQ\_README.md} in the repository.
+
+\section{Approach}
+VeriStressGT tests neural-network verifiers on networks whose robustness answer is known by
+construction, so a wrong verdict is provably wrong. Existing benchmarks such as VNN-COMP have no
+ground truth and fall back on majority vote between verifiers.
+\begin{itemize}
+  \item \textbf{Benchmark:} 50 instances, pre-built in the repository. 24 are UNSAT by analytic
+  construction (exact-radius MILP, MEAP, corners, paired-bias CNN, contractive CNN, attention).
+  26 are SAT, each with a counterexample checked in float64 and onnxruntime float32; 4 of these
+  are attack-hard, so only a completed proof decides them.
+  \item \textbf{Verifier pool:} 2 sound in-house controls; 5 real verifiers
+  ($\alpha$-$\beta$-CROWN, PyRAT, nnenum, NeuralSAT, Marabou 2.0.0); and 42 deliberately buggy
+  verifiers: 12 mutants of our reference verifier plus 6 output-level faults on each real verifier.
+  \item \textbf{Scoring:} every definitive verdict is judged against the known label. The same
+  verdicts are also judged by majority vote, as a baseline.
+\end{itemize}
+
+\section{Metric and BAA alignment}
+The BAA metric is \code{gt\_scoring\_accuracy}: the fraction of all definitive verdicts that
+ground truth judges correctly, target $\geq 95\%$. It is 100\% in our runs, over 2{,}025 verdicts.
+
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Card symbol & Measures & Target & Result \\
+\midrule
+\code{gt\_scoring\_accuracy} (BAA) & Verdicts judged correctly by ground truth & $\geq 95\%$ & 100\% \\
+\code{gt\_detection\_rate} & Planted bugs that fired and were caught & $\geq 75\%$ (claim) & 100\% \\
+\code{mv\_full\_scoring\_accuracy} & Same verdicts judged by majority vote & baseline & 96.7\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Distinct models:} the instances span many distinct networks in three families
+  (MLPs, CNNs, attention models), well past the BAA minimum of two.
+  \item \textbf{Datasets:} synthetic constructions; the input data is part of each network's
+  construction.
+  \item \textbf{Claim:} the card passes only if ground truth scores 100\% of verdicts, flags no
+  sound control, and catches at least 75\% of the planted bugs that fired.
+\end{itemize}
+
+\section{Expected results}
+The run should end with \code{RESULT: VERIFIED}, with both metrics at 1.0 in the top-level
+\code{verdict.json}. Our reference run took 32 minutes on a MacBook Pro (Apple Silicon, 8\,GB,
+CPU only) with MAGNET v0.1.0. The card has been run on macOS; Linux x86\_64 is the expected
+evaluation platform.
+
+\textbf{Buggy verifiers caught} (42 planted, 39 fired)
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Labels used for scoring & Caught & Sound verifiers wrongly flagged \\
+\midrule
+Ground truth & 39/39 (100\%) & none \\
+Majority vote, one buggy verifier & 37/39 (95\%) & none \\
+Majority vote, full pool & 39/39 (100\%) & 3: \code{reference}, \code{ibp\_only}, real NeuralSAT \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Scoring accuracy} (2{,}025 definitive verdicts)
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Labels used for scoring & Correct & Wrongful accusations & Wrongful acquittals & Ties \\
+\midrule
+Ground truth & 2025/2025 (100\%) & 0 & 0 & 0 \\
+Majority vote, one buggy verifier & 2015/2025 (99.5\%) & 0 & 0 & 10 \\
+Majority vote, full pool & 1959/2025 (96.7\%) & 19 & 25 & 22 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+What can differ on other hardware, without changing the verdict or the metrics:
+\begin{itemize}
+  \item \textbf{Verdict counts:} timeouts depend on machine speed, so totals (2{,}025 verdicts,
+  39 fired bugs) can shift slightly. Ground-truth accuracy stays 100\% because the labels do not
+  depend on timing.
+  \item \textbf{Marabou:} Marabou 2.0.0 is nondeterministic. We saw it return false SAT on
+  \code{meap\_02}, \code{meap\_03} and \code{milp\_s2\_a}, and not every run hits all three. Each is
+  a real Marabou soundness bug that ground truth correctly flags.
+\end{itemize}
+
+\section{Scalability}
+TA2 scales the card with one parameter, \code{scale: N}, in the card's \code{algo\_params}. The
+runner builds a benchmark $N$ times larger with fresh seeds (\code{thrust1\_bench\_xN/}) and runs
+the same verifier pool on it.
+\begin{itemize}
+  \item \textbf{What grows:} $N$ re-seeded copies of every base network, each keeping its analytic
+  UNSAT certificate, plus $N$ times the random and attack-hard CNN SAT instances.
+  \item \textbf{Why results stay consistent:} every label is re-derived from construction and every
+  SAT witness is re-certified, so expected ground-truth accuracy is 100\% at any $N$.
+  \item \textbf{Tested:} at \code{scale: 2}, 98 instances (48 UNSAT, 50 SAT); all 50 witnesses
+  re-certified, ground-truth scoring 173/173, no control flagged (sound controls only, 9 minutes,
+  free size-limited Gurobi license).
+  \item \textbf{Needs:} \code{gurobipy} (installed by the setup script) to build larger benchmarks.
+\end{itemize}
+
+\section{Supporting evidence}
+On external benchmarks most planted bugs cannot be caught at all. We ran the same pool on VNN-COMP
+\code{mnist\_fc} (30 of 90 instances) and \code{oval21} (all 30), labelled only by attack-certified
+counterexamples, since nothing outside our constructions certifies robustness.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Benchmark & Bugs that fire & Caught by own labels & Verdicts checkable \\
+\midrule
+VeriStressGT & 39/42 & 39/42 & 100\% \\
+VNN-COMP \code{mnist\_fc} (30/90) & 19/42 & 6/42 & 21\% \\
+VNN-COMP \code{oval21} & 19/42 & 2/42 & 7\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Real bug found:} unmodified Marabou 2.0.0 answers UNSAT on \code{oval21} instance
+  \code{vb\_oval21\_0014}, which a certified counterexample shows is SAT.
+  \item \textbf{Subset:} more \code{mnist\_fc} instances can only make more bugs fire, so the subset
+  may understate full \code{mnist\_fc}; \code{scripts/run\_external\_comparison.sh} runs all 90.
+  \item \textbf{Thrust 2} (separate self-evaluation card, not the submission): per-verifier timeout
+  prediction AUC is 0.77--0.92 on held-out data and 0.87--0.96 on fresh networks, all above the 0.7
+  target.
+\end{itemize}
+
+\end{document}

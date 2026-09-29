@@ -33,6 +33,10 @@ so `magnet evaluate` fails on macOS unless a `chmod` that accepts `--` is first 
 ```bash
 magnet evaluate cards/thrust1_soundness.yaml
 ```
+**Expected:** `RESULT: VERIFIED`, and in the top-level `verdict.json` both metrics at 1.0
+("Scoring accuracy (ground truth)", "Buggy verifiers caught (ground truth)"). Full tables are under
+Thrust 1 > Sample run results.
+
 About 30 min on a laptop CPU. The runner stops with an error if a real verifier is not working,
 so a partial environment cannot silently shrink the verifier pool
 (`allow_missing_verifiers: True` in the card's `algo_params` overrides this).
