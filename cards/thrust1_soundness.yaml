@@ -8,7 +8,7 @@
 # Verifier pool:
 #   sound controls    reference (in-house: attack + CROWN + exact MILP / BaB), ibp_only
 #   planted, tier (b) 12 reference mutants, one injected bug each (VeriStressGT.soundness.bugs)
-#   real              abcrown, pyrat, nnenum, neuralsat, marabou (each skipped if not installed)
+#   real              abcrown, pyrat, nnenum, neuralsat, marabou 2.0.0 (setup: scripts/bootstrap.sh)
 #   planted, tier (a) 6 output-level fault wrappers around each real verifier
 #
 # A verifier is flagged when any SAT/UNSAT verdict contradicts the instance label. The same
@@ -18,6 +18,8 @@
 #   1. buggy verifiers caught: fraction of exercised planted bugs flagged
 #   2. scoring accuracy: fraction of all definitive verdicts judged correctly (no wrongful
 #      accusation of a correct verdict, no wrongful acquittal of a wrong one)
+#
+# Metrics: gt_scoring_accuracy (the BAA accuracy metric) and gt_detection_rate, see `symbols`.
 #
 # Claim: ground-truth labels score every verdict correctly (100%), flag no sound control, and
 # catch >= detection_threshold of the exercised planted bugs.
@@ -55,6 +57,34 @@ symbols:
     type: float
     value: 0.75
 
+  # BAA metric (>= 95% accuracy): fraction of all definitive verdicts that ground truth judges
+  # correctly. Written by the runner as a flat scalar in results.json.
+  gt_scoring_accuracy:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Scoring accuracy (ground truth)"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
+
+  gt_detection_rate:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Buggy verifiers caught (ground truth)"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
+
+  mv_full_scoring_accuracy:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Scoring accuracy (majority vote baseline)"
+
 claim:
   python: |
     gt = summary["ground_truth"]
@@ -83,5 +113,11 @@ pipeline:
       jobs: 4
       real_jobs: 2
       abcrown_config: 'src/VeriStressGT/configs/abcrown_thrust1.yaml'
+      # Scaling: N > 1 builds a benchmark N times larger (fresh seeds, labels re-derived from
+      # construction) in thrust1_bench_xN/ and runs the same pool on it. Needs gurobipy.
+      scale: 1
+      # False: stop with an error if a real verifier is not installed, instead of silently
+      # scoring a smaller pool. Check the environment first: python scripts/check_aiq_setup.py
+      allow_missing_verifiers: False
     out_paths:
       results_fpath: 'results.json'

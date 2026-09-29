@@ -12,9 +12,10 @@
 #   2. Installs Miniconda if conda is missing
 #   3. Pulls git submodules
 #   4. Installs VeriStressGT[generate]
-#   5. Sets up verifier conda envs (α-β-CROWN, NeuralSAT, nnenum)
-#   6. Writes a .env file with all env vars
-#   7. Runs VeriStressGT-doctor
+#   5. Installs MAGNET (pinned to the frozen AIQ Phase 1 API)
+#   6. Sets up verifier conda envs (α-β-CROWN, PyRAT, nnenum, NeuralSAT, Marabou)
+#   7. Writes a .env file with all env vars
+#   8. Runs VeriStressGT-doctor and scripts/check_aiq_setup.py
 #
 # After this script, the user is fully set up.
 # ═══════════════════════════════════════════════════════════════════════
@@ -154,7 +155,10 @@ fi
 if [ ! -f "$REPO_ROOT/.gitmodules" ]; then
     warn "No .gitmodules found — skipping submodule pull"
 else
-    git submodule update --init --recursive 2>/dev/null && \
+    # Only the verifiers the AIQ cards use (nnv needs MATLAB; Marabou is installed separately).
+    git submodule update --init --recursive \
+        src/VeriStressGT/verifiers/alpha-beta-CROWN src/VeriStressGT/verifiers/pyrat \
+        src/VeriStressGT/verifiers/nnenum src/VeriStressGT/verifiers/neuralsat 2>/dev/null && \
         ok "Submodules updated" || \
         warn "Submodule update had issues (some verifiers may be missing)"
 fi
@@ -184,10 +188,15 @@ else
     step 5 "Installing VeriStressGT[generate] (this may take a few minutes)"
 fi
 
-pip install -e '.[generate]' --retries 5 --timeout 120 || \
+pip install -e '.[generate,milp]' --retries 5 --timeout 120 || \
     { warn "First attempt failed (network timeout?), retrying..."; \
-      pip install -e '.[generate]' --retries 5 --timeout 120; }
-ok "VeriStressGT[generate] installed"
+      pip install -e '.[generate,milp]' --retries 5 --timeout 120; }
+ok "VeriStressGT[generate,milp] installed"
+
+# MAGNET, pinned to v0.1.0 (the API frozen for the AIQ Phase 1 evaluation)
+pip install "aiq-magnet @ git+https://github.com/AIQ-Kitware/aiq-magnet.git@v0.1.0" \
+    sortedcontainers coloredlogs termcolor beartype --retries 5 --timeout 120 && \
+    ok "MAGNET v0.1.0 installed" || warn "MAGNET install failed"
 
 if $SKIP_CONDA; then
     step 4 "Running doctor"
@@ -252,14 +261,18 @@ else
     warn "α-β-CROWN submodule not populated — skipping"
 fi
 
-# NeuralSAT
+# NeuralSAT (own env: it pins torch 2.1.2 / numpy 1.24; aiq/verifier_args.py runs its python)
 NS_DIR="$REPO_ROOT/src/VeriStressGT/verifiers/neuralsat"
 if [ -d "$NS_DIR" ] && [ -n "$(ls -A "$NS_DIR" 2>/dev/null)" ]; then
-    if [ -f "$NS_DIR/requirements.txt" ]; then
-        pip install -r "$NS_DIR/requirements.txt" --quiet 2>/dev/null && \
-            ok "NeuralSAT requirements installed" || \
-            warn "NeuralSAT requirements install had issues"
+    if conda env list 2>/dev/null | grep -q "^neuralsat "; then
+        ok "neuralsat conda env already exists"
+    else
+        conda create -n neuralsat python=3.10 -y --quiet 2>/dev/null && \
+            ok "neuralsat conda env created" || warn "neuralsat conda env creation failed"
     fi
+    conda run -n neuralsat pip install -r "$NS_DIR/requirements.txt" --quiet && \
+        ok "NeuralSAT requirements installed (in conda env 'neuralsat')" || \
+        warn "NeuralSAT requirements install had issues"
 else
     warn "NeuralSAT submodule not populated — skipping"
 fi
@@ -322,6 +335,10 @@ else
     warn "PyRAT submodule not populated — skipping"
 fi
 
+# Marabou 2.0.0 (wheel on Linux x86_64 / Intel macOS, source build elsewhere)
+bash "$SCRIPT_DIR/install_marabou.sh" && ok "Marabou 2.0.0 installed (in conda env 'marabou')" || \
+    warn "Marabou install failed (see above)"
+
 # ── Step 6: Write .env ───────────────────────────────────────────────
 step 7 "Writing .env"
 
@@ -346,6 +363,8 @@ source "$ENV_FILE"
 step 8 "Running doctor"
 echo ""
 VeriStressGT-doctor || true
+echo ""
+python "$SCRIPT_DIR/check_aiq_setup.py" || warn "AIQ setup check failed (see above)"
 
 echo ""
 echo -e "${GREEN}═══════════════════════════════════════════════════${NC}"

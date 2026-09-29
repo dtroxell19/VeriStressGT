@@ -29,6 +29,16 @@ def conda_env_python(env: str) -> str:
     return "python"
 
 
+def verifier_env_defaults() -> Dict[str, str]:
+    """Environment the verifier subprocesses need, defaulted to this checkout so a fresh clone runs
+    without sourcing .env. Values already set in the environment win."""
+    defaults = {
+        "ABCROWN_VNNCOMP2024_DIR": str(REPO_ROOT / "src" / "VeriStressGT" / "verifiers" / "alpha-beta-CROWN"),
+        "ABCROWN_CONDA_ENV": "alpha-beta-crown",
+    }
+    return {k: os.environ.get(k) or v for k, v in defaults.items()}
+
+
 def verifier_extra(abcrown_config: Path, *, falsify: bool) -> Dict[str, List[str]]:
     """Extra args per verifier. ``falsify`` turns on pyrat's counterexample search (Thrust 1)."""
     return {

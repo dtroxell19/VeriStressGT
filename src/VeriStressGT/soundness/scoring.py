@@ -52,7 +52,8 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
           base_of: Optional[Dict[str, str]] = None) -> Dict:
     """
     verdicts:     verifier -> instance -> status (lower-case)
-    ground_truth: instance -> "sat" | "unsat"
+    ground_truth: instance -> "sat" | "unsat" | None (unknown: nothing is flagged on it, and its
+                  verdicts are left out of scoring accuracy, counted as "unknown_truth")
     planted:      buggy verifier -> how its bug fails ("false_unsat" / "false_sat")
     controls:     verifiers known to be sound (must never be flagged)
     others:       unmodified real verifiers (soundness unknown a priori)
@@ -115,7 +116,8 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
         v for v in honest if per[v]["mv_full_wrongful"])
     summary["majority_one_buggy"]["sound_verifiers_penalized"] = sorted(
         v for v in honest if per[v]["mv_one_buggy_wrongful"])
-    mv_label_errors = [iid for iid in iids if full_mv[iid] is not None and full_mv[iid] != ground_truth[iid]]
+    mv_label_errors = [iid for iid in iids if full_mv[iid] is not None and ground_truth[iid] is not None
+                       and full_mv[iid] != ground_truth[iid]]
     summary["majority_full"]["label_errors"] = mv_label_errors
     summary["majority_full"]["unresolved"] = [iid for iid in iids if full_mv[iid] is None]
 
@@ -132,11 +134,14 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
     }
     for method, labels_for in labellings.items():
         acc = {"judgments": 0, "correctly_scored": 0, "wrongful_accusations": 0,
-               "wrongful_acquittals": 0, "unscored": 0}
+               "wrongful_acquittals": 0, "unscored": 0, "unknown_truth": 0}
         for v in all_v:
             labels = labels_for(v)
             for iid, s in verdicts[v].items():
                 if s not in DEFINITIVE:
+                    continue
+                if ground_truth[iid] is None:
+                    acc["unknown_truth"] += 1
                     continue
                 acc["judgments"] += 1
                 truly_correct = s == ground_truth[iid]

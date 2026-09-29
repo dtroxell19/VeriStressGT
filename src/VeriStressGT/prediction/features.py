@@ -241,7 +241,8 @@ def features_from_onnx(onnx_path: str) -> dict:
 
 def profile_features(onnx_path: str, vnnlib_path: str) -> Dict[str, float]:
     from VeriStressGT.difficulty_profile.profile import estimate_profile
-    p = estimate_profile(onnx_path, vnnlib_path, verbose=False, atau_n_samples=ATAU_N_SAMPLES).to_dict()
+    # fixed seed: the profile samples inputs, so unseeded features (and live AUCs) vary run to run
+    p = estimate_profile(onnx_path, vnnlib_path, verbose=False, atau_n_samples=ATAU_N_SAMPLES, seed=0).to_dict()
     out = {}
     for k, src in PROFILE_SOURCE.items():
         v = p.get(src)

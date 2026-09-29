@@ -35,7 +35,7 @@ from VeriStressGT.prediction.model import (FEATURE_SETS, VERIFIERS, anchor_time_
                                            design, evaluate_recorded, fit_full, load_training_rows,
                                            select_anchors)
 
-from verifier_args import verifier_extra  # noqa: E402
+from verifier_args import verifier_env_defaults, verifier_extra  # noqa: E402
 
 ANCHOR_BENCH = "src/VeriStressGT/benchmarks/sweep_all"
 
@@ -48,7 +48,8 @@ def _resolve(p: str) -> Path:
 def _env() -> Dict[str, str]:
     src = str(REPO_ROOT / "src")
     pp = os.environ.get("PYTHONPATH", "")
-    return {**os.environ, "PYTHONUNBUFFERED": "1", "PYTHONPATH": src + (os.pathsep + pp if pp else "")}
+    return {**os.environ, **verifier_env_defaults(), "PYTHONUNBUFFERED": "1",
+            "PYTHONPATH": src + (os.pathsep + pp if pp else "")}
 
 
 def _run(cmd: List[str]) -> None:

@@ -155,6 +155,21 @@ def _kill_group(proc: "subprocess.Popen") -> None:
         pass
 
 
+def _conda_env_first_on_path(conda_env: str) -> Dict[str, str]:
+    """os.environ with the conda env's bin/ first on PATH.
+
+    `conda run` does not override PATH entries that precede it, so an active venv (or any other
+    `python` earlier on PATH) would otherwise run the verifier with the wrong interpreter."""
+    env = os.environ.copy()
+    conda_exe = os.environ.get("CONDA_EXE") or shutil.which("conda")
+    if conda_exe:
+        env_bin = Path(conda_exe).resolve().parents[1] / "envs" / conda_env / "bin"
+        if env_bin.is_dir():
+            env["PATH"] = str(env_bin) + os.pathsep + env.get("PATH", "")
+            env.pop("VIRTUAL_ENV", None)
+    return env
+
+
 def _run_one(
     job: InstanceJob,
     verifier_name: str,
@@ -185,6 +200,7 @@ def _run_one(
             or "conda"
         )
         cmd = [conda_exe, "run", "-n", conda_env, "--no-capture-output"] + cmd
+    sub_env = _conda_env_first_on_path(conda_env) if conda_env else os.environ.copy()
 
     # monotonic: on macOS it does not advance while the machine sleeps, so a suspended laptop does
     # not inflate recorded runtimes (the subprocess timeout is also monotonic-based).
@@ -205,7 +221,7 @@ def _run_one(
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            env=os.environ.copy(),
+            env=sub_env,
             start_new_session=True,
             preexec_fn=_make_mem_preexec(max_memory_bytes) if max_memory_bytes else None,
         )

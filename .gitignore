@@ -44,3 +44,9 @@ thrust2_ood_bench/**/*.compiled
 !src/VeriStressGT/benchmarks/**/*.onnx
 src/VeriStressGT/benchmarks/**/*.onnx.data
 .DS_Store
+
+# Scaled benchmarks and runs (thrust1_runner --scale N)
+*_bench_x*/
+*_run_x*/
+.deps/
+ext_runs/

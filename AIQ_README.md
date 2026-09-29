@@ -1,53 +1,58 @@
 ## AIQ Flow
-To setup/run, complete the following:
 
-### Benchmark Setup
+**Phase 1 submission card: `cards/thrust1_soundness.yaml`.** The other cards are for
+self-evaluation.
+
+### Setup (one command)
+Needs git and a C/C++ toolchain; conda is installed if missing. Tested on macOS (Apple Silicon);
+Linux x86_64 is the expected evaluation platform.
 ```bash
-git clone --recursive git@github.com:dtroxell19/VeriStressGT.git
+git clone https://github.com/dtroxell19/VeriStressGT.git
 cd VeriStressGT
-git fetch origin
-git checkout -b evaluation-card origin/evaluation-card
-bash scripts/bootstrap.sh
+git checkout evaluation-card
+bash scripts/bootstrap.sh            # envs: VeriStressGT, alpha-beta-crown, pyrat, nnenum, neuralsat, marabou
 conda activate VeriStressGT
+python scripts/check_aiq_setup.py    # runs every real verifier on one UNSAT + one SAT instance
 ```
+`bootstrap.sh` installs MAGNET pinned to `v0.1.0` (the frozen Phase 1 API) into the `VeriStressGT`
+env, and each verifier into its own conda env. The runners locate the envs by name, and the
+α-β-CROWN checkout by default, so no environment variables are needed.
 
-### MAGNET Setup
+**Marabou** is pinned to 2.0.0 (`scripts/install_marabou.sh`). PyPI has 2.0.0 wheels only for
+Linux x86_64 and Intel macOS; on Apple Silicon and Linux aarch64 the script builds the `v2.0.0`
+tag from source (30-60 min). The Intel wheel crashes under Rosetta on macOS 14, so it is not used.
+
+**Gurobi.** `gurobipy` (pip, free size-limited license) is needed only to rebuild or scale the
+benchmark; the committed `thrust1_bench/` runs without it.
+
+**macOS + MAGNET v0.1.0.** Its job scripts run `chmod +x -- <file>`, which macOS `chmod` rejects,
+so `magnet evaluate` fails on macOS unless a `chmod` that accepts `--` is first on `PATH`
+(e.g. GNU coreutils). Linux is unaffected.
+
+### Run
 ```bash
-pip install git+https://github.com/AIQ-Kitware/aiq-magnet.git
-
-# Additional deps needed by Gurobi-based constructions
-pip install sortedcontainers coloredlogs termcolor beartype gurobipy 
+magnet evaluate cards/thrust1_soundness.yaml
 ```
+About 30 min on a laptop CPU. The runner stops with an error if a real verifier is not working,
+so a partial environment cannot silently shrink the verifier pool
+(`allow_missing_verifiers: True` in the card's `algo_params` overrides this).
 
-### α-β-CROWN Environment Variables
-From root directory of repo:
-```bash
-export ABCROWN_VNNCOMP2024_DIR="$(pwd)/src/VeriStressGT/verifiers/alpha-beta-CROWN"
-export ABCROWN_CONDA_ENV="alpha-beta-crown"
-```
+**Metrics** (declared with `define_metric`, reported in the top-level `verdict.json`):
+`gt_scoring_accuracy` (fraction of all definitive verdicts that ground truth judges correctly;
+the BAA accuracy metric) and `gt_detection_rate` (fraction of exercised planted bugs caught).
+`mv_full_scoring_accuracy` is the majority-vote baseline, shown for comparison.
 
-### Other verifiers (Thrust 1 and Thrust 2 cards)
-Each real verifier is skipped if it is not installed. From the repo root:
-```bash
-git submodule update --init src/VeriStressGT/verifiers/{pyrat,nnenum,neuralsat}
-
-# NeuralSAT: its own env (pins torch 2.1.2 / numpy 1.24; uses gurobipy)
-conda create -y -n neuralsat python=3.10
-conda run -n neuralsat pip install -r src/VeriStressGT/verifiers/neuralsat/requirements.txt
-
-# Marabou: the maraboupy wheel (no C++ build). scripts/marabou_env.sh runs the in-process
-# runner (scripts/marabou_maraboupy.py) with this env; maraboupy's ONNX reader needs torch.
-conda create -y -n marabou python=3.10
-conda run -n marabou pip install maraboupy onnx onnxruntime torch
-```
-On macOS only maraboupy 1.0.0 is on PyPI. It lacks the vnnlib loader of 2.x, so the runner encodes
-the input box and the output disjunction itself (`addDisjunctionConstraint`).
+### Scaling
+Set `scale: N` in the card's `algo_params`. The runner builds (once) a benchmark with `N`
+re-seeded copies of every base network, each with its analytic certificate, plus `N` times the
+random and attack-hard CNN SAT instances, in `thrust1_bench_xN/`, and runs the same pool on it.
+Every label is re-derived from construction, so the claim should hold unchanged at any scale.
 
 ### Evaluation cards
 
 | Card | Thrust | Metric |
 |------|--------|--------|
-| `cards/thrust1_soundness.yaml` | 1 (primary) | Buggy verifiers caught and scoring accuracy, ground-truth labels vs. majority vote |
+| `cards/thrust1_soundness.yaml` | 1 (**submission**) | Scoring accuracy and buggy verifiers caught, ground-truth labels vs. majority vote |
 | `cards/thrust2_timeout_prediction.yaml` | 2 | Per-verifier timeout-prediction AUC (target >= 0.7), held-out and live out-of-distribution |
 | `cards/evaluation.yaml` | 2 (supporting) | Mini sweep: per-verifier correctness + per-component timeout AUC |
 
@@ -114,54 +119,63 @@ both only try to prove UNSAT and never report SAT.
 
 ### Sample run results
 
-**Machine:** MacBook Pro (Apple Silicon), CPU only. **Config:** card defaults (60 s timeout,
-4 parallel in-house jobs, 2 parallel real-verifier jobs, abcrown + pyrat + nnenum + neuralsat +
-marabou), plugged in and awake. The full card run takes about 31 min.
+**Command:** `magnet evaluate cards/thrust1_soundness.yaml` with MAGNET v0.1.0 (card defaults:
+60 s timeout, 4 parallel in-house jobs, 2 parallel real-verifier jobs). **Machine:** MacBook Pro
+(Apple Silicon, 8 GB), CPU only, plugged in. **Verifiers:** abcrown, pyrat, nnenum, neuralsat,
+marabou 2.0.0 (source build). Card run takes about 32 min. **Result: VERIFIED**; metrics in
+`verdict.json`: scoring accuracy 1.0, buggy verifiers caught 1.0.
 
 Benchmark: 50 instances (24 UNSAT, 26 SAT, including 4 attack-hard tiny-CNN SAT instances where
 PGD fails and only a completed proof procedure decides the instance).
 
-**1. Buggy verifiers caught** (42 planted; 4 never exercised, so rates are out of 38)
+**1. Buggy verifiers caught** (42 planted; 3 never exercised, so rates are out of 39)
 
 | Labels used for scoring | Caught | Sound verifiers flagged |
 |---|---|---|
-| Ground truth | **38/38 (100%)** | none |
-| Majority vote, one buggy verifier in the pool | 37/38 (97%) | none |
-| Majority vote, full pool | 37/38 (97%) | **3**: `reference`, `ibp_only`, and the real `neuralsat` |
+| Ground truth | **39/39 (100%)** | none |
+| Majority vote, one buggy verifier in the pool | 37/39 (95%) | none |
+| Majority vote, full pool | 39/39 (100%) | **3**: `reference`, `ibp_only`, and the real `neuralsat` |
 
-**2. Scoring accuracy** (each of the 1,992 definitive verdicts across all verifiers is one judgment)
+**2. Scoring accuracy** (each of the 2,025 definitive verdicts across all verifiers is one judgment)
 
 | Labels used for scoring | Correctly scored | Wrongful accusations | Wrongful acquittals | Unscored (ties) |
 |---|---|---|---|---|
-| Ground truth | **1992/1992 (100%)** | 0 | 0 | 0 |
-| Majority vote, one buggy verifier in the pool | 1984/1992 (99.6%) | 0 | 0 | 8 |
-| Majority vote, full pool | 1945/1992 (97.6%) | 12 | 13 | 22 |
+| Ground truth | **2025/2025 (100%)** | 0 | 0 | 0 |
+| Majority vote, one buggy verifier in the pool | 2015/2025 (99.5%) | 0 | 0 | 10 |
+| Majority vote, full pool | 1959/2025 (96.7%) | 19 | 25 | 22 |
 
 A wrongful accusation calls a correct verdict wrong; a wrongful acquittal calls a wrong verdict
 correct. Ground-truth SAT labels are re-certified from their witnesses on every run, so the 100%
 is checked, not assumed.
 
-- **Real finding: Marabou (maraboupy 1.0.0) returns false SAT on `meap_02` and `meap_03`.** Both
-  are provably robust. Marabou's returned assignment lies in the box, but evaluating the network
-  there (Marabou's own output values agree with onnxruntime) gives the true class a lead of 0.001,
-  so the property is not violated. Marabou's constraint tolerance absorbs MEAP's certified margin
-  (gamma = 0.001). This matches the paper's Table 4, where Marabou also returned false SAT claims.
-  Ground truth flags it; so does majority vote here, because the other verifiers answer UNSAT.
+- **Real finding: Marabou 2.0.0 returns false SAT on provably robust instances**, flagged by
+  ground truth on `meap_02`, `meap_03` and `milp_s2_a` in this run. On `meap_*` its assignment
+  leaves the true class 0.001 ahead: the constraint tolerance absorbs MEAP's certified margin
+  (gamma = 0.001). On `milp_s2_a` (eps = 0.99 r\*) the output values Marabou reports at its own
+  assignment disagree with evaluating the network there (onnxruntime: true class ahead by 0.0036).
+  Marabou 2.0.0 is also **not deterministic**: the same command on `milp_s2_a` returns UNSAT on
+  some runs and SAT on others. Which of these instances Marabou gets wrong can therefore vary
+  between runs; the ground-truth scoring (100%) does not. Matches the paper's Table 4, where
+  Marabou also made false SAT claims.
 - **Not exercised:** `pyrat+crash_as_sat` (pyrat never crashed), and
-  `abcrown+/nnenum+/marabou+attention_unsat_to_sat` (none of these produced an UNSAT on an attention
-  model to flip).
+  `abcrown+/nnenum+attention_unsat_to_sat` (neither produced an UNSAT on an attention model to
+  flip).
 - **Hard-to-expose bugs:** `mutant:conv_bias_dropped` and `mutant:weights_fp16` only produce wrong
   answers when the attack fails and the proof procedure decides, which happens on the attack-hard
   CNN instances. `mutant:hwc_layout` goes wrong on a single instance (`rcnn_2_sat_near`), the only
   multi-channel SAT instance whose scrambled box excludes every counterexample.
-- **Majority vote, one buggy verifier** misses `neuralsat+crash_as_sat`: its false SATs land on
-  instances where the vote ties.
-- **Majority vote, full pool** misses `neuralsat+timeout_as_unsat`, leaves 22 verdicts unscored
-  by ties, and flags three sound verifiers for correct answers, including real NeuralSAT.
+- **Majority vote, one buggy verifier** misses `marabou+crash_as_sat` and `neuralsat+crash_as_sat`:
+  their false SATs land on instances where the vote ties.
+- **Majority vote, full pool** leaves 22 verdicts unscored by ties and flags three sound verifiers
+  for correct answers, including real NeuralSAT.
 - **pyrat false UNSAT (prove-only mode):** with counterexample search off, unmodified pyrat
   (`con_z`, torch float32) reported `tcnn_2_sat_near` as robust. Exact rational arithmetic on the
   model's weights confirms the stored witness lies in the box with margin -2.99e-6. With the attack
   enabled, pyrat finds the counterexample first.
+
+**Scaling check** (`scale: 2`, sound controls only, restricted Gurobi license): 98 instances
+(48 UNSAT, 50 SAT, all 50 witnesses re-certified), ground-truth scoring 173/173, no control
+flagged; build + run 9 min.
 
 ![Thrust 1 verdict matrix](assets/thrust1_verdict_matrix.png)
 
@@ -201,37 +215,36 @@ against the table.
 **Run it on an awake, plugged-in machine.** Runtimes are measured with a monotonic clock, so a
 sleeping laptop does not inflate them, but a suspended run does not progress either.
 
+> **Stale for Marabou:** the sample results below were run with maraboupy 1.0.0, before Marabou
+> was pinned to 2.0.0. Re-run this card before quoting Marabou's live numbers.
+
 ### Sample run results
 
 **Machine:** MacBook Pro (Apple Silicon), CPU only, plugged in and awake. **Config:** card
-defaults (120 s horizon, five live verifiers). Full run about 70 min.
+defaults (120 s horizon, five live verifiers, Marabou 2.0.0). Full run about 70 min. Model fits and
+profile features are seeded, so re-scoring the same live runs reproduces every number exactly.
 
 | Verifier | Held-out AUC, size + profile | Size only | Profile only | Live OOD AUC (timeouts) |
 |---|---|---|---|---|
-| abcrown | **0.825** ± 0.047 | 0.754 | 0.825 | **0.808** (4/30) |
+| abcrown | **0.825** ± 0.047 | 0.754 | 0.825 | **0.865** (4/30) |
 | neuralsat | **0.902** ± 0.042 | 0.861 | 0.745 | **0.926** (9/27) |
-| marabou | **0.768** ± 0.058 | 0.675 | 0.774 | 0.622 (10/19) |
-| nnenum | **0.897** ± 0.066 | 0.755 | 0.844 | **0.963** (6/15) |
-| pyrat | **0.919** ± 0.027 | 0.864 | 0.851 | **0.890** (10/30) |
+| marabou | **0.768** ± 0.058 | 0.675 | 0.774 | **0.872** (12/27) |
+| nnenum | **0.897** ± 0.064 | 0.755 | 0.844 | **0.963** (6/15) |
+| pyrat | **0.920** ± 0.026 | 0.864 | 0.851 | **0.890** (10/30) |
 
 Live instances a verifier cannot handle (errors, e.g. nnenum and Marabou on attention models) are
 excluded from its live AUC; the denominators above show how many were scored.
 
-- All five verifiers clear 0.7 on held-out networks. Four of the five predictors also transfer to
-  fresh networks run live on a different machine (0.81-0.96).
-- Marabou is the exception live (0.622). The recorded runs used the server's Marabou build (its
-  runner calls the 2.x maraboupy API), while this machine runs maraboupy 1.0.0, the only macOS
-  wheel on PyPI. The live verifier is therefore likely a different version with different search
-  behaviour, and it is scored on only 19 instances.
+- All five verifiers clear 0.7 on held-out networks, and all five predictors transfer to fresh
+  networks run live on a different machine (0.87-0.96).
+- Marabou's live AUC was 0.622 with maraboupy 1.0.0 (the only macOS wheel); with 2.0.0, the
+  version the recorded server runs used, it is 0.872.
 - The anchors show how much the environment matters. Local abcrown solves the server's attention
-  anchors (142-154 s there) in 7-8 s, about 20× faster. That is too fast for the slope to be
+  anchors (142-154 s there) in 7-8 s, about 20x faster. That is too fast for the slope to be
   identifiable, and the same holds for NeuralSAT. pyrat's slope is about 0.6-1.0, nnenum's
-  0.6-1.0, Marabou's 0.4. An earlier 60 s run gave abcrown a live AUC of about 0.67. That run was
-  not clean (leftover verifier processes overloaded the machine), but the direction is expected:
-  at 60 s the server labels call every attention model a timeout. At 120 s the predictor is less
-  exposed to this speed shift.
-- The anchored models were not better (pyrat 0.830 vs 0.890; nnenum and Marabou about unchanged),
-  so the uncalibrated live AUC is the headline number.
+  0.6-1.0, Marabou's 0.46. At 120 s the predictor is less exposed to this speed shift than at 60 s.
+- The anchored models were not better (pyrat 0.835 vs 0.890; nnenum and Marabou unchanged), so the
+  uncalibrated live AUC is the headline number.
 
 ![Thrust 2 timeout AUC](assets/thrust2_auc.png)
 

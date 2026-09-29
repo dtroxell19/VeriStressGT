@@ -33,11 +33,12 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from VeriStressGT.soundness.bugs import MUTANT_BUGS, SOUND_CONTROLS, WRAPPER_BUGS, apply_wrapper  # noqa: E402
 from VeriStressGT.soundness.scoring import score  # noqa: E402
-from verifier_args import verifier_extra  # noqa: E402
+from verifier_args import verifier_env_defaults, verifier_extra  # noqa: E402
 
-TWIN_BASES = ["milp_s0_a", "milp_s1_a", "milp_s2_a", "milp_s3_a", "corners_03"]
+TWIN_BASES = ["milp_s0_a", "milp_s1_a", "milp_s2_a", "milp_s3_a", "corners_03"]   # id prefixes
 N_RANDOM_CNN = 3
 N_HARD_CNN = 4
+SCALE_SEED_STRIDE = 1000   # seed offset of each scaled copy, clear of every seed in the base spec
 
 _UNSUPPORTED_KEYWORDS = ("unsupported", "not supported", "not implement", "notimplementederror",
                          "unsupportedop", "layer type", "no support")
@@ -52,7 +53,28 @@ def _env() -> Dict[str, str]:
     # Make subprocesses import this checkout even if another copy of VeriStressGT is installed.
     src = str(REPO_ROOT / "src")
     pp = os.environ.get("PYTHONPATH", "")
-    return {**os.environ, "PYTHONUNBUFFERED": "1", "PYTHONPATH": src + (os.pathsep + pp if pp else "")}
+    return {**os.environ, **verifier_env_defaults(), "PYTHONUNBUFFERED": "1",
+            "PYTHONPATH": src + (os.pathsep + pp if pp else "")}
+
+
+def _scaled_spec(spec_path: Path, scale: int, out: Path) -> Path:
+    """The base spec plus ``scale - 1`` re-seeded copies of every instance (ids suffixed ``_x<k>``).
+
+    Each copy is the same construction and arguments with a fresh seed, so it is a new network
+    with the same analytic UNSAT certificate. SAT twins follow automatically (TWIN_BASES are id
+    prefixes)."""
+    import yaml
+    spec = yaml.safe_load(spec_path.read_text())
+    seed0 = int((spec.get("defaults") or {}).get("seed", 0))
+    base = spec["instances"]
+    spec["name"] = f"{spec.get('name', 'thrust1')}_x{scale}"
+    spec["instances"] = base + [
+        {**inst, "id": f"{inst['id']}_x{k}", "seed": int(inst.get("seed", seed0)) + SCALE_SEED_STRIDE * k}
+        for k in range(1, scale) for inst in base
+    ]
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(yaml.safe_dump(spec, sort_keys=False))
+    return out
 
 
 def _run(cmd: List[str]) -> None:
@@ -110,15 +132,18 @@ def _plot_matrix(verdicts: Dict[str, Dict[str, str]], gt: Dict[str, str], order:
     from matplotlib.colors import ListedColormap
     from matplotlib.patches import Patch
 
-    iids = sorted(gt, key=lambda i: (gt[i] != "unsat", i))
-    code = {"correct": 0, "wrong": 1, "undecided": 2, "unsupported": 3}
-    colors = ["#4C9F70", "#D1495B", "#C9C9C9", "#FFFFFF"]
+    order_key = {"unsat": 0, "unknown": 1, "sat": 2}
+    iids = sorted(gt, key=lambda i: (order_key.get(gt[i], 1), i))
+    code = {"correct": 0, "wrong": 1, "undecided": 2, "unsupported": 3, "unlabelled": 4}
+    colors = ["#4C9F70", "#D1495B", "#C9C9C9", "#FFFFFF", "#8FB3D9"]
     M = []
     for v in order:
         row = []
         for i in iids:
             s = verdicts[v].get(i, "missing")
-            if s in ("sat", "unsat"):
+            if s in ("sat", "unsat") and gt[i] not in ("sat", "unsat"):
+                row.append(code["unlabelled"])      # decided, but nothing to check it against
+            elif s in ("sat", "unsat"):
                 row.append(code["correct"] if s == gt[i] else code["wrong"])
             elif s == "unsupported":
                 row.append(code["unsupported"])
@@ -126,16 +151,19 @@ def _plot_matrix(verdicts: Dict[str, Dict[str, str]], gt: Dict[str, str], order:
                 row.append(code["undecided"])
         M.append(row)
     fig, ax = plt.subplots(figsize=(max(8, 0.28 * len(iids) + 4), max(4, 0.32 * len(order) + 2)))
-    ax.imshow(M, cmap=ListedColormap(colors), vmin=0, vmax=3, aspect="auto", interpolation="nearest")
+    ax.imshow(M, cmap=ListedColormap(colors), vmin=0, vmax=4, aspect="auto", interpolation="nearest")
     ax.set_xticks(range(len(iids)))
     ax.set_xticklabels(iids, rotation=90, fontsize=7)
     ax.set_yticks(range(len(order)))
     ax.set_yticklabels([f"{v}  [{roles[v]}]{'  FLAGGED' if flagged[v] else ''}" for v in order], fontsize=8)
-    n_unsat = sum(1 for i in iids if gt[i] == "unsat")
-    ax.axvline(n_unsat - 0.5, color="black", lw=1.5)
-    ax.text((n_unsat - 1) / 2, -1.0, "ground truth UNSAT", ha="center", fontsize=9, fontweight="bold")
-    ax.text(n_unsat + (len(iids) - n_unsat - 1) / 2, -1.0, "ground truth SAT (witness)", ha="center",
-            fontsize=9, fontweight="bold")
+    x0 = 0
+    for lab, title in (("unsat", "ground truth UNSAT"), ("unknown", "no label"), ("sat", "ground truth SAT (witness)")):
+        n = sum(1 for i in iids if gt[i] == lab)
+        if n:
+            ax.text(x0 + (n - 1) / 2, -1.0, title, ha="center", fontsize=9, fontweight="bold")
+            x0 += n
+            if x0 < len(iids):
+                ax.axvline(x0 - 0.5, color="black", lw=1.5)
     ax.set_xticks([x - 0.5 for x in range(1, len(iids))], minor=True)
     ax.set_yticks([y - 0.5 for y in range(1, len(order))], minor=True)
     ax.grid(which="minor", color="white", lw=0.5)
@@ -168,6 +196,15 @@ class Thrust1RunnerCLI(scfg.DataConfig):
                                 help="alpha-beta-CROWN config (attack enabled so it can report SAT).",
                                 tags=["algo_param"])
     rebuild = scfg.Value(False, help="Regenerate the benchmark and its SAT twins.", tags=["algo_param"])
+    scale = scfg.Value(1, type=int, help="Benchmark size multiplier for scaling runs. scale > 1 builds (once) a "
+                                         "benchmark with scale re-seeded copies of every base instance and "
+                                         "scale times the random / attack-hard CNNs, in <bench_dir>_x<scale> "
+                                         "(verifier outputs in <run_dir>_x<scale>). Needs gurobipy.",
+                       tags=["algo_param"])
+    allow_missing_verifiers = scfg.Value(False, help="Continue (and report them as skipped) when a requested real "
+                                                     "verifier is not installed. Default: fail, so a partial "
+                                                     "environment cannot silently shrink the verifier pool.",
+                                         tags=["algo_param"])
     reuse_runs = scfg.Value(False, help="Skip verifiers whose results.jsonl already exists in run_dir "
                                         "(re-score only).", tags=["algo_param"])
     results_fpath = scfg.Value("results.json", help="Output JSON consumed by MAGNET.", tags=["out_path", "primary"])
@@ -176,24 +213,35 @@ class Thrust1RunnerCLI(scfg.DataConfig):
     def main(cls, argv=None, **kwargs):
         config = cls.cli(argv=argv, data=kwargs, strict=True, verbose=True)
         as_list = lambda v: v if isinstance(v, list) else [x.strip() for x in str(v).split(",") if x.strip()]
-        bench = _resolve(config.bench_dir)
-        run_dir = _resolve(config.run_dir)
+        scale = int(config.scale)
+        if scale < 1:
+            raise ValueError(f"scale must be >= 1, got {scale}")
+        suffix = f"_x{scale}" if scale > 1 else ""
+        bench = _resolve(str(config.bench_dir) + suffix)
+        run_dir = _resolve(str(config.run_dir) + suffix)
         timeout = float(config.timeout)
 
         # ── 1. benchmark ────────────────────────────────────────────────────────────────
         if config.rebuild or not (bench / "manifest.json").exists():
-            print("\n=== Building ground-truth benchmark ===", flush=True)
-            _run([sys.executable, "-m", "VeriStressGT.cli.create_benchmark", "--spec", str(_resolve(config.spec_path)),
+            print(f"\n=== Building ground-truth benchmark (scale {scale}) in {bench} ===", flush=True)
+            spec = _resolve(config.spec_path)
+            if scale > 1:
+                spec = _scaled_spec(spec, scale, run_dir / f"thrust1_x{scale}.yaml")
+            _run([sys.executable, "-m", "VeriStressGT.cli.create_benchmark", "--spec", str(spec),
                   "--out_dir", str(bench), "--overwrite"])
             _run([sys.executable, "-m", "VeriStressGT.soundness.ground_truth", "--bench", str(bench),
-                  "--twins", *TWIN_BASES, "--random_cnn", str(N_RANDOM_CNN), "--hard_cnn", str(N_HARD_CNN)])
+                  "--twins", *TWIN_BASES, "--random_cnn", str(N_RANDOM_CNN * scale),
+                  "--hard_cnn", str(N_HARD_CNN * scale)])
         manifest = json.loads((bench / "manifest.json").read_text())
         instances = {i["id"]: i for i in manifest["instances"]}
+        # "unknown": external benchmarks (aiq/build_external_bench.py) can only certify SAT instances
         gt = {iid: i["ground_truth"]["label"] for iid, i in instances.items()}
+        gt_known = {iid: (lab if lab in ("sat", "unsat") else None) for iid, lab in gt.items()}
         n_witness_ok = _certify_sat_labels(bench, instances)
         iids = sorted(gt)
         print(f"Benchmark: {len(iids)} instances ({sum(v == 'unsat' for v in gt.values())} UNSAT, "
-              f"{sum(v == 'sat' for v in gt.values())} SAT)", flush=True)
+              f"{sum(v == 'sat' for v in gt.values())} SAT, {sum(v is None for v in gt_known.values())} unlabelled)",
+              flush=True)
 
         # ── 2. verifier pool ────────────────────────────────────────────────────────────
         verdicts: Dict[str, Dict[str, str]] = {}
@@ -233,6 +281,12 @@ class Thrust1RunnerCLI(scfg.DataConfig):
             for wb in as_list(config.wrapper_bugs):
                 verdicts[f"{v}+{wb}"] = apply_wrapper(wb, st, instances)
 
+        if real_skipped and not config.allow_missing_verifiers:
+            raise SystemExit(
+                f"Real verifier(s) not working in this environment: {real_skipped}. Their logs are in "
+                f"{run_dir}/<verifier>/logs. Run `python scripts/check_aiq_setup.py` to diagnose, or pass "
+                f"allow_missing_verifiers=True to score without them.")
+
         # ── 3. scoring ──────────────────────────────────────────────────────────────────
         planted: Dict[str, str] = {}
         base_of: Dict[str, str] = {}
@@ -244,7 +298,7 @@ class Thrust1RunnerCLI(scfg.DataConfig):
                 planted[f"{v}+{wb}"] = WRAPPER_BUGS[wb]["fails_as"]
                 base_of[f"{v}+{wb}"] = v
         controls = ["reference", "ibp_only"]
-        res = score(verdicts, gt, planted, controls, real_run, base_of=base_of)
+        res = score(verdicts, gt_known, planted, controls, real_run, base_of=base_of)
         per, summ = res["per_verifier"], res["summary"]
         exercised = [v for v in planted if per[v]["exercised"]]
         gt_s, mv1, mvf = summ["ground_truth"], summ["majority_one_buggy"], summ["majority_full"]
@@ -253,13 +307,15 @@ class Thrust1RunnerCLI(scfg.DataConfig):
             "per_verifier": {v: {k: x for k, x in d.items()} for v, d in per.items()},
             "verdicts": verdicts,
             "ground_truth": gt,
+            "scale": scale,
             "n_instances": len(iids),
             "n_unsat": sum(v == "unsat" for v in gt.values()),
             "n_sat": sum(v == "sat" for v in gt.values()),
+            "n_unlabelled": sum(v is None for v in gt_known.values()),
             "n_planted": len(planted),
             "n_planted_exercised": len(exercised),
-            "real_verifiers_run": real_run,
-            "real_verifiers_skipped": real_skipped,
+            # nested: MAGNET 0.1.0 crashes on a top-level empty list (Symbols.simple_view)
+            "real_verifiers": {"run": real_run, "skipped": real_skipped},
             # flat scalars for the MAGNET dashboard
             "gt_detection_rate": gt_s["detection_rate"],
             "gt_control_false_flags": len(gt_s["controls_flagged"]),

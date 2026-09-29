@@ -146,11 +146,12 @@ def instance_split(df: pd.DataFrame, test_frac: float = 0.3, seed: int = 0) -> T
     return set(inst.instance_id) - test, test
 
 
-def _pipeline() -> Pipeline:
+def _pipeline(seed: int = 0) -> Pipeline:
+    # saga shuffles the data, so without random_state every fit (and every reported AUC) differs
     return Pipeline([
         ("impute", SimpleImputer(strategy="median")),
         ("scale", StandardScaler()),
-        ("clf", LogisticRegression(solver="saga", max_iter=5000, tol=1e-3)),  # l1_ratio set by the grid
+        ("clf", LogisticRegression(solver="saga", max_iter=5000, tol=1e-3, random_state=seed)),  # l1_ratio: grid
     ])
 
 
@@ -162,7 +163,7 @@ def fit(train: pd.DataFrame, cols: List[str], seed: int = 0):
     """Grouped-CV-tuned elastic-net logistic on one verifier's training rows."""
     X, y, g = design(train, cols), train.y.to_numpy(int), train.network_group.to_numpy()
     n_splits = min(4, len(np.unique(g)))
-    search = GridSearchCV(_pipeline(), GRID, scoring="roc_auc", cv=GroupKFold(n_splits=n_splits),
+    search = GridSearchCV(_pipeline(seed), GRID, scoring="roc_auc", cv=GroupKFold(n_splits=n_splits),
                           n_jobs=1, error_score=np.nan)
     import warnings
     from sklearn.exceptions import ConvergenceWarning

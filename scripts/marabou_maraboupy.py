@@ -43,6 +43,10 @@ def main() -> int:
         print("error: could not import maraboupy: %s" % e)
         return 2
 
+    # solve(filename=...) redirects fd 1 into the summary file, and Marabou 2.0 does not restore it
+    # when preprocessing already decides the query. Keep a copy of the real stdout for the verdict.
+    sys.stdout.flush()
+    real_stdout = os.dup(1)
     try:
         net = Marabou.read_onnx(args.network)
         options = Marabou.createOptions(
@@ -61,8 +65,14 @@ def main() -> int:
         else:  # maraboupy 1.x (the only PyPI wheel on some platforms): encode the property ourselves
             exit_code = _solve_legacy(net, args.prop, redirect, options)
     except Exception as e:
+        sys.stdout.flush()
+        os.dup2(real_stdout, 1)
         print("error: marabou solve failed: %s" % e)
         return 2
+
+    sys.stdout.flush()
+    os.dup2(real_stdout, 1)
+    os.close(real_stdout)
 
     ec = str(exit_code).strip()
     # Emit a line the adapter's parse_result recognizes (it matches ^unsat$ / ^sat$, and timeout /
