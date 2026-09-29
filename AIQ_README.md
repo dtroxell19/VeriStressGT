@@ -158,11 +158,17 @@ the five Difficulty-Profile components (`src/VeriStressGT/prediction/`).
    (`src/VeriStressGT/prediction/data/training_rows.csv`): 345 instances (225 synthetic, 120
    VNN-COMP mnist_fc / oval21) × abcrown, neuralsat, marabou, nnenum, pyrat. Every split is grouped
    by network, so no network is on both sides; this matters because VNN-COMP reuses 6 networks
-   across 120 properties. Results are the mean over 10 grouped splits. Labels use a 60 s horizon
-   (timed out, or solved only after 60 s), matching the live runs.
+   across 120 properties. Results are the mean over 10 grouped splits. Labels use a 120 s horizon
+   (timed out, or solved only after 120 s), matching the live runs.
 2. **Live out-of-distribution (reported).** `thrust2_ood_bench/` holds 30 fresh networks with
    seeds and parameters outside the training runs. The card computes their features on the fly,
-   runs abcrown and pyrat at a 60 s timeout, and scores predictors fitted on all recorded data.
+   runs abcrown, pyrat and nnenum at a 120 s timeout, and scores predictors fitted on all recorded
+   data.
+3. **Environment diagnostic.** For each live verifier, the card also re-runs 12 recorded anchor
+   instances from the hard end of its recorded runtimes. It fits local_s = overhead + slope[arch] ×
+   recorded_s, which shows how far that verifier's speed has shifted from the recording environment.
+   An anchored model is also reported, but is exploratory: with this few anchors it was not
+   reliably better than the uncalibrated one.
 
 **Claim.** Every verifier's mean held-out AUC is >= 0.7. Per the eval plan, this is not aligned
 to the BAA's 95% goal.
@@ -172,24 +178,32 @@ profile via `estimate_profile(..., atau_n_samples=600)`, with `a_tau` as the log
 local fingerprints (paper Eq. 14). `tests/test_prediction.py` checks the recomputed features
 against the table.
 
+**Run it on an awake, plugged-in machine.** Runtimes are measured with a monotonic clock, so a
+sleeping laptop does not inflate them, but a suspended run does not progress either.
+
 ### Sample run results
 
-**Machine:** MacBook Pro (Apple Silicon), CPU only. **Config:** card defaults. Full run about 17 min.
+**Machine:** MacBook Pro (Apple Silicon), CPU only, plugged in and awake. **Config:** card
+defaults (120 s horizon). Full run about 35 min.
 
-| Verifier | Held-out AUC, size + profile | Size only | Profile only | Live OOD AUC |
+| Verifier | Held-out AUC, size + profile | Size only | Profile only | Live OOD AUC (timeouts) |
 |---|---|---|---|---|
-| abcrown | **0.770** ± 0.046 | 0.668 | 0.567 | 0.673 (4/30 timeouts) |
-| neuralsat | **0.885** ± 0.059 | 0.892 | 0.844 | not run live |
-| marabou | **0.796** ± 0.070 | 0.692 | 0.810 | not run live |
-| nnenum | **0.901** ± 0.059 | 0.763 | 0.860 | not run live |
-| pyrat | **0.939** ± 0.036 | 0.876 | 0.859 | **0.947** (11/30 timeouts) |
+| abcrown | **0.825** ± 0.047 | 0.753 | 0.825 | **0.808** (4/30) |
+| neuralsat | **0.902** ± 0.042 | 0.861 | 0.745 | not run live |
+| marabou | **0.768** ± 0.057 | 0.677 | 0.774 | not run live |
+| nnenum | **0.898** ± 0.065 | 0.756 | 0.844 | **0.963** (6/15; nnenum errors on MEAP and attention) |
+| pyrat | **0.913** ± 0.035 | 0.864 | 0.851 | **0.890** (10/30) |
 
-- All five verifiers clear 0.7 on held-out networks. Adding the profile to size helps most for
-  abcrown (+0.10), marabou (+0.10) and nnenum (+0.14). For neuralsat, size alone is already as good.
-- On live runs, pyrat's predictor transfers well (0.947). abcrown's does not (0.673): the model
-  expects abcrown to time out on attention models, as it often did in the server runs, but the
-  local abcrown solves them in about 9 s. That is a change in the verifier's behaviour between
-  environments, not in the instances. With only 4 live abcrown timeouts, this AUC is also noisy.
+- All five verifiers clear 0.7 on held-out networks, and the predictors transfer to fresh networks
+  run live on a different machine (0.81-0.96).
+- The anchors show how much the environment matters. Local abcrown solves the server's attention
+  anchors (142-154 s there) in 7-8 s, about 20× faster, and too fast for the slope to be
+  identifiable. pyrat's slope is about 0.5-1.2 and nnenum's about 0.6-1.0. An earlier 60 s run gave
+  abcrown a live AUC of about 0.67. That run was not clean (leftover verifier processes overloaded
+  the machine), but the direction is expected: at 60 s the server labels call every attention model
+  a timeout. At 120 s the predictor is less exposed to this speed shift.
+- The anchored models were not better (pyrat 0.830 vs 0.890 uncalibrated; nnenum unchanged), so
+  the uncalibrated live AUC is the headline number.
 
 ![Thrust 2 timeout AUC](assets/thrust2_auc.png)
 

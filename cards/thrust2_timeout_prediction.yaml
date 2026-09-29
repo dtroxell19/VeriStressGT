@@ -6,10 +6,12 @@
 #   1. Recorded (primary): trained and tested on the paper's server runs (345 instances: 225
 #      synthetic constructor instances + 120 VNN-COMP mnist_fc / oval21 instances; abcrown,
 #      neuralsat, marabou, nnenum, pyrat). Test sets are network-grouped held-out splits,
-#      repeated over 10 seeds. Labels use the same horizon as the live runs (60 s).
+#      repeated over 10 seeds. Labels use the same horizon as the live runs (120 s).
 #   2. Live out-of-distribution (reported): 30 fresh networks (new seeds, off-grid parameters)
-#      are featurized on the fly and run through abcrown and pyrat at a 60 s timeout; the
-#      predictors, fitted on all recorded data, rank which instances time out.
+#      are featurized on the fly and run through abcrown, pyrat and nnenum at a 120 s timeout;
+#      the predictors, fitted on all recorded data, rank which instances time out. A few recorded
+#      anchor instances are re-run to measure how each verifier's speed differs from the recording
+#      environment (reported as a diagnostic).
 #
 # Claim: every verifier's mean held-out AUC is >= target_auc. The plan does not align this metric
 # to the BAA's 95% accuracy goal: timeouts depend on network size, verifier strengths and problem
@@ -59,7 +61,7 @@ pipeline:
   thrust2:
     executable: 'python -u aiq/thrust2_runner.py'
     algo_params:
-      horizon: 60
+      horizon: 120
       repeats: 10
       ood_bench_dir: 'thrust2_ood_bench'
       run_dir: 'thrust2_run'
