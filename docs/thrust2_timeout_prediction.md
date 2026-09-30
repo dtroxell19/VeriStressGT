@@ -3,8 +3,11 @@
 [Back to AIQ_README](../AIQ_README.md)
 
 ```bash
-magnet evaluate cards/thrust2_timeout_prediction.yaml
+magnet evaluate /path/to/VeriStressGT/cards/thrust2_timeout_prediction.yaml   # from any directory
 ```
+**Expected:** `RESULT: VERIFIED` (every verifier's held-out AUC >= 0.7), about 70 min on a laptop
+CPU. Metrics in `verdict.json`: worst-verifier held-out AUC 0.768, each verifier's held-out AUC,
+and worst live AUC on fresh networks 0.865 (numbers from the sample run below).
 
 One predictor per verifier: elastic-net logistic regression on network size/type features plus
 the five Difficulty-Profile components (`src/VeriStressGT/prediction/`).

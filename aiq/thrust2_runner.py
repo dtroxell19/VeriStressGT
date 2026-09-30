@@ -273,14 +273,20 @@ class Thrust2RunnerCLI(scfg.DataConfig):
             "ood": ood,
             "per_verifier_auc": per_v_auc,
             "min_verifier_auc": min(a for a in per_v_auc.values() if a is not None),
-            "verifiers_meeting_target": sorted(v for v, a in per_v_auc.items() if a is not None and a >= config.target_auc),
+            # nested: MAGNET 0.1.0 crashes on a top-level empty list (Symbols.simple_view)
+            "target_met": {"verifiers": sorted(v for v, a in per_v_auc.items()
+                                               if a is not None and a >= config.target_auc)},
             "ood_auc": {v: d["auc"] for v, d in ood.items()},
             "ood_auc_uncalibrated": {v: d["auc_uncalibrated"] for v, d in ood.items()},
             "n_ood_instances": len(insts),
         }
+        live = {v: d["auc_uncalibrated"] for v, d in ood.items() if d.get("auc_uncalibrated") is not None}
+        result["n_verifiers_meeting_target"] = len(result["target_met"]["verifiers"])
+        result["min_ood_auc"] = min(live.values()) if live else None   # headline live number (uncalibrated)
         for v in VERIFIERS:  # flat scalars for the MAGNET dashboard
             result[f"{v}_auc"] = per_v_auc[v]
             result[f"{v}_auc_size_only"] = recorded[v]["size"]["mean"]
+            result[f"{v}_ood_auc"] = live.get(v)
         out_fpath = ub.Path(config.results_fpath)
         out_fpath.parent.ensuredir()
         out_fpath.write_text(json.dumps({"result": result}, indent=2))
@@ -302,7 +308,7 @@ class Thrust2RunnerCLI(scfg.DataConfig):
         _plot(recorded, ood, out_dir / "thrust2_auc.png", config.target_auc)
         print(f"\nWrote {out_fpath}", flush=True)
         print(f"Verifiers with held-out AUC >= {config.target_auc}: "
-              f"{len(result['verifiers_meeting_target'])}/{len(VERIFIERS)} (min {result['min_verifier_auc']:.3f})",
+              f"{result['n_verifiers_meeting_target']}/{len(VERIFIERS)} (min {result['min_verifier_auc']:.3f})",
               flush=True)
 
 

@@ -13,6 +13,9 @@
 #      A few recorded anchor instances are re-run to measure how each verifier's speed differs from
 #      the recording environment (reported as a diagnostic).
 #
+# Metrics: min_verifier_auc (worst verifier's held-out AUC, the claim's quantity), each verifier's
+# held-out AUC, and min_ood_auc (worst live AUC on fresh networks), see `symbols`.
+#
 # Claim: every verifier's mean held-out AUC is >= target_auc. The plan does not align this metric
 # to the BAA's 95% accuracy goal: timeouts depend on network size, verifier strengths and problem
 # geometry, so the prediction problem is inherently noisy.
@@ -21,8 +24,9 @@ title: "VeriStressGT Thrust 2: Per-Verifier Timeout Prediction"
 description: |
   Trains one timeout predictor per verifier on recorded verifier runs using network size/type
   and Difficulty-Profile features, and reports held-out AUC over repeated network-grouped
-  splits. Also scores the predictors on live abcrown / pyrat runs over fresh, out-of-distribution
-  networks whose features are computed on the fly.
+  splits. Also scores the predictors on live runs of all five verifiers (abcrown, pyrat, nnenum,
+  neuralsat, marabou) over fresh, out-of-distribution networks whose features are computed on
+  the fly.
 
 version: 1.0
 
@@ -48,6 +52,76 @@ symbols:
   target_auc:
     type: float
     value: 0.7
+
+  min_verifier_auc:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Held-out timeout AUC, worst verifier (target >= 0.7)"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
+
+  abcrown_auc:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Held-out timeout AUC, alpha-beta-CROWN"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
+
+  neuralsat_auc:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Held-out timeout AUC, NeuralSAT"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
+
+  marabou_auc:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Held-out timeout AUC, Marabou"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
+
+  nnenum_auc:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Held-out timeout AUC, nnenum"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
+
+  pyrat_auc:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Held-out timeout AUC, PyRAT"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
+
+  min_ood_auc:
+    metadata:
+      kind: metric
+      display: true
+      display_name: "Live timeout AUC on fresh networks, worst verifier"
+      define_metric:
+        objective: maximize
+        aggregation_strategy:
+          type: mean
 
 claim:
   python: |
