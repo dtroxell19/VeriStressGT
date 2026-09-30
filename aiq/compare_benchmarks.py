@@ -12,7 +12,6 @@ benchmark. Per planted bug and benchmark:
              or only attack-certified counterexamples (external benchmarks, aiq/build_external_bench.py)
   labels+MV  caught by its own labels, with majority vote on the instances it has no label for: the
              best an external benchmark can do (VNN-COMP style). Equals labels on VeriStressGT.
-  MV-1 / MV  caught by majority vote alone (one buggy verifier in the pool / the whole pool)
 
 Coverage: how each benchmark can judge the pool's definitive verdicts: by its labels (certain), only
 by majority vote (correctness unverifiable), or not at all (a tied vote).
@@ -75,14 +74,12 @@ def main(argv=None) -> int:
             return "n/a"
         if not d["exercised"]:
             return "-"
-        marks = [m for m, k in (("L", "gt_flagged"), ("L+M", "labels_mv_flagged"), ("M1", "mv_one_buggy_flagged"),
-                                ("M", "mv_full_flagged")) if d.get(k)]
+        marks = [m for m, k in (("L", "gt_flagged"), ("L+M", "labels_mv_flagged")) if d.get(k)]
         return " ".join(marks) if marks else "fired, missed"
 
     lines += ["## Per planted bug", "",
               "`-` never fired · `L` caught by the benchmark's labels · `L+M` caught by its labels plus "
-              "majority vote · `M1` / `M` caught by majority vote alone (one buggy / full pool) · "
-              "`fired, missed` changed verdicts that nothing could expose", "",
+              "majority vote · `fired, missed` changed verdicts that nothing could expose", "",
               "| Planted bug | Fails as | " + " | ".join(names) + " |",
               "|---|---|" + "---|" * len(names)]
     for v in planted:

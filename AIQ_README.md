@@ -1,3 +1,7 @@
+> **Phase 1 submission summary (PDF):** [docs/aiq_phase1_summary.pdf](docs/aiq_phase1_summary.pdf)
+> covers the approach, the comparison with existing benchmarks, expected results, BAA alignment
+> and scalability, in 3 pages.
+
 ## AIQ Flow
 
 **Phase 1 submission card: `cards/thrust1_soundness.yaml`.** The other cards are for
@@ -44,7 +48,6 @@ so a partial environment cannot silently shrink the verifier pool
 **Metrics** (declared with `define_metric`, reported in the top-level `verdict.json`):
 `gt_scoring_accuracy` (fraction of all definitive verdicts that ground truth judges correctly;
 the BAA accuracy metric) and `gt_detection_rate` (fraction of exercised planted bugs caught).
-`mv_full_scoring_accuracy` is the majority-vote baseline, shown for comparison.
 
 ### Scaling
 Set `scale: N` in the card's `algo_params`. The runner builds (once) a benchmark with `N`
@@ -56,7 +59,7 @@ Every label is re-derived from construction, so the claim should hold unchanged 
 
 | Card | Thrust | Metric |
 |------|--------|--------|
-| `cards/thrust1_soundness.yaml` | 1 (**submission**) | Scoring accuracy and buggy verifiers caught, ground-truth labels vs. majority vote |
+| `cards/thrust1_soundness.yaml` | 1 (**submission**) | Scoring accuracy and buggy verifiers caught, with ground-truth labels |
 | `cards/thrust2_timeout_prediction.yaml` | 2 | Per-verifier timeout-prediction AUC (target >= 0.7), held-out and live out-of-distribution |
 | `cards/evaluation.yaml` | 2 (supporting) | Mini sweep: per-verifier correctness + per-component timeout AUC |
 
@@ -97,15 +100,13 @@ what exposes false UNSAT claims, the dangerous direction.
 Bug descriptions and the failure classes they model are in `src/VeriStressGT/soundness/bugs.py`.
 
 **Scoring.** A verifier is flagged when any SAT/UNSAT verdict contradicts the label;
-timeouts and errors never flag. The same verdicts are scored three ways:
+timeouts and errors never flag. On benchmarks without a label for every instance (the external
+comparison below), verdicts are also scored with the benchmark's labels plus majority vote on its
+unlabelled instances (`labels_plus_majority`), and `coverage` counts how many verdicts each
+benchmark can judge with certainty.
 
-- `ground_truth`: the benchmark labels.
-- `majority_one_buggy`: VNN-COMP-style majority vote over one planted verifier plus every
-  honest verifier. Ties are unresolved; an instance nobody decides is assumed robust.
-- `majority_full`: majority vote over the whole pool.
-
-**Claim.** Ground truth flags at least `detection_threshold` (0.75) of the planted verifiers and
-flags no sound control.
+**Claim.** The card passes only if ground truth scores 100% of verdicts correctly, flags no sound
+control, and catches at least `detection_threshold` (0.75) of the planted bugs that fired.
 
 For planted verifiers, a flag counts only on instances where the planted bug changed the verdict
 of the verifier it was derived from. Disagreements it merely inherits from that verifier are listed
@@ -132,25 +133,25 @@ marabou 2.0.0 (source build). Card run takes about 32 min. **Result: VERIFIED**;
 Benchmark: 50 instances (24 UNSAT, 26 SAT, including 4 attack-hard tiny-CNN SAT instances where
 PGD fails and only a completed proof procedure decides the instance).
 
-**1. Buggy verifiers caught** (42 planted; 3 never exercised, so rates are out of 39)
+| Metric | Result |
+|---|---|
+| Scoring accuracy (BAA metric) | **2025/2025 verdicts (100%)** |
+| Correct verdicts wrongly rejected / wrong verdicts wrongly accepted | 0 / 0 |
+| Buggy verifiers caught | **39/39 fired bugs (100%)** (42 planted; 3 never fired) |
+| Sound verifiers wrongly flagged | 0 |
 
-| Labels used for scoring | Caught | Sound verifiers flagged |
-|---|---|---|
-| Ground truth | **39/39 (100%)** | none |
-| Majority vote, one buggy verifier in the pool | 37/39 (95%) | none |
-| Majority vote, full pool | 39/39 (100%) | **3**: `reference`, `ibp_only`, and the real `neuralsat` |
+Ground-truth SAT labels are re-certified from their witnesses on every run, so the 100% is
+checked, not assumed.
 
-**2. Scoring accuracy** (each of the 2,025 definitive verdicts across all verifiers is one judgment)
+**Compared with existing benchmarks** (same pool on VNN-COMP `mnist_fc`, 30/90 instances, and
+`oval21`, each scored with the best labels it has; details in
+[experiments/external_benchmarks](experiments/external_benchmarks/README.md)):
 
-| Labels used for scoring | Correctly scored | Wrongful accusations | Wrongful acquittals | Unscored (ties) |
+| Benchmark | Bugs that fire | Caught by own labels | Caught by own labels + majority vote | Verdicts judged with certainty |
 |---|---|---|---|---|
-| Ground truth | **2025/2025 (100%)** | 0 | 0 | 0 |
-| Majority vote, one buggy verifier in the pool | 2015/2025 (99.5%) | 0 | 0 | 10 |
-| Majority vote, full pool | 1959/2025 (96.7%) | 19 | 25 | 22 |
-
-A wrongful accusation calls a correct verdict wrong; a wrongful acquittal calls a wrong verdict
-correct. Ground-truth SAT labels are re-certified from their witnesses on every run, so the 100%
-is checked, not assumed.
+| VeriStressGT | 39/42 | **39/42** | 39/42 | **100%** |
+| `mnist_fc` (30/90) | 19/42 | 6/42 | 14/42 | 21% |
+| `oval21` | 19/42 | 2/42 | 9/42 | 7% |
 
 - **Real finding: Marabou 2.0.0 returns false SAT on provably robust instances**, flagged by
   ground truth on `meap_02`, `meap_03` and `milp_s2_a` in this run. On `meap_*` its assignment
@@ -168,10 +169,6 @@ is checked, not assumed.
   answers when the attack fails and the proof procedure decides, which happens on the attack-hard
   CNN instances. `mutant:hwc_layout` goes wrong on a single instance (`rcnn_2_sat_near`), the only
   multi-channel SAT instance whose scrambled box excludes every counterexample.
-- **Majority vote, one buggy verifier** misses `marabou+crash_as_sat` and `neuralsat+crash_as_sat`:
-  their false SATs land on instances where the vote ties.
-- **Majority vote, full pool** leaves 22 verdicts unscored by ties and flags three sound verifiers
-  for correct answers, including real NeuralSAT.
 - **pyrat false UNSAT (prove-only mode):** with counterexample search off, unmodified pyrat
   (`con_z`, torch float32) reported `tcnn_2_sat_near` as robust. Exact rational arithmetic on the
   model's weights confirms the stored witness lies in the box with margin -2.99e-6. With the attack

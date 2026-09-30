@@ -11,8 +11,7 @@
 #   real              abcrown, pyrat, nnenum, neuralsat, marabou 2.0.0 (setup: scripts/bootstrap.sh)
 #   planted, tier (a) 6 output-level fault wrappers around each real verifier
 #
-# A verifier is flagged when any SAT/UNSAT verdict contradicts the instance label. The same
-# verdicts are also scored against VNN-COMP-style majority-vote labels as the baseline.
+# A verifier is flagged when any SAT/UNSAT verdict contradicts the instance label.
 #
 # Two reported metrics:
 #   1. buggy verifiers caught: fraction of exercised planted bugs flagged
@@ -28,8 +27,8 @@ title: "VeriStressGT Thrust 1: Bug Detection with Ground-Truth Labels"
 description: |
   Runs a pool of sound, real, and deliberately buggy neural-network verifiers on a benchmark
   whose robustness labels are known a priori (analytic UNSAT certificates and witness-certified
-  SAT instances). Reports the fraction of planted buggy verifiers exposed by ground truth, and
-  compares with majority voting, which both misses bugs and penalizes sound verifiers.
+  SAT instances). Reports the fraction of all verdicts that the known labels judge correctly (the
+  BAA accuracy metric) and the fraction of planted buggy verifiers they expose.
 
 version: 1.0
 
@@ -78,12 +77,6 @@ symbols:
         objective: maximize
         aggregation_strategy:
           type: mean
-
-  mv_full_scoring_accuracy:
-    metadata:
-      kind: metric
-      display: true
-      display_name: "Scoring accuracy (majority vote baseline)"
 
 claim:
   python: |

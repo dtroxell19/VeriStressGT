@@ -7,7 +7,10 @@
      - planted buggy verifiers, tier (b): reference-verifier mutants, one injected bug each
      - real verifiers (abcrown, pyrat; skipped if not installed)
      - planted buggy verifiers, tier (a): output-level fault wrappers around each real verifier
-3. Scores bug detection twice: against ground truth, and against VNN-COMP-style majority vote.
+3. Scores every verdict against the benchmark's labels. For benchmarks without full labels (external
+   ones, aiq/build_external_bench.py) it also scores the benchmark's labels plus majority vote on
+   its unlabelled instances, the most such a benchmark can do, and counts how many verdicts each
+   benchmark can judge at all (summary["coverage"]).
 
 Primary metric: the fraction of planted buggy verifiers flagged by the ground-truth labels
 (any definitive verdict contradicting ground truth), with no sound control flagged.
@@ -301,11 +304,13 @@ class Thrust1RunnerCLI(scfg.DataConfig):
         res = score(verdicts, gt_known, planted, controls, real_run, base_of=base_of)
         per, summ = res["per_verifier"], res["summary"]
         exercised = [v for v in planted if per[v]["exercised"]]
-        gt_s, mv1, mvf = summ["ground_truth"], summ["majority_one_buggy"], summ["majority_full"]
-        lmv, cov = summ["labels_plus_majority"], summ["coverage"]
+        gt_s, lmv, cov = summ["ground_truth"], summ["labels_plus_majority"], summ["coverage"]
+        # Majority vote on its own is not reported: it is only an ingredient of labels_plus_majority.
+        per_out = {v: {k: x for k, x in d.items() if not k.startswith(("mv_one_buggy", "mv_full"))}
+                   for v, d in per.items()}
         result = {
-            "summary": summ,
-            "per_verifier": {v: {k: x for k, x in d.items()} for v, d in per.items()},
+            "summary": {"ground_truth": gt_s, "labels_plus_majority": lmv, "coverage": cov},
+            "per_verifier": per_out,
             "verdicts": verdicts,
             "ground_truth": gt,
             "scale": scale,
@@ -320,15 +325,8 @@ class Thrust1RunnerCLI(scfg.DataConfig):
             # flat scalars for the MAGNET dashboard
             "gt_detection_rate": gt_s["detection_rate"],
             "gt_control_false_flags": len(gt_s["controls_flagged"]),
-            "mv_one_buggy_detection_rate": mv1["detection_rate"],
-            "mv_full_detection_rate": mvf["detection_rate"],
-            "mv_full_control_false_flags": len(mvf["controls_flagged"]),
-            "mv_full_sound_verifiers_penalized": len(mvf["sound_verifiers_penalized"]),
-            "mv_full_label_errors": len(mvf["label_errors"]),
             "sat_witnesses_recertified": n_witness_ok,
             "gt_scoring_accuracy": gt_s["scoring"]["scoring_accuracy"],
-            "mv_one_buggy_scoring_accuracy": mv1["scoring"]["scoring_accuracy"],
-            "mv_full_scoring_accuracy": mvf["scoring"]["scoring_accuracy"],
             "gt_detected": len(gt_s["detected"]),
             # the best an external benchmark can do: its own labels, majority vote where it has none
             "labels_mv_detection_rate": lmv["detection_rate"],
@@ -347,27 +345,25 @@ class Thrust1RunnerCLI(scfg.DataConfig):
         with open(out_dir / "thrust1_verifiers.csv", "w", newline="") as f:
             w = csv.writer(f)
             w.writerow(["verifier", "role", "fails_as", "exercised", "definitive", "gt_flagged", "gt_wrong",
-                        "mv_one_buggy_flagged", "mv_full_flagged", "mv_full_wrongful"])
+                        "labels_mv_flagged"])
             for v, d in per.items():
                 w.writerow([v, d["role"], d["fails_as"] or "", d.get("exercised", ""), d["definitive"],
-                            d["gt_flagged"], len(d["gt_evidence"]), d["mv_one_buggy_flagged"],
-                            d["mv_full_flagged"], len(d["mv_full_wrongful"])])
+                            d["gt_flagged"], len(d["gt_evidence"]), d["labels_mv_flagged"]])
         (out_dir / "thrust1_evidence.json").write_text(json.dumps(
-            {v: {"gt": d["gt_evidence"], "mv_full": d["mv_full_evidence"]} for v, d in per.items()}, indent=2))
+            {v: {"gt": d["gt_evidence"], "labels_mv": d["labels_mv_evidence"]} for v, d in per.items()}, indent=2))
         order = controls + real_run + sorted(planted)
         roles = {v: per[v]["role"] for v in order}
         _plot_matrix(verdicts, gt, order, roles, {v: per[v]["gt_flagged"] for v in order},
                      out_dir / "thrust1_verdict_matrix.png")
 
         print("\n── 1. Buggy verifiers caught (exercised planted bugs) ─────────", flush=True)
-        for label, s in (("ground truth", gt_s), ("majority (one buggy)", mv1), ("majority (full pool)", mvf),
-                         ("labels + majority", lmv)):
+        for label, s in (("benchmark labels", gt_s), ("labels + majority vote", lmv)):
             dr = s["detection_rate"]
             print(f"  {label:<22s} detected {len(s['detected'])}/{len(exercised)}"
                   f" ({dr:.0%})  controls flagged: {s['controls_flagged'] or 'none'}"
                   if dr is not None else f"  {label}: n/a", flush=True)
         print("\n── 2. Scoring accuracy (every definitive verdict judged correctly?) ──", flush=True)
-        for label, s in (("ground truth", gt_s), ("majority (one buggy)", mv1), ("majority (full pool)", mvf)):
+        for label, s in (("benchmark labels", gt_s),):
             sc = s["scoring"]
             print(f"  {label:<22s} {sc['correctly_scored']}/{sc['judgments']} ({sc['scoring_accuracy']:.1%})"
                   f"  wrongful accusations: {sc['wrongful_accusations']}"
