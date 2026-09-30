@@ -302,6 +302,7 @@ class Thrust1RunnerCLI(scfg.DataConfig):
         per, summ = res["per_verifier"], res["summary"]
         exercised = [v for v in planted if per[v]["exercised"]]
         gt_s, mv1, mvf = summ["ground_truth"], summ["majority_one_buggy"], summ["majority_full"]
+        lmv, cov = summ["labels_plus_majority"], summ["coverage"]
         result = {
             "summary": summ,
             "per_verifier": {v: {k: x for k, x in d.items()} for v, d in per.items()},
@@ -329,6 +330,12 @@ class Thrust1RunnerCLI(scfg.DataConfig):
             "mv_one_buggy_scoring_accuracy": mv1["scoring"]["scoring_accuracy"],
             "mv_full_scoring_accuracy": mvf["scoring"]["scoring_accuracy"],
             "gt_detected": len(gt_s["detected"]),
+            # the best an external benchmark can do: its own labels, majority vote where it has none
+            "labels_mv_detection_rate": lmv["detection_rate"],
+            "labels_mv_detected": len(lmv["detected"]),
+            # how each definitive verdict can be judged (dict: MAGNET lifts only top-level keys)
+            "coverage": cov,
+            "coverage_judged_by_labels": cov["judged_by_labels"] / cov["verdicts"] if cov["verdicts"] else None,
         }
         out_fpath = ub.Path(config.results_fpath)
         out_fpath.parent.ensuredir()
@@ -353,7 +360,8 @@ class Thrust1RunnerCLI(scfg.DataConfig):
                      out_dir / "thrust1_verdict_matrix.png")
 
         print("\n── 1. Buggy verifiers caught (exercised planted bugs) ─────────", flush=True)
-        for label, s in (("ground truth", gt_s), ("majority (one buggy)", mv1), ("majority (full pool)", mvf)):
+        for label, s in (("ground truth", gt_s), ("majority (one buggy)", mv1), ("majority (full pool)", mvf),
+                         ("labels + majority", lmv)):
             dr = s["detection_rate"]
             print(f"  {label:<22s} detected {len(s['detected'])}/{len(exercised)}"
                   f" ({dr:.0%})  controls flagged: {s['controls_flagged'] or 'none'}"
@@ -363,9 +371,15 @@ class Thrust1RunnerCLI(scfg.DataConfig):
             sc = s["scoring"]
             print(f"  {label:<22s} {sc['correctly_scored']}/{sc['judgments']} ({sc['scoring_accuracy']:.1%})"
                   f"  wrongful accusations: {sc['wrongful_accusations']}"
-                  f"  wrongful acquittals: {sc['wrongful_acquittals']}  unscored (ties): {sc['unscored']}",
+                  f"  wrongful acquittals: {sc['wrongful_acquittals']}  unscored (ties): {sc['unscored']}"
+                  + (f"  [{sc['unknown_truth']} verdicts on unlabelled instances left out]" if sc.get("unknown_truth") else ""),
                   flush=True)
         print(f"  (ground-truth SAT labels re-certified from witnesses: {n_witness_ok})", flush=True)
+        n = cov["verdicts"] or 1
+        print(f"\n── 3. How the {cov['verdicts']} definitive verdicts can be judged ──", flush=True)
+        print(f"  by the benchmark's labels (certain)     {cov['judged_by_labels']} ({cov['judged_by_labels'] / n:.1%})\n"
+              f"  only by majority vote (unverifiable)    {cov['judged_by_majority_only']} ({cov['judged_by_majority_only'] / n:.1%})\n"
+              f"  not at all (majority tie)               {cov['unjudged']} ({cov['unjudged'] / n:.1%})", flush=True)
 
 
 __cli__ = Thrust1RunnerCLI

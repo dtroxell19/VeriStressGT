@@ -10,6 +10,11 @@ instance nobody decides is assumed robust. Two pools are scored:
                a competition with a single faulty entrant;
   * full:      every verifier at once.
 
+A third labelling, labels_plus_majority, is the best an external benchmark can do: its own labels
+where it has them (e.g. certified counterexamples), majority vote everywhere else. On a fully
+labelled benchmark it equals ground_truth. ``summary["coverage"]`` counts how each definitive
+verdict can be judged: by a label, only by majority vote (correctness unverifiable), or not at all.
+
 Detection rates are computed over *exercised* planted bugs only: a planted verifier whose verdicts
 are identical to its base verifier's on every instance (e.g. a crash-handling fault on a verifier
 that never crashed) gave the benchmark nothing to catch and is listed as ``not_exercised``.
@@ -72,6 +77,7 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
         return [e for e in ev if b is None or verdicts[b][e["instance_id"]] != verdicts[v][e["instance_id"]]]
 
     full_mv = majority_labels(verdicts, all_v, iids)
+    combined = {iid: (ground_truth[iid] if ground_truth[iid] is not None else full_mv[iid]) for iid in iids}
     for v in all_v:
         gt_all = disagreements(verdicts[v], ground_truth)
         gt_bad = attributable(v, gt_all)
@@ -79,6 +85,7 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
         mv1 = majority_labels(verdicts, pool, iids)
         mv1_bad = attributable(v, disagreements(verdicts[v], mv1))
         mvf_bad = attributable(v, disagreements(verdicts[v], full_mv))
+        comb_bad = attributable(v, disagreements(verdicts[v], combined))
         n_def = sum(1 for s in verdicts[v].values() if s in DEFINITIVE)
         b = base_of.get(v)
         per[v] = {
@@ -90,6 +97,7 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
             "gt_inherited": [e for e in gt_all if e not in gt_bad],
             "mv_one_buggy_flagged": bool(mv1_bad), "mv_one_buggy_evidence": mv1_bad,
             "mv_full_flagged": bool(mvf_bad), "mv_full_evidence": mvf_bad,
+            "labels_mv_flagged": bool(comb_bad), "labels_mv_evidence": comb_bad,
             # MV flags that are wrong w.r.t. ground truth: MV blames a verdict that is actually correct
             "mv_one_buggy_wrongful": [e for e in mv1_bad if verdicts[v][e["instance_id"]] == ground_truth[e["instance_id"]]],
             "mv_full_wrongful": [e for e in mvf_bad if verdicts[v][e["instance_id"]] == ground_truth[e["instance_id"]]],
@@ -102,7 +110,7 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
     exercised = [v for v in planted if per[v]["exercised"]]
     summary = {}
     for method, flag in (("ground_truth", "gt_flagged"), ("majority_one_buggy", "mv_one_buggy_flagged"),
-                         ("majority_full", "mv_full_flagged")):
+                         ("majority_full", "mv_full_flagged"), ("labels_plus_majority", "labels_mv_flagged")):
         summary[method] = {
             "detection_rate": rate(exercised, flag),
             "detected": sorted(v for v in exercised if per[v][flag]),
@@ -120,6 +128,20 @@ def score(verdicts: Dict[str, Dict[str, str]], ground_truth: Dict[str, str],
                        and full_mv[iid] != ground_truth[iid]]
     summary["majority_full"]["label_errors"] = mv_label_errors
     summary["majority_full"]["unresolved"] = [iid for iid in iids if full_mv[iid] is None]
+
+    cov = {"verdicts": 0, "judged_by_labels": 0, "judged_by_majority_only": 0, "unjudged": 0}
+    for v in all_v:
+        for iid, s in verdicts[v].items():
+            if s not in DEFINITIVE:
+                continue
+            cov["verdicts"] += 1
+            if ground_truth[iid] is not None:
+                cov["judged_by_labels"] += 1
+            elif full_mv[iid] is not None:
+                cov["judged_by_majority_only"] += 1
+            else:
+                cov["unjudged"] += 1
+    summary["coverage"] = cov
 
     # Scoring accuracy: how often a labelling judges a definitive verdict correctly. Every
     # definitive verdict of every verifier is one judgment; its true correctness comes from the

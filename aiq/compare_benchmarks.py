@@ -10,7 +10,12 @@ benchmark. Per planted bug and benchmark:
              fires on a benchmark cannot be caught there by any labelling.
   labels     caught by the benchmark's own labels: analytic certificates + witnesses (VeriStressGT),
              or only attack-certified counterexamples (external benchmarks, aiq/build_external_bench.py)
-  MV-1 / MV  caught by majority vote (one buggy verifier in the pool / the whole pool)
+  labels+MV  caught by its own labels, with majority vote on the instances it has no label for: the
+             best an external benchmark can do (VNN-COMP style). Equals labels on VeriStressGT.
+  MV-1 / MV  caught by majority vote alone (one buggy verifier in the pool / the whole pool)
+
+Coverage: how each benchmark can judge the pool's definitive verdicts: by its labels (certain), only
+by majority vote (correctness unverifiable), or not at all (a tied vote).
 """
 from __future__ import annotations
 
@@ -36,27 +41,33 @@ def main(argv=None) -> int:
     names = list(runs)
     planted = sorted({v for r in runs.values() for v, d in r["per_verifier"].items() if d["role"] == "planted"})
 
-    lines = ["## Summary", "",
-             "| Benchmark | Instances (UNSAT / SAT / no label) | Bugs that fire | Caught by the benchmark's labels "
-             "| false-UNSAT bugs caught by labels | Caught by majority vote (1 buggy / full) "
-             "| Sound verifiers blamed by full-pool vote |",
-             "|---|---|---|---|---|---|---|"]
+    def pct(a, b):
+        return f"{a}/{b} ({a / b:.0%})" if b else "n/a"
+
+    lines = ["## Bugs caught", "",
+             "| Benchmark | Instances (UNSAT / SAT / no label) | Bugs that fire | Caught by own labels "
+             "| Caught by own labels + majority vote |",
+             "|---|---|---|---|---|"]
     for n, r in runs.items():
-        per = r["per_verifier"]
-        s = r["summary"]
+        per, s = r["per_verifier"], r["summary"]
         fired = [v for v in planted if per.get(v, {}).get("exercised")]
-        fu = [v for v in planted if per.get(v, {}).get("fails_as") == "false_unsat"]
-        fu_caught = [v for v in fu if per[v]["gt_flagged"] and per[v]["exercised"]]
-        gt_c = [v for v in fired if per[v]["gt_flagged"]]
-        mv1 = [v for v in fired if per[v]["mv_one_buggy_flagged"]]
-        mvf = [v for v in fired if per[v]["mv_full_flagged"]]
-        penal = s["majority_full"].get("sound_verifiers_penalized", [])
+        lab = [v for v in fired if per[v]["gt_flagged"]]
+        lmv = [v for v in fired if per[v].get("labels_mv_flagged")]
         unl = r.get("n_unlabelled", 0)
         lines.append(f"| {n} | {r['n_instances']} ({r['n_unsat']} / {r['n_sat']} / {unl}) | "
-                     f"{len(fired)}/{len(planted)} | **{len(gt_c)}/{len(planted)}** | {len(fu_caught)}/{len(fu)} | "
-                     f"{len(mv1)} / {len(mvf)} | {len(penal)}{': ' + ', '.join(penal) if penal else ''} |")
-    lines += ["", "Rates are out of all planted bugs, so a bug that never fires counts as missed: on that "
-              "benchmark nothing can catch it.", ""]
+                     f"{len(fired)}/{len(planted)} | **{len(lab)}/{len(planted)}** | {len(lmv)}/{len(planted)} |")
+    lines += ["", "Out of all planted bugs: a bug that never fires on a benchmark cannot be caught there. "
+              "Majority-vote catches on unlabelled instances are known to be right only because the bugs "
+              "were planted.", "",
+              "## How verdicts can be judged", "",
+              "| Benchmark | SAT/UNSAT verdicts | Judged by own labels (certain) "
+              "| Judged only by majority vote (unverifiable) | Not judged (tied vote) |",
+              "|---|---|---|---|---|"]
+    for n, r in runs.items():
+        c = r["summary"]["coverage"]
+        lines.append(f"| {n} | {c['verdicts']} | **{pct(c['judged_by_labels'], c['verdicts'])}** | "
+                     f"{pct(c['judged_by_majority_only'], c['verdicts'])} | {pct(c['unjudged'], c['verdicts'])} |")
+    lines.append("")
 
     def cell(r, v):
         d = r["per_verifier"].get(v)
@@ -64,12 +75,14 @@ def main(argv=None) -> int:
             return "n/a"
         if not d["exercised"]:
             return "-"
-        marks = [m for m, k in (("L", "gt_flagged"), ("M1", "mv_one_buggy_flagged"), ("M", "mv_full_flagged")) if d[k]]
+        marks = [m for m, k in (("L", "gt_flagged"), ("L+M", "labels_mv_flagged"), ("M1", "mv_one_buggy_flagged"),
+                                ("M", "mv_full_flagged")) if d.get(k)]
         return " ".join(marks) if marks else "fired, missed"
 
     lines += ["## Per planted bug", "",
-              "`-` never fired · `L` caught by the benchmark's labels · `M1` / `M` caught by majority vote "
-              "(one buggy / full pool) · `fired, missed` changed verdicts that nothing could expose", "",
+              "`-` never fired · `L` caught by the benchmark's labels · `L+M` caught by its labels plus "
+              "majority vote · `M1` / `M` caught by majority vote alone (one buggy / full pool) · "
+              "`fired, missed` changed verdicts that nothing could expose", "",
               "| Planted bug | Fails as | " + " | ".join(names) + " |",
               "|---|---|" + "---|" * len(names)]
     for v in planted:

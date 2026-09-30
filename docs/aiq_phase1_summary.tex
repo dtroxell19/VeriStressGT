@@ -40,7 +40,8 @@ ground truth and fall back on majority vote between verifiers.
 \end{itemize}
 
 \section{Impact and Comparison with Other Benchmarks}
-VeriStressGT exposes 39 of the 42 planted bugs; existing benchmarks expose at most 6. We ran the
+VeriStressGT exposes 39 of the 42 planted bugs; existing benchmarks expose at most 14, and only 6
+with certainty. We ran the
 same verifier pool on two VNN-COMP benchmarks, \code{mnist\_fc} (30 of its 90 instances) and
 \code{oval21} (all 30). A planted bug \emph{fires} on a benchmark when it changes at least one of its
 verifier's verdicts there.
@@ -49,16 +50,38 @@ A bug is ``caught by a benchmark's own labels'' when one of that benchmark's lab
 verdict to be wrong. VeriStressGT has a known label for every instance. An external benchmark only
 has labels an outside party can establish (i.e., SAT where an attack finds a counterexample that
 checks out numerically). Robustness (UNSAT) cannot be certified externally, so every other
-instance is unlabelled, and a wrong verdict there goes unnoticed.
+instance is unlabelled. On those, the most an external benchmark can do is majority vote between
+verifiers, as VNN-COMP does, so each benchmark is also scored with its own labels plus majority vote
+on its unlabelled instances.
 
 \begin{center}\small
 \begin{tabular}{@{}lrrr@{}}
 \toprule
-Benchmark & Bugs that fire & Caught by own labels & Checkable verdicts \\
+Benchmark & Bugs that fire & \shortstack[r]{Caught by\\own labels} & \shortstack[r]{Caught by own labels\\+ majority vote} \\
 \midrule
-VeriStressGT & 39/42 & 39/42 & 100\% \\
-VNN-COMP \code{mnist\_fc} (30/90 subset) & 19/42 & 6/42 & 21\% \\
-VNN-COMP \code{oval21} & 19/42 & 2/42 & 7\% \\
+VeriStressGT & 39/42 & 39/42 & 39/42 \\
+\code{mnist\_fc} (30/90 subset) & 19/42 & 6/42 & 14/42 \\
+\code{oval21} & 19/42 & 2/42 & 9/42 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Majority-vote catches are known to be right here only because we planted the bugs. On a real
+benchmark nobody can tell whether the flagged verifier or the majority is wrong: on VeriStressGT's
+instances, majority vote over the full pool blamed three sound verifiers, including real NeuralSAT,
+and misjudged 44 of 2{,}025 verdicts.
+
+The same limit applies to judging individual verdicts. Only a label judges a verdict with
+certainty; a majority vote only says whether the verdict agrees with the other verifiers.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Benchmark & \shortstack[r]{SAT/UNSAT\\verdicts} & \shortstack[r]{Judged with\\certainty (labels)} & \shortstack[r]{Judged only by\\majority vote} \\
+\midrule
+VeriStressGT & 2{,}025 & 2{,}025 (100\%) & 0 (0\%) \\
+\code{mnist\_fc} (30/90 subset) & 953 & 199 (21\%) & 754 (79\%) \\
+\code{oval21} & 729 & 49 (7\%) & 680 (93\%) \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -94,39 +117,22 @@ The run should end with \code{RESULT: VERIFIED}, with both metrics at 1.0 in the
 Our reference run took
 32 minutes on a MacBook Pro (Apple Silicon, 8\,GB, CPU only) with MAGNET v0.1.0. 
 
-\noindent\begin{minipage}{\linewidth}
-\textbf{Scoring accuracy} (2{,}025 SAT/UNSAT verdicts). A wrongful accusation calls a correct
-verdict wrong while a wrongful acquittal calls a wrong verdict correct; a tie is a majority vote with
-no winner.
+\medskip\noindent\begin{minipage}{\linewidth}
+\textbf{VeriStressGT card results}
 \begin{center}\small
-\begin{tabular}{@{}lrrrr@{}}
+\begin{tabular}{@{}lr@{}}
 \toprule
-Labels used for scoring & Correct & Wrongful accusations & Wrongful acquittals & Ties \\
+Metric & Result \\
 \midrule
-Known labels (VeriStressGT) & 2025/2025 (100\%) & 0 & 0 & 0 \\
-Majority vote, one buggy verifier & 2015/2025 (99.5\%) & 0 & 0 & 10 \\
-Majority vote, full pool & 1959/2025 (96.7\%) & 19 & 25 & 22 \\
+Scoring accuracy (BAA metric) & 2{,}025/2{,}025 verdicts (100\%) \\
+\quad correct verdicts wrongly rejected & 0 \\
+\quad wrong verdicts wrongly accepted & 0 \\
+Buggy verifiers caught & 39/39 fired bugs (100\%) \\
+Sound verifiers wrongly flagged & 0 \\
 \bottomrule
 \end{tabular}
 \end{center}
 \end{minipage}
-
-
-\bigskip\noindent\begin{minipage}{\linewidth}
-\textbf{Buggy verifiers caught} (42 planted, 39 fired)
-\begin{center}\small
-\begin{tabular}{@{}lll@{}}
-\toprule
-Labels used for scoring & Caught & Sound verifiers wrongly flagged \\
-\midrule
-Known labels (VeriStressGT) & 39/39 (100\%) & none \\
-Majority vote, one buggy verifier & 37/39 (95\%) & none \\
-Majority vote, full pool & 39/39 (100\%) & 3: \code{reference}, \code{ibp\_only}, real NeuralSAT \\
-\bottomrule
-\end{tabular}
-\end{center}
-\end{minipage}
-
 
 \section{Scalability}
 TA2 scales the card with one parameter, \code{scale: N}, in the card's \code{algo\_params}. The
