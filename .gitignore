@@ -50,3 +50,6 @@ src/VeriStressGT/benchmarks/**/*.onnx.data
 *_run_x*/
 .deps/
 ext_runs/
+
+# Submission issue text (pasted into aiq-evaluations, not part of the repo)
+docs/aiq_phase1_issue.md
