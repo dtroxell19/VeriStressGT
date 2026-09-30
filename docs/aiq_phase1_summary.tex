@@ -26,11 +26,11 @@ SAT). Verifiers are used to certify networks in safety-critical settings, so a v
 wrongly reports ``robust'' gives false assurance. Catching such bugs requires knowing the right
 answer, which is what VeriStressGT provides.
 
-VeriStressGT tests neural-network verifiers on networks whose robustness answer is known by
+VeriStressGT is a benchmark instance generator that tests neural-network verifiers on networks whose robustness answer is known by
 construction, so a wrong verdict is provably wrong. Existing benchmarks have no
 ground truth and fall back on majority vote between verifiers.
 \begin{itemize}
-  \item \textbf{Benchmark:} 50 instances, pre-built in the repository. 24 are UNSAT (i.e. robust) by analytic
+  \item \textbf{Default Benchmark:} 50 instances (see section Scalability), pre-built in the repository. 24 are UNSAT (i.e. robust) by analytic
   construction. 26 are SAT (non-robust), each with a counterexample checked in float64 and onnxruntime float32.
   \item \textbf{Verifier pool:} 2 sound in-house controls; 5 real verifiers
   ($\alpha$-$\beta$-CROWN, PyRAT, nnenum, NeuralSAT, Marabou); and 42 deliberately buggy
@@ -39,28 +39,64 @@ ground truth and fall back on majority vote between verifiers.
   verdicts are also judged by majority vote, as a baseline.
 \end{itemize}
 
+\section{Impact and Comparison with Other Benchmarks}
+VeriStressGT exposes 39 of the 42 planted bugs; existing benchmarks expose at most 6. We ran the
+same verifier pool on two VNN-COMP benchmarks, \code{mnist\_fc} (30 of its 90 instances) and
+\code{oval21} (all 30). A planted bug \emph{fires} on a benchmark when it changes at least one of its
+verifier's verdicts there.
+
+A bug is ``caught by a benchmark's own labels'' when one of that benchmark's labels shows a
+verdict to be wrong. VeriStressGT has a known label for every instance. An external benchmark only
+has labels an outside party can establish (i.e., SAT where an attack finds a counterexample that
+checks out numerically). Robustness (UNSAT) cannot be certified externally, so every other
+instance is unlabelled, and a wrong verdict there goes unnoticed.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Benchmark & Bugs that fire & Caught by own labels & Checkable verdicts \\
+\midrule
+VeriStressGT & 39/42 & 39/42 & 100\% \\
+VNN-COMP \code{mnist\_fc} (30/90 subset) & 19/42 & 6/42 & 21\% \\
+VNN-COMP \code{oval21} & 19/42 & 2/42 & 7\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Bugs that never fire:} 19 of the 42 bugs never change a verdict on either external
+  benchmark, reflecting a lack of benchmark coverage. VeriStressGT exposes 16 of these 19.
+  \item \textbf{Real bugs found:} unmodified Marabou 2.0.0 returns false SAT on the provably robust
+  VeriStressGT instances \code{meap\_02}, \code{meap\_03} and \code{milp\_s2\_a}, and false UNSAT
+  on \code{oval21} instance \code{vb\_oval21\_0014}, which a certified counterexample shows is SAT.
+  \item \textbf{Subset:} the \code{mnist\_fc} row uses 30 of 90 instances for a quicker proof of
+  concept. More instances can only make more bugs fire, so it may understate full \code{mnist\_fc}; \code{scripts/run\_external\_comparison.sh} runs all 90.
+\end{itemize}
+
 \section{Expected Results and BAA Alignment}
 Every verifier in the pool gives a verdict (SAT or UNSAT) on every instance, or times out. Because
 each instance's correct answer is known, the card checks each verdict and reports two metrics:
 \begin{itemize}
-  \item \textbf{Scoring accuracy} (\code{gt\_scoring\_accuracy}, the BAA metric, target
+  \item \textbf{Scoring accuracy} (\code{gt\_scoring\_accuracy} which is the BAA metric with target
   $\geq 95\%$): of all SAT/UNSAT verdicts, the fraction that the labels judge correctly, i.e.\
   a correct verdict is accepted and a wrong one is rejected.
-  \item \textbf{Buggy verifiers caught} (\code{gt\_detection\_rate}): of the planted buggy
-  verifiers whose bug changed at least one verdict (``fired''), the fraction shown to be wrong on
-  some instance.
+  \item \textbf{Buggy verifiers caught} (\code{gt\_detection\_rate}): of the planted bugs that
+  fired, the fraction shown to be wrong on some instance.
 \end{itemize}
-Both are also computed with majority-vote labels instead of known labels, as the baseline that
-existing benchmarks rely on.
 
 The run should end with \code{RESULT: VERIFIED}, with both metrics at 1.0 in the top-level
-\code{verdict.json}. The card passes only if the known labels score 100\% of verdicts correctly,
-flag no sound control, and catch at least 75\% of the bugs that fired. Our reference run took
-32 minutes on a MacBook Pro (Apple Silicon, 8\,GB, CPU only) with MAGNET v0.1.0. The card has been
-run on macOS.
+\code{verdict.json}. The card passes only if all three hold:
+\begin{enumerate}
+  \item the known labels score 100\% of verdicts correctly;
+  \item they do not falsely flag a sound verifier;
+  \item they catch at least 75\% of the bugs that fired.
+\end{enumerate}
+Our reference run took
+32 minutes on a MacBook Pro (Apple Silicon, 8\,GB, CPU only) with MAGNET v0.1.0. 
 
+\noindent\begin{minipage}{\linewidth}
 \textbf{Scoring accuracy} (2{,}025 SAT/UNSAT verdicts). A wrongful accusation calls a correct
-verdict wrong; a wrongful acquittal calls a wrong verdict correct; a tie is a majority vote with
+verdict wrong while a wrongful acquittal calls a wrong verdict correct; a tie is a majority vote with
 no winner.
 \begin{center}\small
 \begin{tabular}{@{}lrrrr@{}}
@@ -73,7 +109,10 @@ Majority vote, full pool & 1959/2025 (96.7\%) & 19 & 25 & 22 \\
 \bottomrule
 \end{tabular}
 \end{center}
+\end{minipage}
 
+
+\noindent\begin{minipage}{\linewidth}
 \textbf{Buggy verifiers caught} (42 planted, 39 fired)
 \begin{center}\small
 \begin{tabular}{@{}lll@{}}
@@ -86,20 +125,8 @@ Majority vote, full pool & 39/39 (100\%) & 3: \code{reference}, \code{ibp\_only}
 \bottomrule
 \end{tabular}
 \end{center}
+\end{minipage}
 
-\textbf{Models and datasets.} The instances span many distinct networks in three families (MLPs,
-CNNs, attention models), well past the BAA minimum of two. The inputs are synthetic and part of
-each network's construction.
-
-What can differ on other hardware, without changing the verdict or the metrics:
-\begin{itemize}
-  \item \textbf{Verdict counts:} timeouts depend on machine speed, so totals (2{,}025 verdicts,
-  39 fired bugs) can shift slightly. Ground-truth accuracy stays 100\% because the labels do not
-  depend on timing.
-  \item \textbf{Marabou:} Marabou 2.0.0 is nondeterministic. We saw it return false SAT on
-  \code{meap\_02}, \code{meap\_03} and \code{milp\_s2\_a}, and not every run hits all three. Each is
-  a real Marabou soundness bug that ground truth correctly flags.
-\end{itemize}
 
 \section{Scalability}
 TA2 scales the card with one parameter, \code{scale: N}, in the card's \code{algo\_params}. The
@@ -116,39 +143,8 @@ the same verifier pool on it.
   \item \textbf{Needs:} \code{gurobipy} (installed by the setup script) to build larger benchmarks.
 \end{itemize}
 
-\section{Impact and Comparison with Other Benchmarks}
-Existing benchmarks cannot catch most of these bugs. We ran the same verifier pool on two VNN-COMP
-benchmarks, \code{mnist\_fc} (30 of its 90 instances) and \code{oval21} (all 30).
-
-A bug is \emph{caught by a benchmark's own labels} when one of that benchmark's labels shows a
-verdict to be wrong. VeriStressGT has a known label for every instance. An external benchmark only
-has labels an outside party can establish: SAT where an attack finds a counterexample that
-checks out numerically. Robustness (UNSAT) cannot be certified from outside, so every other
-instance is unlabelled, and a wrong verdict there goes unnoticed.
-
-\begin{center}\small
-\begin{tabular}{@{}lrrr@{}}
-\toprule
-Benchmark & Bugs that fire & Caught by own labels & Verdicts that can be checked \\
-\midrule
-VeriStressGT & 39/42 & 39/42 & 100\% \\
-VNN-COMP \code{mnist\_fc} (30/90) & 19/42 & 6/42 & 21\% \\
-VNN-COMP \code{oval21} & 19/42 & 2/42 & 7\% \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\begin{itemize}
-  \item \textbf{Bugs that never fire:} 19 of the 42 bugs never change a verdict on either external
-  benchmark, so no labelling could catch them there. VeriStressGT exposes 16 of these 19.
-  \item \textbf{Real bugs found:} unmodified Marabou 2.0.0 returns false SAT on the provably robust
-  VeriStressGT instances \code{meap\_02}, \code{meap\_03} and \code{milp\_s2\_a}, and false UNSAT
-  on \code{oval21} instance \code{vb\_oval21\_0014}, which a certified counterexample shows is SAT.
-  \item \textbf{Subset:} more \code{mnist\_fc} instances can only make more bugs fire, so the subset
-  may understate full \code{mnist\_fc}; \code{scripts/run\_external\_comparison.sh} runs all 90.
-  \item \textbf{Thrust 2} (separate self-evaluation card, not the submission): per-verifier timeout
-  prediction AUC is 0.77--0.92 on held-out data and 0.87--0.96 on fresh networks, all above the 0.7
-  target.
-\end{itemize}
+\paragraph{Thrust 2.} A separate self-evaluation card (not the submission) predicts per-verifier
+timeouts: AUC is 0.77--0.92 on held-out data and 0.87--0.96 on fresh networks, all above the 0.7
+target.
 
 \end{document}
