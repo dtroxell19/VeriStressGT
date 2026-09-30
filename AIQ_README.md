@@ -34,8 +34,11 @@ so `magnet evaluate` fails on macOS unless a `chmod` that accepts `--` is first 
 
 ### Run
 ```bash
-magnet evaluate cards/thrust1_soundness.yaml
+magnet evaluate /path/to/VeriStressGT/cards/thrust1_soundness.yaml   # from any directory
 ```
+The card's pipeline node is the `veristressgt-thrust1` command that `bootstrap.sh` installs, so the
+card also runs if copied elsewhere, as long as the `VeriStressGT` env is active.
+
 **Expected:** `RESULT: VERIFIED`, and in the top-level `verdict.json` both metrics at 1.0
 ("Scoring accuracy (ground truth)", "Buggy verifiers caught (ground truth)"). Takes about 30 min on a laptop
 CPU.

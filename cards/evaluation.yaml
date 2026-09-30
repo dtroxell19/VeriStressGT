@@ -61,7 +61,8 @@ claim:
 
 pipeline:
   mini_sweep:
-    executable: 'python -u aiq/mini_sweep_runner.py'
+    # installed by `pip install -e .` (bootstrap.sh); runs aiq/ from any working directory
+    executable: 'veristressgt-mini-sweep'
     algo_params:
       spec_path: 'src/VeriStressGT/configs/mini_sweep.yaml'
       bench_dir: 'mini_sweep_bench'

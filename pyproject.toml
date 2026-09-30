@@ -57,6 +57,10 @@ all = [
 VeriStressGT-export-onnx = "VeriStressGT.cli_run:main_export_onnx"
 VeriStressGT-verify       = "VeriStressGT.cli_run:main_verify"
 VeriStressGT-doctor       = "VeriStressGT.cli.doctor:main"
+# AIQ evaluation cards' pipeline nodes (run from any directory; see VeriStressGT/cli/aiq_cards.py)
+veristressgt-thrust1      = "VeriStressGT.cli.aiq_cards:thrust1"
+veristressgt-thrust2      = "VeriStressGT.cli.aiq_cards:thrust2"
+veristressgt-mini-sweep   = "VeriStressGT.cli.aiq_cards:mini_sweep"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

@@ -59,7 +59,8 @@ claim:
 
 pipeline:
   thrust2:
-    executable: 'python -u aiq/thrust2_runner.py'
+    # installed by `pip install -e .` (bootstrap.sh); runs aiq/ from any working directory
+    executable: 'veristressgt-thrust2'
     algo_params:
       horizon: 120
       repeats: 10

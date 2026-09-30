@@ -98,7 +98,8 @@ claim:
 
 pipeline:
   thrust1:
-    executable: 'python -u aiq/thrust1_runner.py'
+    # installed by `pip install -e .` (bootstrap.sh); runs aiq/ from any working directory
+    executable: 'veristressgt-thrust1'
     algo_params:
       bench_dir: 'thrust1_bench'
       run_dir: 'thrust1_run'
