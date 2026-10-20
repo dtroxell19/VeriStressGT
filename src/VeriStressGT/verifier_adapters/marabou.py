@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 from pathlib import Path
 from typing import List
@@ -68,8 +69,12 @@ def add_args(p: argparse.ArgumentParser) -> None:
     p.add_argument(
         "--marabou_bin",
         type=str,
-        default="Marabou",
-        help="Path to Marabou binary executable.",
+        default=os.environ.get("MARABOU_BIN", "Marabou"),
+        help=(
+            "Marabou executable: the compiled binary (make install-marabou) or "
+            "scripts/marabou_env.sh for the maraboupy env (scripts/install_marabou.sh). "
+            "Defaults to $MARABOU_BIN, else 'Marabou' on PATH."
+        ),
     )
     p.add_argument(
         "--marabou_timeout",

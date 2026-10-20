@@ -16,7 +16,7 @@ PIP ?= pip
 
 .PHONY: help install install-generate install-all install-dev \
         install-verifiers install-abcrown install-neuralsat install-nnenum \
-        install-marabou install-nnv install-pyrat \
+        install-marabou install-marabou-py install-nnv install-pyrat \
         doctor test test-fresh docker clean
 
 help:  ## Show this help
@@ -65,17 +65,18 @@ install-abcrown: install-submodules  ## Set up α-β-CROWN conda env
 	echo "  export ABCROWN_VNNCOMP2024_DIR=$$(pwd)/$$ABCROWN_DIR"; \
 	echo "  export ABCROWN_CONDA_ENV=alpha-beta-crown"
 
-install-neuralsat: install-submodules  ## Install NeuralSAT deps
+install-neuralsat: install-submodules  ## Install NeuralSAT deps (own conda env 'neuralsat')
 	@echo "═══ Setting up NeuralSAT ═══"
 	@NS_DIR=src/VeriStressGT/verifiers/neuralsat; \
 	if [ ! -d "$$NS_DIR" ] || [ -z "$$(ls -A $$NS_DIR 2>/dev/null)" ]; then \
 		echo "ERROR: $$NS_DIR not populated. Run: make install-submodules"; \
 		exit 1; \
 	fi; \
-	if [ -f "$$NS_DIR/requirements.txt" ]; then \
-		$(PIP) install -r $$NS_DIR/requirements.txt; \
+	if ! conda env list | grep -q "^neuralsat "; then \
+		conda create -n neuralsat python=3.10 -y; \
 	fi; \
-	echo "Done. Set: export NEURALSAT_DIR=$$(pwd)/$$NS_DIR"
+	conda run -n neuralsat pip install -r $$NS_DIR/requirements.txt; \
+	echo "Done. Set: export NEURALSAT_DIR=$$(pwd)/$$NS_DIR NEURALSAT_CONDA_ENV=neuralsat"
 
 install-nnenum: install-submodules  ## Install nnenum
 	@echo "═══ Setting up nnenum ═══"
@@ -87,6 +88,10 @@ install-nnenum: install-submodules  ## Install nnenum
 	cd $$NNENUM_DIR && $(PIP) install -e . 2>/dev/null || \
 		$(PIP) install . 2>/dev/null || \
 		echo "nnenum install: check $$NNENUM_DIR manually"
+
+install-marabou-py:  ## Install maraboupy 2.0.0 in its own conda env 'marabou'
+	bash scripts/install_marabou.sh
+	@echo "Done. Set: export MARABOU_BIN=$$(pwd)/scripts/marabou_env.sh"
 
 install-marabou: install-submodules  ## Build and install Marabou (requires cmake)
 	@echo "═══ Setting up Marabou ═══"

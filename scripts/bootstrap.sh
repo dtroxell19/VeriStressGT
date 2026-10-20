@@ -6,13 +6,14 @@
 # Usage:
 #   bash scripts/bootstrap.sh              # full setup
 #   bash scripts/bootstrap.sh --no-conda   # skip conda/verifier setup
+#   SKIP_MARABOU=1 bash scripts/bootstrap.sh   # skip Marabou (a source build on Apple Silicon)
 #
 # What it does:
 #   1. Checks Python version (fails if < 3.9)
 #   2. Installs Miniconda if conda is missing
 #   3. Pulls git submodules
-#   4. Installs VeriStressGT[generate]
-#   5. Sets up verifier conda envs (α-β-CROWN, NeuralSAT, nnenum)
+#   4. Installs VeriStressGT[generate,milp]
+#   5. Sets up verifier conda envs (α-β-CROWN, NeuralSAT, nnenum, PyRAT, Marabou)
 #   6. Writes a .env file with all env vars
 #   7. Runs VeriStressGT-doctor
 #
@@ -177,17 +178,17 @@ if ! $SKIP_CONDA; then
     ok "Activated conda env: VeriStressGT"
 fi
 
-# ── Step 5: Install VeriStressGT[generate] ─────────────────────
+# ── Step 5: Install VeriStressGT[generate,milp] ─────────────────────
 if $SKIP_CONDA; then
-    step 3 "Installing VeriStressGT[generate] (this may take a few minutes)"
+    step 3 "Installing VeriStressGT[generate,milp] (this may take a few minutes)"
 else
-    step 5 "Installing VeriStressGT[generate] (this may take a few minutes)"
+    step 5 "Installing VeriStressGT[generate,milp] (this may take a few minutes)"
 fi
 
-pip install -e '.[generate]' --retries 5 --timeout 120 || \
+pip install -e '.[generate,milp]' --retries 5 --timeout 120 || \
     { warn "First attempt failed (network timeout?), retrying..."; \
-      pip install -e '.[generate]' --retries 5 --timeout 120; }
-ok "VeriStressGT[generate] installed"
+      pip install -e '.[generate,milp]' --retries 5 --timeout 120; }
+ok "VeriStressGT[generate,milp] installed"
 
 if $SKIP_CONDA; then
     step 4 "Running doctor"
@@ -214,10 +215,27 @@ if [ -d "$ABCROWN_DIR/complete_verifier" ]; then
         ok "α-β-CROWN conda env already exists"
     else
         echo "  Creating conda env (this may take a few minutes)..."
-        conda env create -f "$ABCROWN_DIR/complete_verifier/environment.yaml" \
-            --name alpha-beta-crown 2>&1 && \
-            ok "α-β-CROWN conda env created" || \
-            warn "α-β-CROWN conda env creation failed (see above)"
+        OS=$(uname -s)
+        if [ "$OS" = "Darwin" ]; then
+            # environment.yaml pins Linux-only packages (_libgcc_mutex, _openmp_mutex).
+            # Build a minimal CPU env from scratch instead.
+            conda create -n alpha-beta-crown python=3.11 -y --quiet 2>/dev/null && \
+            conda install -n alpha-beta-crown -c gurobi gurobi -y --quiet 2>/dev/null && \
+            conda run -n alpha-beta-crown pip install --quiet \
+                torch torchvision torchaudio \
+                numpy protobuf pyyaml appdirs sortedcontainers packaging \
+                psutil tqdm pandas pytest rich scikit-learn scipy mpmath pygments \
+                onnx onnxruntime onnxoptimizer onnxsim skl2onnx 2>/dev/null && \
+            conda run -n alpha-beta-crown pip install --quiet --no-deps \
+                "git+https://github.com/Verified-Intelligence/onnx2pytorch.git" 2>/dev/null && \
+                ok "α-β-CROWN conda env created (macOS CPU)" || \
+                warn "α-β-CROWN conda env creation failed (see above)"
+        else
+            conda env create -f "$ABCROWN_DIR/complete_verifier/environment.yaml" \
+                --name alpha-beta-crown 2>&1 && \
+                ok "α-β-CROWN conda env created" || \
+                warn "α-β-CROWN conda env creation failed (see above)"
+        fi
     fi
     # Install VeriStressGT into the abcrown env
     echo "  Installing VeriStressGT in alpha-beta-crown env..."
@@ -235,14 +253,18 @@ else
     warn "α-β-CROWN submodule not populated — skipping"
 fi
 
-# NeuralSAT
+# NeuralSAT (own env: it pins torch 2.1.2 / numpy 1.24; .env sets NEURALSAT_CONDA_ENV)
 NS_DIR="$REPO_ROOT/src/VeriStressGT/verifiers/neuralsat"
 if [ -d "$NS_DIR" ] && [ -n "$(ls -A "$NS_DIR" 2>/dev/null)" ]; then
-    if [ -f "$NS_DIR/requirements.txt" ]; then
-        pip install -r "$NS_DIR/requirements.txt" --quiet 2>/dev/null && \
-            ok "NeuralSAT requirements installed" || \
-            warn "NeuralSAT requirements install had issues"
+    if conda env list 2>/dev/null | grep -q "^neuralsat "; then
+        ok "neuralsat conda env already exists"
+    else
+        conda create -n neuralsat python=3.10 -y --quiet 2>/dev/null && \
+            ok "neuralsat conda env created" || warn "neuralsat conda env creation failed"
     fi
+    conda run -n neuralsat pip install -r "$NS_DIR/requirements.txt" --quiet && \
+        ok "NeuralSAT requirements installed (in conda env 'neuralsat')" || \
+        warn "NeuralSAT requirements install had issues"
 else
     warn "NeuralSAT submodule not populated — skipping"
 fi
@@ -266,6 +288,57 @@ else
     warn "nnenum submodule not populated — skipping"
 fi
 
+# PyRAT
+PYRAT_DIR="$REPO_ROOT/src/VeriStressGT/verifiers/pyrat"
+# Prefer the repo-vendored env spec (scripts/pyrat_env.yml), which fixes an
+# unsatisfiable conda solve in the submodule's own copy. Fall back to the
+# submodule's file only if the vendored one is missing.
+PYRAT_ENV_YML="$SCRIPT_DIR/pyrat_env.yml"
+if [ ! -f "$PYRAT_ENV_YML" ]; then
+    PYRAT_ENV_YML="$PYRAT_DIR/pyrat_env.yml"
+fi
+if [ -d "$PYRAT_DIR" ] && [ -n "$(ls -A "$PYRAT_DIR" 2>/dev/null)" ]; then
+    if conda env list 2>/dev/null | grep -q "^pyrat "; then
+        ok "pyrat conda env already exists"
+    else
+        echo "  Creating pyrat conda env (this may take a few minutes)..."
+        OS=$(uname -s)
+        if [ "$OS" = "Darwin" ]; then
+            # pyrat_env.yml includes pytorch-cuda which doesn't exist on macOS;
+            # create a plain CPU env and install via requirements.txt instead.
+            conda create -n pyrat python=3.10 -y --quiet 2>/dev/null && \
+                conda run -n pyrat pip install -r "$PYRAT_DIR/requirements.txt" --quiet 2>/dev/null && \
+                ok "pyrat conda env created (macOS CPU)" || \
+                warn "pyrat conda env creation failed"
+        else
+            conda env create -f "$PYRAT_ENV_YML" 2>&1 && \
+                ok "pyrat conda env created (from $(basename "$(dirname "$PYRAT_ENV_YML")")/$(basename "$PYRAT_ENV_YML"))" || \
+                warn "pyrat conda env creation failed (see above)"
+        fi
+    fi
+    echo "  Installing PyRAT..."
+    # Non-editable, --no-deps: the conda env (pyrat_env.yml) already provides every
+    # dependency, and the pinned pip=21.2.4 cannot do a PEP 660 editable install of a
+    # pyproject-only package. This registers the `pyrat` console entry point.
+    conda run -n pyrat pip install --no-deps "$PYRAT_DIR" && \
+        ok "PyRAT installed (in conda env 'pyrat')" || \
+        warn "PyRAT install had issues"
+else
+    warn "PyRAT submodule not populated — skipping"
+fi
+
+# Marabou 2.0.0 (wheel on Linux x86_64 / Intel macOS, source build elsewhere). The alternative,
+# a compiled binary from the Marabou submodule, is `make install-marabou`.
+MARABOU_OK=false
+if [ "${SKIP_MARABOU:-0}" = "1" ]; then
+    warn "Skipping Marabou (SKIP_MARABOU=1)"
+elif bash "$SCRIPT_DIR/install_marabou.sh"; then
+    MARABOU_OK=true
+    ok "Marabou 2.0.0 installed (in conda env '${MARABOU_CONDA_ENV:-marabou}')"
+else
+    warn "Marabou install failed (see above)"
+fi
+
 # ── Step 6: Write .env ───────────────────────────────────────────────
 step 7 "Writing .env"
 
@@ -277,8 +350,15 @@ cat > "$ENV_FILE" << EOF
 export ABCROWN_VNNCOMP2024_DIR=$REPO_ROOT/src/VeriStressGT/verifiers/alpha-beta-CROWN
 export ABCROWN_CONDA_ENV=alpha-beta-crown
 export NEURALSAT_DIR=$REPO_ROOT/src/VeriStressGT/verifiers/neuralsat
+export NEURALSAT_CONDA_ENV=neuralsat
 export MARABOU_DIR=$REPO_ROOT/src/VeriStressGT/verifiers/Marabou
 EOF
+if ${MARABOU_OK:-false}; then
+    cat >> "$ENV_FILE" << EOF
+export MARABOU_CONDA_ENV=${MARABOU_CONDA_ENV:-marabou}
+export MARABOU_BIN=$REPO_ROOT/scripts/marabou_env.sh
+EOF
+fi
 
 ok "Wrote $ENV_FILE"
 echo "    Run: source .env"

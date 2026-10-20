@@ -88,7 +88,7 @@ def _check_conda_env(env_name: str) -> tuple[bool, str]:
             for env_path in envs:
                 if Path(env_path).name == env_name:
                     return True, _ok(f"conda env '{env_name}' exists → {env_path}")
-            return False, _fail(f"conda env '{env_name}' not found (run: make install-abcrown)")
+            return False, _fail(f"conda env '{env_name}' not found (run: bash scripts/bootstrap.sh)")
         return False, _warn(f"conda env list failed")
     except FileNotFoundError:
         return False, _fail("conda not installed")
@@ -247,14 +247,18 @@ def run_doctor() -> int:
     print(f"  {msg}")
     ok_env, msg = _check_env_var("NEURALSAT_DIR")
     print(f"  {msg}")
-    # Check if key NeuralSAT deps are importable
-    ns_deps_ok = True
-    for dep in ["onnx2pytorch"]:
-        ok_dep, msg = _check_module(dep)
+    # NeuralSAT runs in its own conda env (it pins torch / numpy versions)
+    ns_env = os.environ.get("NEURALSAT_CONDA_ENV", "neuralsat")
+    ok_conda, msg = _check_conda_env(ns_env)
+    print(f"  {msg}")
+    if ok_conda:
+        ns_deps_ok, msg = _check_module_in_conda_env(ns_env, "onnx2pytorch")
         print(f"  {msg}")
-        if not ok_dep:
-            ns_deps_ok = False
-    if all([ok_sub, ok_env, ns_deps_ok]):
+    else:
+        ns_deps_ok = False
+    if "NEURALSAT_CONDA_ENV" not in os.environ:
+        print(f"  {_warn('$NEURALSAT_CONDA_ENV not set (source .env); NeuralSAT would run in the current env')}")
+    if all([ok_sub, ok_env, ok_conda, ns_deps_ok]):
         print(f"    {_GREEN}→ Ready{_RESET}")
     else:
         print(f"    {_YELLOW}→ Not ready{_RESET}")
@@ -264,26 +268,42 @@ def run_doctor() -> int:
     print(f"\n  {_BOLD}nnenum{_RESET}  [make install-nnenum]")
     ok_sub, msg = _check_submodule("src/VeriStressGT/verifiers/nnenum", "repo")
     print(f"  {msg}")
-    ok_mod, msg = _check_module("nnenum")
+    ok_conda, msg = _check_conda_env("nnenum")
     print(f"  {msg}")
-    if ok_sub and ok_mod:
+    if ok_conda:
+        ok_mod, msg = _check_module_in_conda_env("nnenum", "nnenum")
+        print(f"  {msg}")
+    else:
+        ok_mod = False
+    if ok_sub and ok_conda and ok_mod:
         print(f"    {_GREEN}→ Ready{_RESET}")
     else:
         print(f"    {_YELLOW}→ Not ready{_RESET}")
         warnings += 1
 
     # --- Marabou ---
-    print(f"\n  {_BOLD}Marabou{_RESET}  [see Marabou README for cmake build]")
-    ok_sub, msg = _check_submodule("src/VeriStressGT/verifiers/Marabou", "repo")
+    # Two supported installs: maraboupy 2.0.0 in its own conda env (scripts/install_marabou.sh,
+    # run through scripts/marabou_env.sh), or the compiled submodule binary (make install-marabou).
+    print(f"\n  {_BOLD}Marabou{_RESET}  [bash scripts/install_marabou.sh, or make install-marabou]")
+    ok_bin_env, msg = _check_env_var("MARABOU_BIN")
     print(f"  {msg}")
-    ok_env, msg = _check_env_var("MARABOU_DIR")
+    mb_env = os.environ.get("MARABOU_CONDA_ENV", "marabou")
+    ok_conda, msg = _check_conda_env(mb_env)
     print(f"  {msg}")
-    ok_mod, msg = _check_module("maraboupy")
-    print(f"  {msg}")
-    if all([ok_sub, ok_env, ok_mod]):
-        print(f"    {_GREEN}→ Ready{_RESET}")
+    if ok_conda:
+        ok_py, msg = _check_module_in_conda_env(mb_env, "maraboupy")
+        print(f"  {msg}")
     else:
-        print(f"    {_YELLOW}→ Not ready (requires cmake build){_RESET}")
+        ok_py = False
+    marabou_bin = os.environ.get("MARABOU_BIN", "Marabou")
+    ok_bin = bool(shutil.which(marabou_bin) or Path(marabou_bin).expanduser().is_file())
+    if ok_bin and (ok_py or not marabou_bin.endswith("marabou_env.sh")):
+        print(f"    {_GREEN}→ Ready ({marabou_bin}){_RESET}")
+    elif ok_py:
+        print(f"    {_YELLOW}→ maraboupy installed; pass --marabou_bin scripts/marabou_env.sh or set $MARABOU_BIN{_RESET}")
+        warnings += 1
+    else:
+        print(f"    {_YELLOW}→ Not ready{_RESET}")
         warnings += 1
 
     # --- NNV ---
@@ -302,9 +322,14 @@ def run_doctor() -> int:
     print(f"\n  {_BOLD}PyRAT{_RESET}")
     ok_sub, msg = _check_submodule("src/VeriStressGT/verifiers/pyrat", "repo")
     print(f"  {msg}")
-    ok_mod, msg = _check_module("pyrat")
+    ok_conda, msg = _check_conda_env("pyrat")
     print(f"  {msg}")
-    if ok_sub and ok_mod:
+    if ok_conda:
+        ok_mod, msg = _check_module_in_conda_env("pyrat", "pyrat")
+        print(f"  {msg}")
+    else:
+        ok_mod = False
+    if ok_sub and ok_conda and ok_mod:
         print(f"    {_GREEN}→ Ready{_RESET}")
     else:
         print(f"    {_YELLOW}→ Not ready{_RESET}")
