@@ -66,6 +66,25 @@ class PolynomialBoundaryConfig:
     degree: int = 10
     num_outputs: int = 2
 
+    # Certification mode.
+    #   certified_convex=True: enforce an even degree and coordinatewise-nonnegative margin
+    #     coefficients alpha_j = W2[0,j] - W2[1,j] >= 0, which makes the scalar margin
+    #     mu(x) = sum_j alpha_j (W1_j . x + b1_j)^degree + (b2_0 - b2_1) CONVEX. Robust separation
+    #     then follows analytically from the convex first-order inequality (no L-BFGS-B / NBC needed):
+    #     for x0 = p + (eps+delta) u(p) at a boundary point p, every x in B_eps(x0) satisfies
+    #     mu(x) >= delta * ||grad mu(p)||_* > 0, and the exact distance from x0 to the boundary is
+    #     eps+delta. This is the main analytically-certified constructor.
+    #   certified_convex=False: general (possibly nonconvex) margin. Robustness is only screened
+    #     numerically by multi-start L-BFGS-B (kept as a SEPARATE exploratory experiment).
+    certified_convex: bool = False
+    # Perturbation norm for the normal direction / certificate. "linf" -> u = sign(grad),
+    # ||.||_* = ||.||_1 ; "l2" -> u = grad/||grad||_2, ||.||_* = ||.||_2. Proposition 11 is norm-generic.
+    norm: str = "linf"
+    # Nonconvex-only: if True, do not hard-fail when a candidate is not screened-robust; instead
+    # return it labelled with screening_status in {numerically_certified_robust, non_robust,
+    # inconclusive} so a separate experiment can tally outcomes.
+    nonconvex_report_mode: bool = False
+
     # Boundary sampling: random affine lines a + t v.
     num_lines: int = 1000
     center_scale: float = 2.0
@@ -114,6 +133,13 @@ class PolynomialBoundaryConfig:
             raise ValueError("hidden_dim must be >= 1")
         if self.degree < 2:
             raise ValueError("degree must be >= 2")
+        if self.norm not in {"linf", "l2"}:
+            raise ValueError("norm must be one of: linf, l2")
+        if self.certified_convex and (int(self.degree) % 2 != 0):
+            raise ValueError(
+                "certified_convex requires an EVEN activation degree (t^degree is convex only "
+                f"for even degree); got degree={self.degree}."
+            )
         if self.num_outputs != 2:
             raise ValueError(
                 "This algebraic-boundary construction is binary; num_outputs must be 2."
@@ -184,10 +210,18 @@ class Candidate:
     epsilon: float
     label: int
     margin_at_x0: float
-    nbc_min_fsq: float
-    nbc_best_z: np.ndarray
-    nbc_elapsed_sec: float
-    nbc_num_restarts: int
+    # Nonconvex numerical nearest-boundary-check fields (None in the convex analytic path).
+    nbc_min_fsq: Optional[float] = None
+    nbc_best_z: Optional[np.ndarray] = None
+    nbc_elapsed_sec: Optional[float] = None
+    nbc_num_restarts: Optional[int] = None
+    # Convex analytic-certificate fields (None in the nonconvex path).
+    grad_dual_norm_at_p: Optional[float] = None
+    certified_margin_lb: Optional[float] = None
+    exact_boundary_dist: Optional[float] = None
+    # Nonconvex screening outcome: numerically_certified_robust | non_robust | inconclusive.
+    screening_status: Optional[str] = None
+    screening_min_signed_margin: Optional[float] = None
 
 
 # ---------------------------------------------------------------------------
@@ -298,6 +332,30 @@ def make_random_params(
     else:  # validate() should prevent this.
         raise ValueError(f"Unknown init_mode: {cfg.init_mode}")
 
+    if cfg.certified_convex:
+        # Enforce coordinatewise-nonnegative margin coefficients alpha_j = W2[0,j] - W2[1,j] >= 0.
+        # Together with the even degree required in validate(), this makes the scalar margin
+        # mu(x) = sum_j alpha_j (W1_j . x + b1_j)^degree + const CONVEX in x. We keep the second
+        # output row W2[1] as sampled and set W2[0] = W2[1] + |W2[0] - W2[1]| so that the difference
+        # is exactly |.| >= 0 (preserving the sampling scale of the coefficient magnitudes).
+        alpha = np.abs(W2[0] - W2[1])
+        W2 = W2.copy()
+        W2[0] = W2[1] + alpha
+
+        # The variable part V(x) = sum_j alpha_j (W1_j.x + b1_j)^degree is >= 0, so mu = V + c is
+        # positive everywhere unless the constant offset c = b2[0]-b2[1] is negative enough to make
+        # {mu <= 0} nonempty (otherwise there is NO decision boundary to sample). Calibrate c to the
+        # median of V over the boundary-sampling region so classes are roughly balanced and a boundary
+        # exists. This only shifts the constant offset; convexity (alpha>=0, even degree) is preserved.
+        n_cal = 4096
+        Xcal = rng.uniform(-float(cfg.center_scale), float(cfg.center_scale),
+                           size=(n_cal, int(cfg.input_dim)))
+        a_cal = Xcal @ W1.T + b1                      # (n_cal, hidden)
+        V_cal = (a_cal ** int(cfg.degree)) @ alpha    # (n_cal,)  == sum_j alpha_j a_j^degree
+        c = -float(np.median(V_cal))
+        b2 = b2.copy()
+        b2[0] = b2[1] + c                             # so that b2[0]-b2[1] = c
+
     return PolynomialParams(W1=W1, b1=b1, W2=W2, b2=b2, degree=int(cfg.degree))
 
 
@@ -389,16 +447,42 @@ def linf_dist(a: np.ndarray, b: np.ndarray) -> float:
     return float(np.max(np.abs(np.asarray(a, dtype=np.float64) - np.asarray(b, dtype=np.float64))))
 
 
-def perturb_normal_linf(
+def _norm_dist(a: np.ndarray, b: np.ndarray, norm: str) -> float:
+    d = np.asarray(a, dtype=np.float64) - np.asarray(b, dtype=np.float64)
+    return float(np.max(np.abs(d))) if norm == "linf" else float(np.linalg.norm(d))
+
+
+def _dual_norm(g: np.ndarray, norm: str) -> float:
+    """Dual norm ||g||_* : dual of l_inf is l_1, dual of l_2 is l_2."""
+    g = np.asarray(g, dtype=np.float64)
+    return float(np.sum(np.abs(g))) if norm == "linf" else float(np.linalg.norm(g))
+
+
+def _unit_ascent_direction(g: np.ndarray, norm: str) -> np.ndarray:
+    """Unit-norm direction u with g . u = ||g||_* : sign(g) for l_inf, g/||g||_2 for l_2."""
+    g = np.asarray(g, dtype=np.float64)
+    if norm == "linf":
+        return np.sign(g)
+    return g / (float(np.linalg.norm(g)) + 1.0e-300)
+
+
+def perturb_normal(
     p: np.ndarray,
     oracle: PolynomialOracle,
-    eps_linf: float,
+    eps_normal: float,
     grad_tol: float,
+    norm: str = "linf",
 ) -> Optional[np.ndarray]:
+    """Move from boundary point p by eps_normal in the norm-adapted outward normal direction."""
     grad = oracle.grad_margin(p)
     if float(np.linalg.norm(grad)) <= float(grad_tol):
         return None
-    return np.asarray(p, dtype=np.float64) + float(eps_linf) * np.sign(grad)
+    return np.asarray(p, dtype=np.float64) + float(eps_normal) * _unit_ascent_direction(grad, norm)
+
+
+# Backwards-compatible alias (l_inf normal move).
+def perturb_normal_linf(p, oracle, eps_linf, grad_tol):
+    return perturb_normal(p, oracle, eps_linf, grad_tol, norm="linf")
 
 
 def nearest_boundary_check(
@@ -457,6 +541,108 @@ def nearest_boundary_check(
     }
 
 
+def screen_box_signed_margin(
+    oracle: PolynomialOracle,
+    x0: np.ndarray,
+    eps_verify: float,
+    label_sign: float,
+    cfg: PolynomialBoundaryConfig,
+    rng: np.random.Generator,
+) -> Dict[str, Any]:
+    """
+    Numerical NON-robustness screen for the nonconvex case.
+
+    Minimize label_sign * mu(z) over the l_inf box B_eps(x0) with multi-start L-BFGS-B, where
+    label_sign = sign(mu(x0)). A negative minimum means the box contains a point of the opposite
+    class -> the instance is (numerically) NON-robust. A minimum within +/- nbc_boundary_tol of 0
+    means the box grazes the boundary -> inconclusive. Because L-BFGS-B is local, a positive minimum
+    only certifies robustness *numerically* (an undetected branch may still exist).
+    """
+    _, minimize = _require_scipy_optimize()
+    x0 = np.asarray(x0, dtype=np.float64).reshape(-1)
+    lb = x0 - float(eps_verify)
+    ub = x0 + float(eps_verify)
+    bounds = list(zip(lb.tolist(), ub.tolist()))
+    s = float(label_sign)
+
+    def obj_and_grad(z: np.ndarray) -> Tuple[float, np.ndarray]:
+        z = np.asarray(z, dtype=np.float64)
+        return s * float(oracle.margin(z)), s * oracle.grad_margin(z)
+
+    best_val = math.inf
+    best_z = x0.copy()
+    for _ in range(int(cfg.nbc_num_restarts)):
+        z0 = rng.uniform(lb, ub)
+        res = minimize(obj_and_grad, z0, method="L-BFGS-B", jac=True, bounds=bounds,
+                       options={"maxiter": int(cfg.nbc_max_iter), "ftol": float(cfg.nbc_ftol),
+                                "gtol": float(cfg.nbc_gtol)})
+        if float(res.fun) < best_val:
+            best_val = float(res.fun)
+            best_z = np.asarray(res.x, dtype=np.float64).copy()
+
+    tol = float(cfg.candidate_margin_tol)
+    if best_val < -tol:
+        status = "non_robust"
+    elif best_val <= tol:
+        status = "inconclusive"
+    else:
+        status = "numerically_certified_robust"
+    return {"status": status, "min_signed_margin": best_val, "best_z": best_z,
+            "n_restarts": int(cfg.nbc_num_restarts)}
+
+
+def select_candidate_convex(
+    oracle: PolynomialOracle,
+    boundary_points: np.ndarray,
+    cfg: PolynomialBoundaryConfig,
+    *,
+    verbose: bool,
+) -> Candidate:
+    """
+    Analytic convex certified selection (no L-BFGS-B).
+
+    For a convex margin mu and boundary point p (mu(p)=0), place x0 = p + eps_normal * u(p) where
+    u(p) is the norm-adapted unit ascent direction (g.u = ||g||_*). With eps_verify = eps_normal -
+    delta_prime, the convex first-order inequality gives, for all x in B_eps_verify(x0),
+        mu(x) >= grad mu(p) . (x - p)
+               = grad mu(p) . (x - x0) + eps_normal * ||grad mu(p)||_*
+               >= (eps_normal - eps_verify) * ||grad mu(p)||_* = delta_prime * ||grad mu(p)||_* > 0,
+    so B_eps_verify(x0) is certifiably robust and the exact distance from x0 to the boundary is
+    eps_normal. No verifier or numerical global search is used.
+    """
+    for i, p in enumerate(boundary_points):
+        grad_p = oracle.grad_margin(p)
+        gdual = _dual_norm(grad_p, cfg.norm)
+        if gdual <= float(cfg.grad_tol):
+            continue
+        q = perturb_normal(p, oracle, float(cfg.eps_normal), float(cfg.grad_tol), norm=cfg.norm)
+        if q is None:
+            continue
+        margin_q = float(oracle.margin(q))
+        if abs(margin_q) <= float(cfg.candidate_margin_tol):
+            continue
+        known_dist = _norm_dist(q, p, cfg.norm)      # == eps_normal by construction
+        eps_verify = known_dist - float(cfg.delta_prime)
+        if eps_verify <= 0:
+            continue
+        certified_lb = float(cfg.delta_prime) * gdual
+        label = int(np.argmax(oracle.logits(q)))
+        if verbose:
+            print(f"Convex candidate {i}: eps={eps_verify:.6e}, |g(q)|={abs(margin_q):.3e}, "
+                  f"||grad mu(p)||_*={gdual:.3e}, certified margin lb={certified_lb:.3e} "
+                  f"[ANALYTIC, norm={cfg.norm}]")
+        return Candidate(
+            index=i, boundary_point=np.asarray(p, dtype=np.float64).copy(),
+            x0=np.asarray(q, dtype=np.float64).copy(), known_boundary_dist_linf=float(known_dist),
+            epsilon=float(eps_verify), label=label, margin_at_x0=margin_q,
+            grad_dual_norm_at_p=float(gdual), certified_margin_lb=float(certified_lb),
+            exact_boundary_dist=float(known_dist), screening_status="analytic_convex")
+    raise RuntimeError(
+        "No convex candidate could be formed (all boundary points had near-zero gradient or "
+        "degenerate radius). Increase num_lines/center_scale or adjust eps_normal/delta_prime."
+    )
+
+
 def select_candidate(
     oracle: PolynomialOracle,
     boundary_points: np.ndarray,
@@ -466,14 +652,10 @@ def select_candidate(
     verbose: bool,
 ) -> Candidate:
     checked = 0
+    last: Optional[Candidate] = None
 
     for p in boundary_points:
-        q = perturb_normal_linf(
-            p,
-            oracle=oracle,
-            eps_linf=float(cfg.eps_normal),
-            grad_tol=float(cfg.grad_tol),
-        )
+        q = perturb_normal(p, oracle, float(cfg.eps_normal), float(cfg.grad_tol), norm=cfg.norm)
         if q is None:
             continue
 
@@ -481,55 +663,57 @@ def select_candidate(
         if abs(margin_q) <= float(cfg.candidate_margin_tol):
             continue
 
-        known_dist = linf_dist(q, p)
+        known_dist = _norm_dist(q, p, cfg.norm)
         eps_verify = known_dist - float(cfg.delta_prime)
         if eps_verify <= 0:
             continue
 
         checked += 1
         t0 = time.time()
-        nbc = nearest_boundary_check(
-            oracle=oracle,
-            q=q,
-            eps_verify=eps_verify,
-            cfg=cfg,
-            rng=rng,
-        )
+        nbc = nearest_boundary_check(oracle=oracle, q=q, eps_verify=eps_verify, cfg=cfg, rng=rng)
+        # Signed-margin screen classifies non_robust / inconclusive / numerically_certified_robust.
+        screen = screen_box_signed_margin(oracle, q, eps_verify, math.copysign(1.0, margin_q), cfg, rng)
         elapsed = time.time() - t0
 
+        logits = oracle.logits(q)
+        label = int(np.argmax(logits))
+        cand = Candidate(
+            index=checked - 1,
+            boundary_point=np.asarray(p, dtype=np.float64).copy(),
+            x0=np.asarray(q, dtype=np.float64).copy(),
+            known_boundary_dist_linf=float(known_dist),
+            epsilon=float(eps_verify), label=label, margin_at_x0=margin_q,
+            nbc_min_fsq=float(nbc["min_fsq"]),
+            nbc_best_z=np.asarray(nbc["best_z"], dtype=np.float64).copy(),
+            nbc_elapsed_sec=float(elapsed), nbc_num_restarts=int(nbc["n_restarts"]),
+            screening_status=str(screen["status"]),
+            screening_min_signed_margin=float(screen["min_signed_margin"]),
+        )
+        last = cand
+
         if verbose:
-            status = "PASS" if nbc["passes"] else "FAIL"
             print(
-                f"Candidate {checked}: eps={eps_verify:.6e}, "
-                f"|g(q)|={abs(margin_q):.3e}, "
-                f"min|g(z)|^2={nbc['min_fsq']:.3e} -> {status} "
-                f"({elapsed:.1f}s)"
+                f"Candidate {checked}: eps={eps_verify:.6e}, |g(q)|={abs(margin_q):.3e}, "
+                f"min|g(z)|^2={nbc['min_fsq']:.3e}, min_signed_margin={screen['min_signed_margin']:.3e} "
+                f"-> {screen['status']} ({elapsed:.1f}s)"
             )
 
-        if nbc["passes"]:
-            logits = oracle.logits(q)
-            label = int(np.argmax(logits))
-            return Candidate(
-                index=checked - 1,
-                boundary_point=np.asarray(p, dtype=np.float64).copy(),
-                x0=np.asarray(q, dtype=np.float64).copy(),
-                known_boundary_dist_linf=float(known_dist),
-                epsilon=float(eps_verify),
-                label=label,
-                margin_at_x0=margin_q,
-                nbc_min_fsq=float(nbc["min_fsq"]),
-                nbc_best_z=np.asarray(nbc["best_z"], dtype=np.float64).copy(),
-                nbc_elapsed_sec=float(elapsed),
-                nbc_num_restarts=int(nbc["n_restarts"]),
-            )
+        # A screened-robust candidate is always accepted.
+        if screen["status"] == "numerically_certified_robust" and nbc["passes"]:
+            return cand
+        # In report mode, a decisive non_robust / inconclusive outcome is also returned (tallied by
+        # the separate nonconvex experiment); otherwise keep searching for a robust one.
+        if cfg.nonconvex_report_mode and screen["status"] in ("non_robust", "inconclusive"):
+            return cand
 
         if checked >= int(cfg.max_candidates):
             break
 
+    if cfg.nonconvex_report_mode and last is not None:
+        return last
     raise RuntimeError(
         f"No candidate passed the nearest-boundary check after checking {checked} "
-        f"candidate(s). Try increasing max_candidates/num_lines or loosening "
-        f"nbc_boundary_tol."
+        f"candidate(s). Try increasing max_candidates/num_lines or loosening nbc_boundary_tol."
     )
 
 
@@ -585,15 +769,15 @@ def create_instance(
         )
 
     if verbose:
-        print("Perturbing along l_inf normal direction and running NBC...")
+        mode = "ANALYTIC CONVEX certificate" if cfg.certified_convex else "numerical L-BFGS-B screen"
+        print(f"Perturbing along {cfg.norm} normal direction ({mode})...")
 
-    candidate = select_candidate(
-        oracle=oracle,
-        boundary_points=boundary_points,
-        cfg=cfg,
-        rng=rng,
-        verbose=verbose,
-    )
+    if cfg.certified_convex:
+        candidate = select_candidate_convex(
+            oracle=oracle, boundary_points=boundary_points, cfg=cfg, verbose=verbose)
+    else:
+        candidate = select_candidate(
+            oracle=oracle, boundary_points=boundary_points, cfg=cfg, rng=rng, verbose=verbose)
 
     # Export verifier-facing model as float32.
     model = PolynomialNet(params, dtype=torch.float32).eval()
@@ -601,34 +785,66 @@ def create_instance(
     candidate_boundary_abs_res = abs(float(oracle.margin(candidate.boundary_point)))
     candidate_boundary_rel_res = float(oracle.relative_margin_residual(candidate.boundary_point))
 
-    meta: Dict[str, Any] = {
-        "label": int(candidate.label),
-        "epsilon": float(candidate.epsilon),
-        "x0": candidate.x0.astype(float).tolist(),
-        "is_robust": True,
-        "certificate_type": "numerical_multistart_lbfgsb_nearest_boundary_check",
-        "construction_note": (
-            "Accepted because the multi-start L-BFGS-B nearest-boundary check did "
-            "not find |g(z)|^2 below nbc_boundary_tol inside the verification box. "
-            "No verifier was run by this constructor."
-        ),
-        "candidate": {
-            "candidate_index_checked": int(candidate.index),
-            "known_boundary_dist_linf": float(candidate.known_boundary_dist_linf),
-            "delta_prime": float(cfg.delta_prime),
-            "margin_at_x0": float(candidate.margin_at_x0),
-            "boundary_abs_residual_at_p": float(candidate_boundary_abs_res),
-            "boundary_rel_residual_at_p": float(candidate_boundary_rel_res),
+    if cfg.certified_convex:
+        is_robust = True
+        certificate_type = "analytic_convex_first_order"
+        construction_note = (
+            "CONVEX margin (even degree, coordinatewise-nonnegative coefficients alpha_j = "
+            "W2[0,j]-W2[1,j] >= 0). Robustness follows analytically from the convex first-order "
+            "inequality: for all x in B_eps(x0), mu(x) >= delta * ||grad mu(p)||_* > 0, where x0 = "
+            "p + (eps+delta) u(p) and u is the norm-adapted unit normal. The exact distance from x0 "
+            "to the decision boundary is eps+delta. No verifier and no numerical global search used."
+        )
+        candidate_extra = {
+            "grad_dual_norm_at_p": float(candidate.grad_dual_norm_at_p),
+            "certified_margin_lower_bound": float(candidate.certified_margin_lb),
+            "exact_boundary_distance": float(candidate.exact_boundary_dist),
+        }
+    else:
+        is_robust = bool(candidate.screening_status == "numerically_certified_robust")
+        certificate_type = "numerical_multistart_lbfgsb_screen"
+        construction_note = (
+            "NONCONVEX margin: robustness only SCREENED numerically by multi-start L-BFGS-B "
+            "(minimizing |g(z)|^2 and the signed margin over the box). Local optimization cannot "
+            "certify global separation; reported screening_status is one of "
+            "{numerically_certified_robust, non_robust, inconclusive}. Kept separate from the "
+            "analytically certified benchmark; not used to assign ground truth or judge soundness."
+        )
+        candidate_extra = {
             "nbc_min_fsq": float(candidate.nbc_min_fsq),
             "nbc_elapsed_sec": float(candidate.nbc_elapsed_sec),
             "nbc_num_restarts": int(candidate.nbc_num_restarts),
             "nbc_boundary_tol": float(cfg.nbc_boundary_tol),
+            "screening_min_signed_margin": float(candidate.screening_min_signed_margin),
+        }
+
+    meta: Dict[str, Any] = {
+        "label": int(candidate.label),
+        "epsilon": float(candidate.epsilon),
+        "x0": candidate.x0.astype(float).tolist(),
+        "is_robust": bool(is_robust),
+        "certificate_type": certificate_type,
+        "certified_convex": bool(cfg.certified_convex),
+        "norm": str(cfg.norm),
+        "screening_status": str(candidate.screening_status),
+        "construction_note": construction_note,
+        "candidate": {
+            "candidate_index_checked": int(candidate.index),
+            "known_boundary_dist": float(candidate.known_boundary_dist_linf),
+            "delta_prime": float(cfg.delta_prime),
+            "eps_normal": float(cfg.eps_normal),
+            "margin_at_x0": float(candidate.margin_at_x0),
+            "boundary_abs_residual_at_p": float(candidate_boundary_abs_res),
+            "boundary_rel_residual_at_p": float(candidate_boundary_rel_res),
+            **candidate_extra,
         },
         "model": {
             "input_dim": int(cfg.input_dim),
             "hidden_dim": int(cfg.hidden_dim),
             "degree": int(cfg.degree),
             "num_outputs": int(cfg.num_outputs),
+            "certified_convex": bool(cfg.certified_convex),
+            "norm": str(cfg.norm),
             "init_mode": str(cfg.init_mode),
             "weight_scale": float(cfg.weight_scale),
             "bias_scale": float(cfg.bias_scale),
@@ -661,6 +877,14 @@ def create_and_export_instance(
     *,
     verbose: bool = True,
 ) -> Dict[str, Any]:
+    if cfg.norm != "linf":
+        # make_box_vnnlib emits an l_inf box, which is exactly the certified set only for norm="linf".
+        # The l2 certificate (correct x0/eps and margin bound) is available via create_instance(), but
+        # exporting it as a VNNLIB spec requires l2 spec support in the verifier/format (future work).
+        raise NotImplementedError(
+            f"VNNLIB export supports norm='linf' only (got norm={cfg.norm!r}). The l2 analytic "
+            "certificate is computed by create_instance(); l2 spec export is not yet wired."
+        )
     onnx_path = Path(onnx_path)
     vnnlib_path = Path(vnnlib_path)
     onnx_path.parent.mkdir(parents=True, exist_ok=True)
@@ -746,6 +970,17 @@ def add_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("--degree", type=int, default=10)
     p.add_argument("--num-outputs", type=int, default=2)
 
+    # Certification mode.
+    p.add_argument("--certified-convex", action="store_true",
+                   help="Enforce even degree + coordinatewise-nonnegative margin coefficients so the "
+                        "margin is convex; robustness is then certified analytically (no L-BFGS-B).")
+    p.add_argument("--norm", choices=["linf", "l2"], default="linf",
+                   help="Perturbation norm for the normal direction / certificate (Prop. 11 is "
+                        "norm-generic). VNNLIB export currently supports linf only.")
+    p.add_argument("--nonconvex-report-mode", action="store_true",
+                   help="Nonconvex only: return non_robust/inconclusive candidates (with "
+                        "screening_status) instead of hard-failing, for the separate experiment.")
+
     # Boundary sampling.
     p.add_argument("--num-lines", type=int, default=1000)
     p.add_argument("--center-scale", type=float, default=2.0)
@@ -800,6 +1035,9 @@ def run(args) -> Dict[str, Any]:
         hidden_dim=int(args.hidden_dim),
         degree=int(args.degree),
         num_outputs=int(args.num_outputs),
+        certified_convex=bool(getattr(args, "certified_convex", False)),
+        norm=str(getattr(args, "norm", "linf")),
+        nonconvex_report_mode=bool(getattr(args, "nonconvex_report_mode", False)),
         num_lines=int(args.num_lines),
         center_scale=float(args.center_scale),
         line_t_min=float(args.line_t_min),
