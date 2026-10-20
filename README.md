@@ -81,7 +81,6 @@ Under `src/VeriStressGT/benchmarks/`, each with a `manifest.json` and `instances
 | `mlp_relu.embedded_projection` | MLP | Baseline provably-robust via input projection |
 | `mlp_relu.meap` | MLP | Mutually exclusive activation patterns |
 | `mlp_relu.corners` | MLP | Convex corner-based certificate |
-| `mlp_relu.activation_test` | MLP | Activation pattern testing |
 | `mlp_relu.milp.exact_radius` | MLP | MILP-computed exact robustness radius |
 | `cnn.cnn_paired_bias` | CNN | Exploits CROWN's independent neuron relaxation |
 | `cnn.deep_contractive_cnn` | CNN | Easy for CROWN, hard for CDCL verifiers |
