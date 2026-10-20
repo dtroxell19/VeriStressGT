@@ -1,0 +1,1 @@
+{"id": "polyconv_d10_s1", "construction": "polynomial.algebraic_boundary", "args": {"degree": 10, "certified_convex": true, "seed": 1}}

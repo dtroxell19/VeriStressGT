@@ -1,0 +1,3731 @@
+[
+ {
+  "instance_id": "dc_cnn1",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "7815579/33554432",
+  "certified_lb_float": 0.23292240500450134,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.2329; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=2"
+ },
+ {
+  "instance_id": "dc_cnn10",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15802883/134217728",
+  "certified_lb_float": 0.11774065345525742,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1177; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=10"
+ },
+ {
+  "instance_id": "dc_cnn11",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8965965/268435456",
+  "certified_lb_float": 0.033400822430849075,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.0334; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn12",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "9988925/134217728",
+  "certified_lb_float": 0.07442329078912735,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.07442; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn13",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn14",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "14005237/67108864",
+  "certified_lb_float": 0.20869429409503937,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.2087; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn15",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8438695/33554432",
+  "certified_lb_float": 0.2514927089214325,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.2515; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn16",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "208523/8388608",
+  "certified_lb_float": 0.02485787868499756,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.02486; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn17",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "14868105/268435456",
+  "certified_lb_float": 0.05538800731301308,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.05539; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn18",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn19",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "10423111/67108864",
+  "certified_lb_float": 0.15531645715236664,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1553; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn2",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4554447/33554432",
+  "certified_lb_float": 0.13573309779167175,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1357; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=4"
+ },
+ {
+  "instance_id": "dc_cnn20",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "3140163/16777216",
+  "certified_lb_float": 0.18716830015182495,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1872; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn21",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15915619/67108864",
+  "certified_lb_float": 0.23716120421886444,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.2372; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn22",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn23",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn24",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn25",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn26",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "1695165/8388608",
+  "certified_lb_float": 0.2020794153213501,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.2021; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn27",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn28",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn29",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn3",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn30",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn31",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn32",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn33",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn34",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn35",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn36",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn37",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn38",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn39",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn4",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5503573/67108864",
+  "certified_lb_float": 0.08200962841510773,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.08201; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=8"
+ },
+ {
+  "instance_id": "dc_cnn40",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn41",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "2356555/33554432",
+  "certified_lb_float": 0.07023081183433533,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.07023; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn42",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "11255105/134217728",
+  "certified_lb_float": 0.08385706692934036,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.08386; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn43",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5062603/33554432",
+  "certified_lb_float": 0.15087732672691345,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1509; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn44",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "10814381/67108864",
+  "certified_lb_float": 0.1611468344926834,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1611; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn45",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "7943573/33554432",
+  "certified_lb_float": 0.23673692345619202,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.2367; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn46",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13743961/268435456",
+  "certified_lb_float": 0.05120024457573891,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.0512; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn47",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "12907869/134217728",
+  "certified_lb_float": 0.09617111831903458,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.09617; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn48",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn49",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "12691713/67108864",
+  "certified_lb_float": 0.18912126123905182,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1891; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn5",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "11467233/134217728",
+  "certified_lb_float": 0.08543754369020462,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.08544; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=10"
+ },
+ {
+  "instance_id": "dc_cnn50",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "9566785/33554432",
+  "certified_lb_float": 0.2851124107837677,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.2851; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn6",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "11540119/67108864",
+  "certified_lb_float": 0.17196117341518402,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.172; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=2"
+ },
+ {
+  "instance_id": "dc_cnn7",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4884499/33554432",
+  "certified_lb_float": 0.14556941390037537,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1456; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=4"
+ },
+ {
+  "instance_id": "dc_cnn8",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "15070955/134217728",
+  "certified_lb_float": 0.11228736490011215,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.1123; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=6"
+ },
+ {
+  "instance_id": "dc_cnn9",
+  "family": "cnn.deep_contractive_cnn",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "5276423/67108864",
+  "certified_lb_float": 0.07862482964992523,
+  "checks": {
+   "ends_in_relu_before_readout": true,
+   "readout_row_nonneg": true,
+   "other_logits_zero": true
+  },
+  "notes": "structural: margin>=B=0.07862; paper's l2-contraction cert not re-verified here (cheap induced-norm bound is loose for conv operators); positivity is structural and contraction-independent, depth=8"
+ },
+ {
+  "instance_id": "ep1",
+  "family": "mlp_relu.embedded_projection",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "49310388940336069875022013040838944759339044824791229288172452076651567154511949/59285549689505892056868344324448208820874232148807968788202283012051522375647232",
+  "certified_lb_float": 0.8317438093867329,
+  "checks": {
+   "proj_l1_structure": true,
+   "proj_l2_structure": true,
+   "ibp_margin_positive": true
+  },
+  "notes": "exact IBP over full net; projection box-width=1.19e-08"
+ },
+ {
+  "instance_id": "ep2",
+  "family": "mlp_relu.embedded_projection",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "49310388940336069875022013040838944759339044824791229288172452076651567154511949/59285549689505892056868344324448208820874232148807968788202283012051522375647232",
+  "certified_lb_float": 0.8317438093867329,
+  "checks": {
+   "proj_l1_structure": true,
+   "proj_l2_structure": true,
+   "ibp_margin_positive": true
+  },
+  "notes": "exact IBP over full net; projection box-width=1.19e-08"
+ },
+ {
+  "instance_id": "ep3",
+  "family": "mlp_relu.embedded_projection",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "49310388940336069875022013040838944759339044824791229288172452076651567154511949/59285549689505892056868344324448208820874232148807968788202283012051522375647232",
+  "certified_lb_float": 0.8317438093867329,
+  "checks": {
+   "proj_l1_structure": true,
+   "proj_l2_structure": true,
+   "ibp_margin_positive": true
+  },
+  "notes": "exact IBP over full net; projection box-width=1.19e-08"
+ },
+ {
+  "instance_id": "ep4",
+  "family": "mlp_relu.embedded_projection",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "49310388940336069875022013040838944759339044824791229288172452076651567154511949/59285549689505892056868344324448208820874232148807968788202283012051522375647232",
+  "certified_lb_float": 0.8317438093867329,
+  "checks": {
+   "proj_l1_structure": true,
+   "proj_l2_structure": true,
+   "ibp_margin_positive": true
+  },
+  "notes": "exact IBP over full net; projection box-width=1.19e-08"
+ },
+ {
+  "instance_id": "ep5",
+  "family": "mlp_relu.embedded_projection",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "49310388940336069875022013040838944759339044824791229288172452076651567154511949/59285549689505892056868344324448208820874232148807968788202283012051522375647232",
+  "certified_lb_float": 0.8317438093867329,
+  "checks": {
+   "proj_l1_structure": true,
+   "proj_l2_structure": true,
+   "ibp_margin_positive": true
+  },
+  "notes": "exact IBP over full net; projection box-width=1.19e-08"
+ },
+ {
+  "instance_id": "fp1",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.28986244591873905",
+  "certified_lb_float": 0.28986244591873905,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp10",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.5773481556315723",
+  "certified_lb_float": 0.5773481556315723,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp11",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.7613447417360796",
+  "certified_lb_float": 0.7613447417360796,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp12",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.8411820043665884",
+  "certified_lb_float": 0.8411820043665884,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp13",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "31.57380427370753",
+  "certified_lb_float": 31.57380427370753,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp14",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "12.018791570765636",
+  "certified_lb_float": 12.018791570765636,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp15",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "6.152287378413342",
+  "certified_lb_float": 6.152287378413342,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp16",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "5.506971731288098",
+  "certified_lb_float": 5.506971731288098,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp17",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "5.500518694026135",
+  "certified_lb_float": 5.500518694026135,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp2",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.5806488142641228",
+  "certified_lb_float": 0.5806488142641228,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp3",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "5.956483701892962",
+  "certified_lb_float": 5.956483701892962,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp4",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "2.363472335006041",
+  "certified_lb_float": 2.363472335006041,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp5",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "5.7902768334332855",
+  "certified_lb_float": 5.7902768334332855,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp6",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "11.32493463890468",
+  "certified_lb_float": 11.32493463890468,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp7",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.004297593620608056",
+  "certified_lb_float": 0.004297593620608056,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp8",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.1680167013988406",
+  "certified_lb_float": 0.1680167013988406,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "fp9",
+  "family": "attention.fixed_pattern",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "1.7248692501419918",
+  "certified_lb_float": 1.7248692501419918,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld1",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.0925962598930472",
+  "certified_lb_float": 0.0925962598930472,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld10",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.2843800258082934",
+  "certified_lb_float": 0.2843800258082934,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld11",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.28528226188921846",
+  "certified_lb_float": 0.28528226188921846,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld12",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.33035893594728494",
+  "certified_lb_float": 0.33035893594728494,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld13",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.27515789644935734",
+  "certified_lb_float": 0.27515789644935734,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld14",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.2707668334391192",
+  "certified_lb_float": 0.2707668334391192,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld15",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.27684776775551284",
+  "certified_lb_float": 0.27684776775551284,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld16",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.1052968261686633",
+  "certified_lb_float": 0.1052968261686633,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld17",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.2645403687552124",
+  "certified_lb_float": 0.2645403687552124,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld18",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.6130596317644057",
+  "certified_lb_float": 0.6130596317644057,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld2",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.26476458918056345",
+  "certified_lb_float": 0.26476458918056345,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld3",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.4798025969680923",
+  "certified_lb_float": 0.4798025969680923,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld4",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.06399248504467567",
+  "certified_lb_float": 0.06399248504467567,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld5",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.1663207855207499",
+  "certified_lb_float": 0.1663207855207499,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld6",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.5500519719106729",
+  "certified_lb_float": 0.5500519719106729,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld7",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.19933612021939925",
+  "certified_lb_float": 0.19933612021939925,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld8",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.2954988466519833",
+  "certified_lb_float": 0.2954988466519833,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "ld9",
+  "family": "attention.linear_dominance",
+  "benchmark": "sweep_all",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": true,
+  "certified_lb": "0.40530061192546923",
+  "certified_lb_float": 0.40530061192546923,
+  "checks": {
+   "interval_enclosure_positive": true
+  },
+  "notes": "direct mpmath.iv box enclosure (prec=200 bits)"
+ },
+ {
+  "instance_id": "meap1",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=2, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap10",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13743895/137438953472",
+  "certified_lb_float": 9.999999747378752e-05,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap11",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "2748779/274877906944",
+  "certified_lb_float": 9.999999747378752e-06,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap12",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "1",
+  "certified_lb_float": 1.0,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap13",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=2, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap14",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "100",
+  "certified_lb_float": 100.0,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap2",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap3",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=32, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap4",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=128, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap5",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap6",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap7",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap8",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "meap9",
+  "family": "mlp_relu.meap",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "pair_negation": true,
+   "biases_equal_gamma": true,
+   "gamma_positive": true,
+   "sel_even": true,
+   "sel_odd": true,
+   "sel_odd_neg": true,
+   "neg_identity": true,
+   "output_onehot": true
+  },
+  "notes": "P=16, lb=gamma (f_label>=gamma pointwise)"
+ },
+ {
+  "instance_id": "milp1",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp10",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp11",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp12",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp13",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp14",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp15",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp16",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp17",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp18",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp19",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp2",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp20",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp21",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp22",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp23",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp24",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp25",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp26",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp27",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp28",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp29",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp3",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp30",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp31",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp4",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp5",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp6",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp7",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp8",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "milp9",
+  "family": "mlp_relu.milp.exact_radius",
+  "benchmark": "sweep_all",
+  "arithmetic": "inconclusive",
+  "tier": "inconclusive",
+  "certified_positive": false,
+  "certified_lb": null,
+  "certified_lb_float": null,
+  "checks": {
+   "ibp_positive": false,
+   "box_bab_robust": false
+  },
+  "notes": "exact-rational IBP + box-BaB too loose for this near-boundary MILP instance; robustness at eps<r* rests on the exact-radius MILP (complete)"
+ },
+ {
+  "instance_id": "pb_cnn_1",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=2, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_10",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=32, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_11",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "1",
+  "certified_lb_float": 1.0,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_12",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "1/2",
+  "certified_lb_float": 0.5,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_13",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_14",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/268435456",
+  "certified_lb_float": 0.05000000074505806,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_15",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_16",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "1",
+  "certified_lb_float": 1.0,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_17",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "1/2",
+  "certified_lb_float": 0.5,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_18",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_19",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/268435456",
+  "certified_lb_float": 0.05000000074505806,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_2",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=4, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_20",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "8589935/8589934592",
+  "certified_lb_float": 0.0010000000474974513,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_21",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_22",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_23",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_24",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_25",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_26",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_27",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_28",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_29",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_3",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_30",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_31",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_32",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_33",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_34",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_35",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_36",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_37",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_38",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_39",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_4",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=16, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_40",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=64, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_41",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=144, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_42",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=256, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_43",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_44",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=64, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_45",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=144, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_46",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=256, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_5",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=32, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_6",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=2, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_7",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=4, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_8",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=8, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "pb_cnn_9",
+  "family": "cnn.cnn_paired_bias",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "13421773/134217728",
+  "certified_lb_float": 0.10000000149011612,
+  "checks": {
+   "weight_sharing": true,
+   "fc_paired_pattern": true,
+   "other_logits_zero": true,
+   "pair_gap_positive": true
+  },
+  "notes": "P=16, HW=16, lb=fc_bias[label]"
+ },
+ {
+  "instance_id": "rc1",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc10",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc11",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc12",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc13",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc14",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "9444665932682423146697/2361183241434822606848",
+  "certified_lb_float": 3.999971610396139,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc15",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "9444163635358080359073/2361183241434822606848",
+  "certified_lb_float": 3.999758879204621,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc16",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "73529053399313974093/18446744073709551616",
+  "certified_lb_float": 3.9860179718169437,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc17",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "73565011664256069471/18446744073709551616",
+  "certified_lb_float": 3.987967273265395,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc18",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "72852549583973228867/18446744073709551616",
+  "certified_lb_float": 3.9493446265025853,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc19",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc2",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc20",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc21",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc22",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc3",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc4",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc5",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc6",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc7",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc8",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "rc9",
+  "family": "mlp_relu.corners",
+  "benchmark": "sweep_all",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "4",
+  "certified_lb_float": 4.0,
+  "checks": {
+   "competitor_nonneg": true,
+   "corner_min_computed": true
+  },
+  "notes": "active_dim=8, exact min over 256 corners (concave margin)"
+ },
+ {
+  "instance_id": "poly01_easy_N50_d10",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-15510.000762258964",
+  "certified_lb_float": -15510.000762258964,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=10, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly02_easy_d2",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-3.1786266318908902",
+  "certified_lb_float": -3.1786266318908902,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=2, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly03_easy_d6",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-101.94573233019784",
+  "certified_lb_float": -101.94573233019784,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=6, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly04_easy_d10_h50",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-754.3163061657822",
+  "certified_lb_float": -754.3163061657822,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=10, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly05_easy_d10_h500",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-142241.2197330902",
+  "certified_lb_float": -142241.2197330902,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=10, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly06_deg12",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-102925.64266269842",
+  "certified_lb_float": -102925.64266269842,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=12, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly07_deg14",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-1885669.890318509",
+  "certified_lb_float": -1885669.890318509,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=14, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly08_deg16",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-2095451384.0415282",
+  "certified_lb_float": -2095451384.0415282,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=16, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly09_deg17",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-325039355.2642958",
+  "certified_lb_float": -325039355.2642958,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=17, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly10_deg18_a",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-169436762.1196352",
+  "certified_lb_float": -169436762.1196352,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=18, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly11_deg18_b",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-50068604.38858558",
+  "certified_lb_float": -50068604.38858558,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=18, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly12_deg19_a",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-1597374518.4099782",
+  "certified_lb_float": -1597374518.4099782,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=19, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly13_deg19_b",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-381395270.56324935",
+  "certified_lb_float": -381395270.56324935,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=19, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly14_deg20",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-17910770225.326344",
+  "certified_lb_float": -17910770225.326344,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=20, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly15_deg21",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-11215662635.584023",
+  "certified_lb_float": -11215662635.584023,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=21, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly16_deg22",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-3558546241.1224413",
+  "certified_lb_float": -3558546241.1224413,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=22, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly17_delta2e3",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-11380.978455860384",
+  "certified_lb_float": -11380.978455860384,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=10, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly18_delta1e3",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-17181.880697153956",
+  "certified_lb_float": -17181.880697153956,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=10, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly19_delta5e4",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-16208.808104589676",
+  "certified_lb_float": -16208.808104589676,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=10, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly20_delta2e4",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-32307.96722319035",
+  "certified_lb_float": -32307.96722319035,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=10, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly21_delta1e4",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-12442.276689236633",
+  "certified_lb_float": -12442.276689236633,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=10, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "poly22_combo_deg18_delta1e3",
+  "family": "polynomial.algebraic_boundary",
+  "benchmark": "polynomial_stress_22",
+  "arithmetic": "interval_mpmath",
+  "tier": "validated-interval",
+  "certified_positive": false,
+  "certified_lb": "-54166447.748806454",
+  "certified_lb_float": -54166447.748806454,
+  "checks": {
+   "interval_enclosure_positive": false
+  },
+  "notes": "degree=18, nonconvex shipped; iv box enclosure"
+ },
+ {
+  "instance_id": "polyconv_d10_s1",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "204822279790672718915992851074645915024279868977063445635455314625734069550309973233864827179844984663485224324449782246602757905140596812233750458085793359568834918501757463540780049324198435292244102691536426194994150659290055139021016513235700119071522391845563991588158360931684899/580865979874134008905493163339804906301273516273200960568660882545289319203282958416081372850061074449140126480544130097833822361540978792105793195743122900696472984549789013258861878841522553464937185852481030158620214338624171909436366773573694563676580119318024965946783339380736",
+  "certified_lb_float": 352.6153826999044,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=10: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d10_s2",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "2055773159929472472003975291191802202855151613861207824404421297601279700253492971333692727408692911461562551911474252275788689015453948092015026323563290330512598569045679934054303214580196723700416918143442613005718159688958194525794802494462884210678900220307488322317706369731/8863311460481781141746416676937941075153709659930434578989576454853657824757125219971944776154496375261537574471193391385403783592849407838528338558092085276740615608975052082196989118065224509657855008735367281473086766641604185629827373864344704645943910512054824309490712576",
+  "certified_lb_float": 231.94188414740952,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=10: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d12_s1",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "18177491643259252841740797822550609567664480894611166343899584259206352098130665791854864701789764358154483085771420336710306375563437162487686812045494390221543798942185870421987162175447601586315584970588670289500107209703435769058362348323893817543953366075808842909027097392949768223157396050477979326184977791292221055349787177613460033/7121396191982444081459240256716232608204685820201504864985518806022556707739359503819940604520725527815037000327546736987361103337611554964717200129550256031340043173576777574269774276415812130972283521217972496767542066294098470661445536203251688606676161518538692485497426544725388753939541721317210145930590368012063501317132976652288",
+  "certified_lb_float": 2552.5179547971516,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=12: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d12_s2",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "20745401866594975338796563434194382283212191141382360676916669037038379305715185776975319416549080888095394768573511992243915278172611372861603623587322299400778880051592193488532066495165500219679102161298143956290585449493579848426614227736345428285245706353597524460795763337595536155166574332337511178352354304407225721309764583847221/13908976937465711096600078626398891812899776992581064189424841418012806069803436530898321493204542046513744141264739720678439654956272568290463281503027843811211021823392143699745652883624633068305241252378852532749105598230661075510635812896975954309914377965895883760737161220166774910038167424447676066270684312523561526010025345024",
+  "certified_lb_float": 1491.511702109048,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=12: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d2_s1",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "24032273084521175118234566219873925229018953792565443341470253/205688069665150755269371147819668813122841983204197482918576128",
+  "certified_lb_float": 0.11683843950523935,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=2: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d2_s2",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "154471853391526252955057036422064322288196586970853532084782343/1645504557321206042154969182557350504982735865633579863348609024",
+  "certified_lb_float": 0.09387506871630803,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=2: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d4_s1",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "3823156631848004732020313982712387179710885405531237749824206993302455483800882677193370435414293224300612106406764953/5043456793138493339171717132818382567050206626619577173497381555743452386751642958261026080625269202023248382759272448",
+  "certified_lb_float": 0.7580429036388933,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=4: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d4_s2",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "90681637714013381719574014874443353113897538729042741592257185782122020201035853912661110184972861588704382591336503/157608024785577916849116160400574455220318957081861786671793173616982887085988842445657065019539662563226511961227264",
+  "certified_lb_float": 0.575361805576738,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=4: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d6_s1",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "12604015033668680719310563898082064586815027094417993124857291158789354615970491498674262564612425677945932128409813777093956637059599688290515279031256203996854262309452017321/1978643211784836272484020168157177520281050792809694719312504448743177800852254937362531208489944359916781371408129114714810920274454009679740369240815145343332854177189593088",
+  "certified_lb_float": 6.3700291990991245,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=6: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d6_s2",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "14830916516096570569010370488467600020455191137129838814614593813643718488334303413356335971306816153855027740151950069239938343207565309730201413656750433274347443452732551/3864537523017258344695351890931987344298927329706434998657235251451519142289560424536193766581922577962463616031502177177365078661042987655742908673467080748696980814823424",
+  "certified_lb_float": 3.8376950483113057,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=6: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d8_s1",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "35092411089276293763944087430096919059122210852524223292584744085377913378375268236899974707658375060413746583435629092639616850474905302022696485863802728970736351047696855139854122842937630540469663541594222627219857383177603/740298315191606967520227188330889966610377319868419938630605715764070011466206019559325413145373572325939050053182159998975553533608824916574615132828322000124194610605645134711392062011527273571616649243219599128195212771328",
+  "certified_lb_float": 47.40306761361943,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=8: lb=mu(x0)-eps*||grad||_1"
+ },
+ {
+  "instance_id": "polyconv_d8_s2",
+  "family": "polynomial.algebraic_boundary(convex_companion)",
+  "benchmark": "poly_convex",
+  "arithmetic": "exact_rational",
+  "tier": "exact-rational",
+  "certified_positive": true,
+  "certified_lb": "187608781221925616738887079411686909405435765548198580750945625817651651164311519484771214455438930906252566766965619909002273135199768768125214019417426832348510528038864279984898592721437643405643025871538100881408224898025967/5922386521532855740161817506647119732883018558947359509044845726112560091729648156474603305162988578607512400425457279991804428268870599332596921062626576000993556884845161077691136496092218188572933193945756793025561702170624",
+  "certified_lb_float": 31.677902234143264,
+  "checks": {
+   "degree_even": true,
+   "alpha_nonneg": true
+  },
+  "notes": "convex Prop-11, degree=8: lb=mu(x0)-eps*||grad||_1"
+ }
+]
