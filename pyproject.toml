@@ -55,6 +55,7 @@ all = [
 VeriStressGT-export-onnx = "VeriStressGT.cli_run:main_export_onnx"
 VeriStressGT-verify       = "VeriStressGT.cli_run:main_verify"
 VeriStressGT-doctor       = "VeriStressGT.cli.doctor:main"
+VeriStressGT-soundness    = "VeriStressGT.cli.soundness_eval:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
