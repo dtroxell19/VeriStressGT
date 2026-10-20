@@ -18,3 +18,15 @@ dist/
 !examples/toy_weights.pt
 !examples/toy_instance.npz
 !examples/toy_spec.vnnlib
+
+# Track committed benchmark models (needed to actually run the benchmarks); never commit the
+# stale external-data blobs the older exporter left behind.
+!src/VeriStressGT/benchmarks/**/*.onnx
+src/VeriStressGT/benchmarks/**/*.onnx.data
+
+# Verifier caches and local outputs
+*.vnnlib.compiled
+runs/
+.pytest_cache/
+.deps/
+.DS_Store
