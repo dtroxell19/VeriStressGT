@@ -3,7 +3,7 @@
 Instead of pooling all real benchmarks into one wide distribution, compare the TRAINED realistic
 constructors and the SYNTHETIC bare constructors against EACH real benchmark separately, per component.
 
-Rebuttal claim this supports: real networks are HETEROGENEOUS in difficulty; the synthetic constructors
+Claim this supports: real networks are HETEROGENEOUS in difficulty; the synthetic constructors
 reproduce the hard end (e.g. MNIST_fc), the trained constructors reproduce the lower-difficulty end
 (e.g. oval21, rl_benchmarks), and together they span the real spectrum ("complementary coverage").
 

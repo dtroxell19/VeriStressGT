@@ -3,7 +3,7 @@
   (2) SYNTHETIC bare constructors (the original sweep_all),
   (3) REAL standard networks (MNIST_fc + oval21).
 
-Goal (rebuttal): show the trained-realistic nets match the REAL networks' difficulty profiles MORE
+Goal: show the trained-realistic nets match the REAL networks' difficulty profiles MORE
 closely than the bare synthetic constructors do. Produced BEFORE any verifier is run.
 
 Usage:
