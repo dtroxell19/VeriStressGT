@@ -170,7 +170,8 @@ def _run_one_instance(
     if isinstance(run_result, dict):
         gt = run_result.get("meta", run_result)
         try:
-            inst_meta["gt"] = json.loads(json.dumps(gt, default=str))
+            # numpy arrays/scalars -> lists/numbers; anything else falls back to str
+            inst_meta["gt"] = json.loads(json.dumps(gt, default=lambda o: o.tolist() if hasattr(o, "tolist") else str(o)))
         except (TypeError, ValueError):
             pass
 

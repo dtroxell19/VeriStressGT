@@ -1,0 +1,175 @@
+# gibp_realband: the four amplifier-type constructor families with their amplitude knob pushed
+# toward the IBP relative gap (G_IBP) of real verified-robust networks. See
+# src/VeriStressGT/benchmarks/gibp_realband/README.md.
+name: gibp_realband
+defaults:
+  seed: 0
+instances:
+- id: meap_hi1
+  construction: mlp_relu.meap
+  seed: 0
+  args:
+    input_dim: 100
+    num_classes: 10
+    num_pairs: 32
+    epsilon: 0.1
+    gamma: 0.001
+    weight_scale: 2.0
+    label: 0
+- id: meap_hi2
+  construction: mlp_relu.meap
+  seed: 0
+  args:
+    input_dim: 100
+    num_classes: 10
+    num_pairs: 64
+    epsilon: 0.1
+    gamma: 0.001
+    weight_scale: 2.0
+    label: 0
+- id: meap_hi3
+  construction: mlp_relu.meap
+  seed: 1
+  args:
+    input_dim: 100
+    num_classes: 10
+    num_pairs: 128
+    epsilon: 0.1
+    gamma: 0.001
+    weight_scale: 2.0
+    label: 0
+- id: milp_hi1
+  construction: mlp_relu.milp.exact_radius
+  seed: 0
+  args:
+    input_dim: 50
+    h1: 20
+    h2: 20
+    num_outputs: 5
+    epsilon_frac: 0.99
+    rmax: 2.0
+    time_limit: 240.0
+    mip_gap: null
+    epsilon_mode: safe
+- id: milp_hi2
+  construction: mlp_relu.milp.exact_radius
+  seed: 1
+  args:
+    input_dim: 50
+    h1: 20
+    h2: 20
+    num_outputs: 5
+    epsilon_frac: 0.999
+    rmax: 2.0
+    time_limit: 240.0
+    mip_gap: null
+    epsilon_mode: safe
+- id: milp_hi3
+  construction: mlp_relu.milp.exact_radius
+  seed: 2
+  args:
+    input_dim: 50
+    h1: 20
+    h2: 20
+    num_outputs: 5
+    epsilon_frac: 0.9999
+    rmax: 2.0
+    time_limit: 240.0
+    mip_gap: null
+    epsilon_mode: safe
+- id: rc_hi1
+  construction: mlp_relu.corners
+  seed: 1
+  args:
+    input_dim: 100
+    num_outputs: 10
+    hinge_l1: 1000
+    num_hinges: 16
+    epsilon: 0.2
+    label: 0
+    active_dim: 8
+    hinge_density: 1.0
+    pattern_density: 0.5
+    coeff_scale: 1.0
+    tau: 0.0001
+    big_m: 2.0
+- id: rc_hi2
+  construction: mlp_relu.corners
+  seed: 2
+  args:
+    input_dim: 100
+    num_outputs: 10
+    hinge_l1: 10000
+    num_hinges: 16
+    epsilon: 0.2
+    label: 0
+    active_dim: 8
+    hinge_density: 1.0
+    pattern_density: 0.5
+    coeff_scale: 1.0
+    tau: 0.0001
+    big_m: 2.0
+- id: rc_hi3
+  construction: mlp_relu.corners
+  seed: 3
+  args:
+    input_dim: 100
+    num_outputs: 10
+    hinge_l1: 100000
+    num_hinges: 16
+    epsilon: 0.2
+    label: 0
+    active_dim: 8
+    hinge_density: 1.0
+    pattern_density: 0.5
+    coeff_scale: 1.0
+    tau: 0.0001
+    big_m: 2.0
+- id: pb_hi1
+  construction: cnn.cnn_paired_bias
+  seed: 0
+  args:
+    num_pairs: 32
+    margin: 0.001
+    delta: 0.025
+    num_backbone_layers: 4
+    in_channels: 3
+    height: 4
+    width: 4
+    backbone_channels: 2
+    kernel_size: 3
+    num_classes: 10
+    label: 0
+    epsilon: 0.05
+- id: pb_hi2
+  construction: cnn.cnn_paired_bias
+  seed: 1
+  args:
+    num_pairs: 64
+    margin: 0.001
+    delta: 0.025
+    num_backbone_layers: 4
+    in_channels: 3
+    height: 4
+    width: 4
+    backbone_channels: 2
+    kernel_size: 3
+    num_classes: 10
+    label: 0
+    epsilon: 0.05
+- id: pb_hi3
+  construction: cnn.cnn_paired_bias
+  seed: 0
+  args:
+    num_pairs: 64
+    margin: 0.0001
+    delta: 0.01
+    num_backbone_layers: 4
+    in_channels: 3
+    height: 4
+    width: 4
+    backbone_channels: 2
+    kernel_size: 3
+    num_classes: 10
+    label: 0
+    epsilon: 0.05
