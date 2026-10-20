@@ -69,7 +69,6 @@ Under `src/VeriStressGT/benchmarks/`, each with a `manifest.json` and `instances
 | `polynomial_stress_22` | 22 | Polynomial networks (spec: `configs/polynomial_stress_22.yaml`) |
 | `gibp_realband` | 12 | Amplifier-type families pushed into the IBP-gap band of real verified-robust networks ([README](src/VeriStressGT/benchmarks/gibp_realband/README.md)) |
 | `soundness_gt` | 50 | 24 analytic-UNSAT + 26 witness-certified SAT instances for soundness evaluation |
-| `nnenum_continue` | 51 | Paired-bias CNNs and embedded-projection MLPs (spec: `configs/nnenum_continue.yaml`) |
 | `vnncomp_mnist_fc`, `oval21`, `cifar2020`, `vnncomp22_acasxu` | 90 / 30 / 203 / 186 | VNN-COMP 2022 comparison sets: specs, metadata and difficulty profiles; the ONNX models come from the VNN-COMP 2022 benchmark repository (each manifest records its source) |
 
 `src/VeriStressGT/runs_standardized/` holds standardized verifier runs (results and logs) on these benchmarks.
