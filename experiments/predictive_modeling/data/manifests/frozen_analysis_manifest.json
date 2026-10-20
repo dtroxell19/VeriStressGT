@@ -1,0 +1,81 @@
+{
+  "row_table_sha256": "a9d8452cf8b4866ccabcd8a034effae53373d73d5518aeda29a128f558d9e499",
+  "row_table_csv_sha256": "f02f9c00946d199335852ecc1f15e08f394d9e392787c55b825abf32c1b0b11a",
+  "n_rows": 1725,
+  "n_networks": 231,
+  "profile_features": [
+    "margin_hat_min",
+    "g_ibp",
+    "unstable_fraction",
+    "a_tau",
+    "d_eff"
+  ],
+  "size_features": [
+    "input_dim",
+    "output_dim",
+    "n_param_total",
+    "n_nodes",
+    "n_gemm_matmul",
+    "n_conv",
+    "n_relu",
+    "n_add",
+    "n_mul",
+    "n_softmax",
+    "n_pow",
+    "graph_depth",
+    "n_hidden_layers",
+    "max_hidden_width",
+    "onnx_file_bytes",
+    "arch_MLP",
+    "arch_CNN",
+    "arch_ATTENTION",
+    "arch_POLYNOMIAL",
+    "arch_HYBRID",
+    "arch_OTHER",
+    "has_conv",
+    "has_softmax",
+    "has_add_residual",
+    "has_pow"
+  ],
+  "verifiers": [
+    "abcrown",
+    "neuralsat",
+    "marabou",
+    "nnenum",
+    "pyrat"
+  ],
+  "cv": {
+    "outer_folds": 5,
+    "outer_repeats": 20,
+    "outer_seed_base": 1100,
+    "inner_folds": 4,
+    "min_folds_fallback": [
+      5,
+      4,
+      3
+    ]
+  },
+  "budgets": {
+    "abcrown|polynomial_stress_22": 600.0,
+    "abcrown|sweep_all": 600.0,
+    "abcrown|oval21": 360.0,
+    "abcrown|vnncomp_mnist_fc": 360.0,
+    "neuralsat|polynomial_stress_22": 600.0,
+    "neuralsat|sweep_all": 600.0,
+    "neuralsat|oval21": 360.0,
+    "neuralsat|vnncomp_mnist_fc": 240.0,
+    "marabou|polynomial_stress_22": 60.0,
+    "marabou|sweep_all": 600.0,
+    "marabou|oval21": 300.0,
+    "marabou|vnncomp_mnist_fc": 240.0,
+    "nnenum|polynomial_stress_22": 60.0,
+    "nnenum|sweep_all": 600.0,
+    "nnenum|oval21": 360.0,
+    "nnenum|vnncomp_mnist_fc": 240.0,
+    "pyrat|polynomial_stress_22": 600.0,
+    "pyrat|sweep_all": 600.0,
+    "pyrat|oval21": 360.0,
+    "pyrat|vnncomp_mnist_fc": 360.0
+  },
+  "frozen_manifest_sha256": "e9cbe066e822f90ac302d044debc1d338e76d49c5cdc1f8ba3b81e370b694a0a"
+}

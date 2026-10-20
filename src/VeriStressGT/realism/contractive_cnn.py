@@ -10,7 +10,7 @@ to a target induced-l-inf norm <= lam, giving a rigorous whole-network Lipschitz
 Robust iff all these lower bounds exceed the acceptance floor. (This bound is sound but loose, hence
 the HARDNESS gate falls back to exact MILP for near-boundary labels — see hardness_gate.py.)
 
-Inputs are 8x8 avg-pooled MNIST so the exact MILP / abcrown remain tractable (see DECISIONS.md).
+Inputs are 8x8 avg-pooled MNIST so the exact MILP / abcrown remain tractable.
 """
 from __future__ import annotations
 

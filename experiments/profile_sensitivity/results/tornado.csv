@@ -1,0 +1,13 @@
+component,knob,swing
+margin_hat_min,N:n_samples,0.00012001317849038101
+d_eff,N:n_samples,0.011747320203742655
+a_tau,N:n_samples,0.616210593790853
+g_ibp,N:n_samples,1.1751848268241193e-07
+margin_hat_min,dist:dist_preset,0.001946334480757491
+d_eff,dist:dist_preset,0.03862067413921032
+g_ibp,dist:dist_preset,0.004430995191374516
+a_tau,atau:atau_width,0.016797190513855472
+a_tau,atau:proj_dim,0.009203713330202626
+d_eff,eta:eta,0.5299444330447558
+g_ibp,eta:eta,0.0003502113021173376
+unstable_fraction,U:u_tau,0.0

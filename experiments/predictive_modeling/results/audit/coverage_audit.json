@@ -1,0 +1,115 @@
+{
+  "n_rows": 1725,
+  "n_unique_instances": 345,
+  "n_unique_networks": 231,
+  "rows_per_domain": {
+    "synthetic": 1125,
+    "established": 600
+  },
+  "rows_per_benchmark": {
+    "sweep_all": 1015,
+    "vnncomp_mnist_fc": 450,
+    "oval21": 150,
+    "polynomial_stress_22": 110
+  },
+  "rows_per_constructor": {
+    "MNIST_fc": 450,
+    "Deep Contractive": 250,
+    "Paired-Biases": 230,
+    "MILP": 155,
+    "oval21": 150,
+    "Input-Corner Stress": 110,
+    "Polynomial Net": 110,
+    "Dominant Key Attn": 90,
+    "Fixed Order Attn": 85,
+    "MEAP": 70,
+    "Constant-on-Box": 25
+  },
+  "rows_per_verifier": {
+    "abcrown": 345,
+    "neuralsat": 345,
+    "marabou": 345,
+    "nnenum": 345,
+    "pyrat": 345
+  },
+  "status_per_verifier": {
+    "abcrown": {
+      "UNSAT": 249,
+      "TIMEOUT": 93,
+      "ERROR": 2,
+      "SAT": 1
+    },
+    "neuralsat": {
+      "UNSAT": 241,
+      "TIMEOUT": 80,
+      "SAT": 15,
+      "UNKNOWN": 7,
+      "ERROR": 2
+    },
+    "marabou": {
+      "UNSAT": 180,
+      "TIMEOUT": 92,
+      "ERROR": 59,
+      "SAT": 14
+    },
+    "nnenum": {
+      "UNSAT": 145,
+      "TIMEOUT": 92,
+      "ERROR": 63,
+      "missing": 35,
+      "SAT": 10
+    },
+    "pyrat": {
+      "UNSAT": 215,
+      "TIMEOUT": 96,
+      "ERROR": 20,
+      "UNKNOWN": 12,
+      "SAT": 2
+    }
+  },
+  "groups_per_domain": {
+    "established": 6,
+    "synthetic": 225
+  },
+  "groups_per_benchmark": {
+    "oval21": 3,
+    "polynomial_stress_22": 22,
+    "sweep_all": 203,
+    "vnncomp_mnist_fc": 3
+  },
+  "budgets_per_verifier_benchmark": {
+    "abcrown|oval21": 360.0,
+    "abcrown|polynomial_stress_22": 600.0,
+    "abcrown|sweep_all": 600.0,
+    "abcrown|vnncomp_mnist_fc": 360.0,
+    "marabou|oval21": 300.0,
+    "marabou|polynomial_stress_22": 60.0,
+    "marabou|sweep_all": 600.0,
+    "marabou|vnncomp_mnist_fc": 240.0,
+    "neuralsat|oval21": 360.0,
+    "neuralsat|polynomial_stress_22": 600.0,
+    "neuralsat|sweep_all": 600.0,
+    "neuralsat|vnncomp_mnist_fc": 240.0,
+    "nnenum|oval21": 360.0,
+    "nnenum|polynomial_stress_22": 60.0,
+    "nnenum|sweep_all": 600.0,
+    "nnenum|vnncomp_mnist_fc": 240.0,
+    "pyrat|oval21": 360.0,
+    "pyrat|polynomial_stress_22": 600.0,
+    "pyrat|sweep_all": 600.0,
+    "pyrat|vnncomp_mnist_fc": 360.0
+  },
+  "profile_missing_rows": 0,
+  "size_missing_rows": 110,
+  "feat_source_counts": {
+    "onnx": 323,
+    "poly_args": 22
+  },
+  "arch_type_counts": {
+    "MLP": 180,
+    "CNN": 126,
+    "POLYNOMIAL": 22,
+    "ATTENTION": 17
+  },
+  "duplicate_instance_verifier_rows": 0
+}
