@@ -9,7 +9,7 @@ description = "Neural network verification benchmark framework with provably rob
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
-authors = [{name = "Anonymous"}]
+authors = [{name = "David Troxell"}]
 
 # ── Minimal core: enough to parse specs, read ONNX/VNNLIB, run CLI ──────────
 # A fresh user can `pip install .` and get the CLI + doctor without torch.
