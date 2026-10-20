@@ -19,7 +19,7 @@
         "meta": "instances/poly01_easy_N50_d10/meta.json"
       },
       "sha256": {
-        "onnx": "6bdba22bb5de940acc9645cc915a5dff5006b7b2dc6c1ba15f8078df40976fea",
+        "onnx": "17bce53eb5216b020c27a10af1c4b2ea71a71c05e4c0e916bfa5376a253c2814",
         "vnnlib": "b7f798ec55862377edacbc6ab2b11c34b2e4731f8237592bfcce1bc85a5c4fbf"
       },
       "args": {
@@ -69,7 +69,7 @@
         "meta": "instances/poly02_easy_d2/meta.json"
       },
       "sha256": {
-        "onnx": "8e9018025f69ecbc1a84f8ca984345d780086e5845e88666d9cdaf695cba09b2",
+        "onnx": "ac15d7b738ff0501bf11880355ba8a768c0cfbebda003edacd4ce30828362c03",
         "vnnlib": "10c9233cb60e05c79bde1dd3da61e2638ec310922e7d1725b9197fbfaddae8e1"
       },
       "args": {
@@ -119,7 +119,7 @@
         "meta": "instances/poly03_easy_d6/meta.json"
       },
       "sha256": {
-        "onnx": "82973c16682fdd52045e1467bcfc037c68a72cf4e93548a89d5ec74587b3f10e",
+        "onnx": "6aa0c3d29d36cbedd381eed9fdc07347efaf5ca3d8ab33aacd542e0cabf9a637",
         "vnnlib": "381ab37d5d6b57e194cd467b5972cd22272562a6dfaaf3420b4a3680750ed39f"
       },
       "args": {
@@ -169,7 +169,7 @@
         "meta": "instances/poly04_easy_d10_h50/meta.json"
       },
       "sha256": {
-        "onnx": "c4cfaed777d2984480f0840028f35dbcb973dbee27f155c84f35868c094581e0",
+        "onnx": "d7d9360c3ed51d21751b67531bcb89eaa6d658903c64ef892aafb84fa7cf3b7d",
         "vnnlib": "38e25514bbe8cba66e0bef21f9aa468ded2b7990b1f7dd7b61b589e30cd7da7e"
       },
       "args": {
@@ -219,7 +219,7 @@
         "meta": "instances/poly05_easy_d10_h500/meta.json"
       },
       "sha256": {
-        "onnx": "0639c5fba366650162dac0034325d3deea2e801f764102897cb77030d9ff71ae",
+        "onnx": "3047f77a84498b88c2f859749b0b908e0254640cfe87d65160886cf692183255",
         "vnnlib": "70251aaab33135770ac90961e1df4adf703354a870e8228d09af4d39d25026f6"
       },
       "args": {
@@ -269,7 +269,7 @@
         "meta": "instances/poly06_deg12/meta.json"
       },
       "sha256": {
-        "onnx": "67956ac58495d5add18a7a05418ed831365bcf5b7d3308c619a1f6d6342a96a3",
+        "onnx": "a750f2d0b73b7a9a6905f1734a2c7ec588c37c8974087aec55e2d3d51ebd88e5",
         "vnnlib": "baed44312f8e90f46523563a160edaa125a8b18f4efedb7617a7fcb52c11be1d"
       },
       "args": {
@@ -319,7 +319,7 @@
         "meta": "instances/poly07_deg14/meta.json"
       },
       "sha256": {
-        "onnx": "e2da87e9ec38d0227c4ade0951439effdb978f9809690a1177808fbc615a9688",
+        "onnx": "3a58e9227817de347ae041cbac0fac50c8eeafc9abe423fa31046be63eef1a3d",
         "vnnlib": "f0123ee485f5c74b4fc287dd9fa901e9208140ec2797ad246891c2889214afa1"
       },
       "args": {
@@ -369,7 +369,7 @@
         "meta": "instances/poly08_deg16/meta.json"
       },
       "sha256": {
-        "onnx": "ca5cdde6fa0e190419535f14d3f507d7d292a48a2f28d42b25b242fc8b17e433",
+        "onnx": "80b53ad4e3a3f75bf91648ff1ef855604e9b4407335029fb9cdb5b47dcf2ae03",
         "vnnlib": "c3affa75498b99faaa9c802d753bd5dea693b5f44a7d3e59b2a22c2f0b91e05c"
       },
       "args": {
@@ -419,7 +419,7 @@
         "meta": "instances/poly09_deg17/meta.json"
       },
       "sha256": {
-        "onnx": "8dbfd919332d83a62f72cc3a8c8e2a85d13d480fec7bc52acf005bb8806af3e8",
+        "onnx": "7304b561cf36b1b1392e4a03d481611b13da97396afec81a0189f80c1849b7cb",
         "vnnlib": "8b1a82eb88e354846490f691b62b3a7c00e0f88db35bb098d626328594964545"
       },
       "args": {
@@ -469,7 +469,7 @@
         "meta": "instances/poly10_deg18_a/meta.json"
       },
       "sha256": {
-        "onnx": "1b941d6e0fc2a5b94b888be2e58e1fbee46b634bdddc8fa3560230c83014b073",
+        "onnx": "0bb48b5399b6345d1d1bb1c18485a946a22d33b09d1b3db63ab1b58da00a9171",
         "vnnlib": "ebd949212362e391a12f670def53ce45ccd10f024dc8f0c2499389b597754134"
       },
       "args": {
@@ -519,7 +519,7 @@
         "meta": "instances/poly11_deg18_b/meta.json"
       },
       "sha256": {
-        "onnx": "7a78e3018cb24e44724dfaeb7540c9d8c0988628bde0f3d764b149e0a3af0a70",
+        "onnx": "95d1f60281427f3028b363c5173cddd6605d3ec80a503877cbe6595915cd301f",
         "vnnlib": "5a006e5f9011768e02484e9c04ed11e55107166c4e284786b2aa4431f55cbe4b"
       },
       "args": {
@@ -569,7 +569,7 @@
         "meta": "instances/poly12_deg19_a/meta.json"
       },
       "sha256": {
-        "onnx": "a2eb06fb757d8fca35e74d738acc97e8888c60dabcb3ec64eb6ab00899fcd29d",
+        "onnx": "b0a7fb98da910a7c575db714b59fefdae9e0d3bbad358c6bd89ed176d4b655a8",
         "vnnlib": "b5ba4554de8af930929264eae80e76ecb57d997f92e38613674891acc755b379"
       },
       "args": {
@@ -619,7 +619,7 @@
         "meta": "instances/poly13_deg19_b/meta.json"
       },
       "sha256": {
-        "onnx": "86c1b06d40995b37709be26a6b2cb6d36d83abfa97a246aa1bc913ce9170479f",
+        "onnx": "634056153f59fe2605eac672bf31e1b06d63b47f36a6a095144762636f230f79",
         "vnnlib": "402edee19a7ccced8796ae072720c25834162a92459eaea3f5f68d92eb4252d9"
       },
       "args": {
@@ -669,7 +669,7 @@
         "meta": "instances/poly14_deg20/meta.json"
       },
       "sha256": {
-        "onnx": "180a71d77bcec5929d7b07dcb8742883872f892b9ecc6ac4343eb3939da429f7",
+        "onnx": "63a4f7a4dfd1e7dab5c5df6df139f435188d7c03dc09eb34b51683791f41e372",
         "vnnlib": "3b4ceb83e12227b8f6217f68b13226770d1cea2e26898bbecac0911773cc6075"
       },
       "args": {
@@ -719,7 +719,7 @@
         "meta": "instances/poly15_deg21/meta.json"
       },
       "sha256": {
-        "onnx": "b6dae09c3ad5356e830304ecba778e2e5498f41caeb1ee4d758c65d7d69841fe",
+        "onnx": "71c92d6788d05d9a28ff77580642927895831b9672eb599045bbe4c8efc9cfd3",
         "vnnlib": "d1c8704d4243fa172ee9b63fd1f1a161dda54dcde155311665858d7258b76ae7"
       },
       "args": {
@@ -769,7 +769,7 @@
         "meta": "instances/poly16_deg22/meta.json"
       },
       "sha256": {
-        "onnx": "6cc409d0668b69b7b77bce0d656053d6e546635d9e63d5fe60b284322e6b8660",
+        "onnx": "d322d350bff25d9f5b0aeafa24f933bc2e7b900e6c10c7d2568ce74f6c5e44ef",
         "vnnlib": "b2d80066e4cd66b42e881fa6462474a86b3fe2d383e2fcb1c51de9856ce17ea0"
       },
       "args": {
@@ -819,7 +819,7 @@
         "meta": "instances/poly17_delta2e3/meta.json"
       },
       "sha256": {
-        "onnx": "8896ddf41a09ee5a59707ac07d5cf454fc8c8c084f587a4671a2dfe4651bd446",
+        "onnx": "a7fb120214c1f7830ef86db16cc93fe67626cb6a819d4782af023044e0314bca",
         "vnnlib": "59e72339e21b3b4f267d9db11db745e74426b0de5c5483ddf14b1b44be59f6e4"
       },
       "args": {
@@ -869,7 +869,7 @@
         "meta": "instances/poly18_delta1e3/meta.json"
       },
       "sha256": {
-        "onnx": "ea132189d5effc4dfc1df4a60e333c380de964fd8a66a16874062c068561ba9e",
+        "onnx": "c5ff095565592de83c1206fbd49fb5a4f441ce7b88b01809c889b07eddaead66",
         "vnnlib": "aeac66c8318a0d3fa18d05755f619a179dbfee5ea59e1be27e45d0f626524da4"
       },
       "args": {
@@ -919,7 +919,7 @@
         "meta": "instances/poly19_delta5e4/meta.json"
       },
       "sha256": {
-        "onnx": "ed202d3e48c142de5dfa1a61f248a082c07d4d4e07e47adb9bc36d26140eb25f",
+        "onnx": "9739cd5b3af1b1dfd4e15a9e32f4626765b86b416b93aef404a5eb01ee61fff5",
         "vnnlib": "0b1561423b47965b10482b8e418ea950d1c25c1894e7e3ce6381ee1c75cc6eca"
       },
       "args": {
@@ -969,7 +969,7 @@
         "meta": "instances/poly20_delta2e4/meta.json"
       },
       "sha256": {
-        "onnx": "3689a99fba83c415c8e6c976f8cf075ed1cb72f88731e23b04ed968b81aa89fb",
+        "onnx": "f94ddc47879ec2186a9c54dd410a1b8e22ce0c08728bbaba82738692fda67ed0",
         "vnnlib": "85bb66cabfb1abba67b2d1a12c88b7bc04a86299060cdaf2a5c1b46ae02fe8bf"
       },
       "args": {
@@ -1019,7 +1019,7 @@
         "meta": "instances/poly21_delta1e4/meta.json"
       },
       "sha256": {
-        "onnx": "96426a4cd55a4e76f19f4da111c5159c872170c3fffab6f21b446cc2bb2957e7",
+        "onnx": "3ddeacc100d8c37ec985d1330fc7787ce1c0aa1d20f930fba3b6e5559bb5a35f",
         "vnnlib": "8d075b104c0bf85179e727905b65fe480b527504322aee68fe5de89bff6983cc"
       },
       "args": {
@@ -1069,7 +1069,7 @@
         "meta": "instances/poly22_combo_deg18_delta1e3/meta.json"
       },
       "sha256": {
-        "onnx": "588c56482cbb74e66166ed6a7dd64be66b0109eb53525cb704a1c59e5cbc0fc3",
+        "onnx": "2b7f7e91d4fa1a52e42c61f28b1e426b8a3df3aa605f221c701d2b60c3339e8d",
         "vnnlib": "c345a2e0c9b103eec18e707586f6d7067a642b5d222024c475a9b7f0e66c4f8d"
       },
       "args": {
