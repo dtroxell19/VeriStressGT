@@ -12,7 +12,7 @@
 #   1. Checks Python version (fails if < 3.9)
 #   2. Installs Miniconda if conda is missing
 #   3. Pulls git submodules
-#   4. Installs VeriStressGT[generate,milp]
+#   4. Installs VeriStressGT[generate,milp,analysis]
 #   5. Sets up verifier conda envs (α-β-CROWN, NeuralSAT, nnenum, PyRAT, Marabou)
 #   6. Writes a .env file with all env vars
 #   7. Runs VeriStressGT-doctor
@@ -178,17 +178,17 @@ if ! $SKIP_CONDA; then
     ok "Activated conda env: VeriStressGT"
 fi
 
-# ── Step 5: Install VeriStressGT[generate,milp] ─────────────────────
+# ── Step 5: Install VeriStressGT[generate,milp,analysis] ─────────────────────
 if $SKIP_CONDA; then
-    step 3 "Installing VeriStressGT[generate,milp] (this may take a few minutes)"
+    step 3 "Installing VeriStressGT[generate,milp,analysis] (this may take a few minutes)"
 else
-    step 5 "Installing VeriStressGT[generate,milp] (this may take a few minutes)"
+    step 5 "Installing VeriStressGT[generate,milp,analysis] (this may take a few minutes)"
 fi
 
-pip install -e '.[generate,milp]' --retries 5 --timeout 120 || \
+pip install -e '.[generate,milp,analysis]' --retries 5 --timeout 120 || \
     { warn "First attempt failed (network timeout?), retrying..."; \
-      pip install -e '.[generate,milp]' --retries 5 --timeout 120; }
-ok "VeriStressGT[generate,milp] installed"
+      pip install -e '.[generate,milp,analysis]' --retries 5 --timeout 120; }
+ok "VeriStressGT[generate,milp,analysis] installed"
 
 if $SKIP_CONDA; then
     step 4 "Running doctor"

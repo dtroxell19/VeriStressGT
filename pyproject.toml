@@ -39,16 +39,34 @@ milp = [
 # NOTE: auto_LiRPA is provided by the α-β-CROWN conda environment (environment.yaml),
 # not via pip. There is no [abcrown] extra. Run: make install-abcrown
 
+# Sound re-certification (mpmath), the soundness evaluation (scipy HiGHS MILP), plots
+analysis = [
+  "VeriStressGT[generate]",
+  "mpmath>=1.3",
+  "scipy>=1.10",
+  "matplotlib>=3.7",
+]
+
+# The experiments/ suite and the trained realism constructors
+experiments = [
+  "VeriStressGT[analysis]",
+  "pandas>=1.5",
+  "pyarrow>=10.0",
+  "scikit-learn>=1.2",
+  "joblib>=1.2",
+  "torchvision>=0.15",
+]
+
 # Development / testing
 dev = [
-  "VeriStressGT[generate]",
+  "VeriStressGT[analysis]",
   "pytest>=7.0",
   "ruff>=0.4.0",
 ]
 
 # Everything pip can install (does NOT include Marabou/NNV/NeuralSAT binaries)
 all = [
-  "VeriStressGT[generate,milp,dev]",
+  "VeriStressGT[generate,milp,analysis,experiments,dev]",
 ]
 
 [project.scripts]
