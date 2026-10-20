@@ -2,6 +2,10 @@
 
 Benchmark framework for neural network verification. Generates provably robust (ONNX, VNNLIB) pairs with known ground-truth properties, then runs third-party verifiers on them in a standardized way.
 
+This is the code for the NeurIPS 2026 paper **Stress-Testing Neural Network Verifiers with Provably Robust Instances** ([arXiv:2605.17153](https://arxiv.org/abs/2605.17153)). If you use it, please [cite the paper](#citation).
+
+You are not limited to the benchmarks in this repo: any constructor can generate as many new instances as you want, at whatever size and difficulty you choose, in seconds for most constructors (see [Generate a benchmark](#generate-a-benchmark)). The benchmarks shipped here are examples, including the ones used in the paper.
+
 ## Setup
 
 **Requires:** Python 3.9+, git. Optional: CUDA GPU, [Gurobi license](https://www.gurobi.com/academia/academic-program-and-licenses/) (for MILP construction), MATLAB (for NNV verifier).
@@ -23,8 +27,18 @@ Optional extras: `milp` (gurobipy), `analysis` (sound re-certification, soundnes
 
 ## Usage
 
-**Generate a benchmark:**
-Define instances in a YAML spec (see `src/VeriStressGT/configs/` for examples). Then generate:
+### Generate a benchmark
+
+Every instance comes with its ground-truth label by construction, so a new benchmark is one command. Pick a constructor, a number of instances and its knobs:
+
+```bash
+python3 -m VeriStressGT.cli.create_benchmark \
+  --construction mlp_relu.meap --num 20 \
+  --num-pairs 8 --epsilon 0.05 \
+  --out_dir ./benchmarks/my_meap
+```
+
+Each seed gives a different network. To mix constructors and settings in one benchmark, list the instances in a YAML spec (every file in `src/VeriStressGT/configs/` that has an `instances:` list is one; `configs/test_benchmark.yaml` is a small starting point):
 
 ```bash
 python3 -m VeriStressGT.cli.create_benchmark \
@@ -33,7 +47,11 @@ python3 -m VeriStressGT.cli.create_benchmark \
   --overwrite
 ```
 
-**Run a verifier on it** (no env switching needed — conda isolation is automatic):
+The output is `manifest.json` plus `instances/<id>/{model.onnx, spec.vnnlib, meta.json}`. `meta.json` records the arguments and the ground-truth certificate. The [constructions](#available-constructions) table lists what is available; a constructor's knobs are the options in its module's `add_args` (dashes on the command line, underscores in YAML specs), and every example instance's `meta.json` shows a full set.
+
+### Run a verifier on it
+
+No env switching needed — conda isolation is automatic:
 
 ```bash
 python3 -m VeriStressGT.cli.verify_benchmark \
@@ -59,9 +77,9 @@ python -m VeriStressGT.cli.verify_benchmark \
 
 Results go to `results.jsonl` and `summary.csv`.
 
-## Shipped benchmarks
+## Example benchmarks
 
-Under `src/VeriStressGT/benchmarks/`, each with a `manifest.json` and `instances/<id>/{model.onnx, spec.vnnlib, meta.json}`:
+These are examples; [generate your own](#generate-a-benchmark) for anything else. Each lives under `src/VeriStressGT/benchmarks/` in the same layout, and each constructed one has the spec that regenerates it:
 
 | Benchmark | Instances | Contents |
 |---|---|---|
@@ -148,4 +166,20 @@ src/VeriStressGT/
 experiments/                supporting studies (see experiments/README.md)
 docs/                       soundness evaluation guide
 tests/                      unit tests
+```
+
+## Citation
+
+The paper has been accepted at NeurIPS 2026. Until the proceedings are out, please cite it as:
+
+```bibtex
+@inproceedings{troxell2026stresstesting,
+  title         = {Stress-Testing Neural Network Verifiers with Provably Robust Instances},
+  author        = {Troxell, David and Alexandr, Yulia and Hunt, Sofia and Lei, Stephanie and Mont{\'u}far, Guido},
+  booktitle     = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year          = {2026},
+  eprint        = {2605.17153},
+  archivePrefix = {arXiv},
+  url           = {https://arxiv.org/abs/2605.17153}
+}
 ```
