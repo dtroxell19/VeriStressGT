@@ -334,7 +334,7 @@ debug:
   save_minimal_config: null
   save_minimal_config_omit_keys: []
 
-Experiments at Tue Apr 14 13:27:19 2026 on tacheles
+Experiments at Tue Apr 14 13:27:19 2026 on server
 Internal results will be saved to out.txt.
 
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% idx: 0, vnnlib ID: 0 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
