@@ -956,6 +956,10 @@ def plot_construction_heatmap(records: List[Dict[str, Any]], verifiers: List[str
         ),
     )
     print(constructions)
+    # Column order used in the paper; verifiers not listed keep their discovery order at the end.
+    paper_order = ["abcrown", "alpha-beta-crown", "ab-crown", "marabou", "neuralsat", "pyrat", "nnenum"]
+    verifiers = sorted(verifiers, key=lambda v: (paper_order.index(v.lower()) if v.lower() in paper_order
+                                                 else len(paper_order), verifiers.index(v)))
     c_labels = [heatmap_labels.get(c, construction_short(c)) for c in constructions]
     v_labels = [verifier_labels.get(v.lower(), v) for v in verifiers]
 
@@ -992,7 +996,7 @@ def plot_construction_heatmap(records: List[Dict[str, Any]], verifiers: List[str
             data[(ci, vi)] = counts
 
     fig, ax = plt.subplots(
-        figsize=(max(4, 3 * len(verifiers)), max(3, 0.52 * len(constructions)))
+        figsize=(max(4, 3 * len(verifiers)), max(3, 0.72 * len(constructions)))
     )
 
     for ci in range(len(constructions)):

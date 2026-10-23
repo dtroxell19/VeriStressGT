@@ -1,0 +1,56 @@
+construction,construction_short,verifier,UNSAT,SAT,TIMEOUT,ERROR,MISSING,OTHER,total,unsat_rate,sat_rate,timeout_rate
+attention.fixed_pattern,Fixed Order Attn,abcrown,17,0,0,0,0,0,17,1.0,0.0,0.0
+attention.fixed_pattern,Fixed Order Attn,marabou,0,0,0,17,0,0,17,0.0,0.0,0.0
+attention.fixed_pattern,Fixed Order Attn,neuralsat,17,0,0,0,0,0,17,1.0,0.0,0.0
+attention.fixed_pattern,Fixed Order Attn,nnenum,0,0,0,0,17,0,17,,,
+attention.fixed_pattern,Fixed Order Attn,pyrat,17,0,0,0,0,0,17,1.0,0.0,0.0
+attention.linear_dominance,Dominant Key Attn,abcrown,18,0,0,0,0,0,18,1.0,0.0,0.0
+attention.linear_dominance,Dominant Key Attn,marabou,0,0,0,18,0,0,18,0.0,0.0,0.0
+attention.linear_dominance,Dominant Key Attn,neuralsat,18,0,0,0,0,0,18,1.0,0.0,0.0
+attention.linear_dominance,Dominant Key Attn,nnenum,0,0,0,0,18,0,18,,,
+attention.linear_dominance,Dominant Key Attn,pyrat,0,0,0,18,0,0,18,0.0,0.0,0.0
+cnn.cnn_paired_bias,Paired-Biases,abcrown,36,0,10,0,0,0,46,0.782608695652174,0.0,0.21739130434782608
+cnn.cnn_paired_bias,Paired-Biases,marabou,34,0,12,0,0,0,46,0.7391304347826086,0.0,0.2608695652173913
+cnn.cnn_paired_bias,Paired-Biases,neuralsat,35,0,11,0,0,0,46,0.7608695652173914,0.0,0.2391304347826087
+cnn.cnn_paired_bias,Paired-Biases,nnenum,31,0,15,0,0,0,46,0.6739130434782609,0.0,0.32608695652173914
+cnn.cnn_paired_bias,Paired-Biases,pyrat,36,0,10,0,0,0,46,0.782608695652174,0.0,0.21739130434782608
+cnn.deep_contractive_cnn,Deep Contractive,abcrown,50,0,0,0,0,0,50,1.0,0.0,0.0
+cnn.deep_contractive_cnn,Deep Contractive,marabou,50,0,0,0,0,0,50,1.0,0.0,0.0
+cnn.deep_contractive_cnn,Deep Contractive,neuralsat,50,0,0,0,0,0,50,1.0,0.0,0.0
+cnn.deep_contractive_cnn,Deep Contractive,nnenum,50,0,0,0,0,0,50,1.0,0.0,0.0
+cnn.deep_contractive_cnn,Deep Contractive,pyrat,50,0,0,0,0,0,50,1.0,0.0,0.0
+mlp_relu.corners,Input-Corner Stress,abcrown,19,0,3,0,0,0,22,0.8636363636363636,0.0,0.13636363636363635
+mlp_relu.corners,Input-Corner Stress,marabou,12,0,10,0,0,0,22,0.5454545454545454,0.0,0.45454545454545453
+mlp_relu.corners,Input-Corner Stress,neuralsat,19,0,3,0,0,0,22,0.8636363636363636,0.0,0.13636363636363635
+mlp_relu.corners,Input-Corner Stress,nnenum,0,0,0,22,0,0,22,0.0,0.0,0.0
+mlp_relu.corners,Input-Corner Stress,pyrat,19,0,3,0,0,0,22,0.8636363636363636,0.0,0.13636363636363635
+mlp_relu.embedded_projection,Constant-on-Box,abcrown,5,0,0,0,0,0,5,1.0,0.0,0.0
+mlp_relu.embedded_projection,Constant-on-Box,marabou,5,0,0,0,0,0,5,1.0,0.0,0.0
+mlp_relu.embedded_projection,Constant-on-Box,neuralsat,5,0,0,0,0,0,5,1.0,0.0,0.0
+mlp_relu.embedded_projection,Constant-on-Box,nnenum,0,0,0,5,0,0,5,0.0,0.0,0.0
+mlp_relu.embedded_projection,Constant-on-Box,pyrat,5,0,0,0,0,0,5,1.0,0.0,0.0
+mlp_relu.meap,MEAP,abcrown,13,0,1,0,0,0,14,0.9285714285714286,0.0,0.07142857142857142
+mlp_relu.meap,MEAP,marabou,2,1,11,0,0,0,14,0.14285714285714285,0.07142857142857142,0.7857142857142857
+mlp_relu.meap,MEAP,neuralsat,6,0,8,0,0,0,14,0.42857142857142855,0.0,0.5714285714285714
+mlp_relu.meap,MEAP,nnenum,0,0,0,14,0,0,14,0.0,0.0,0.0
+mlp_relu.meap,MEAP,pyrat,14,0,0,0,0,0,14,1.0,0.0,0.0
+mlp_relu.milp.exact_radius,MILP,abcrown,19,0,12,0,0,0,31,0.6129032258064516,0.0,0.3870967741935484
+mlp_relu.milp.exact_radius,MILP,marabou,19,4,8,0,0,0,31,0.6129032258064516,0.12903225806451613,0.25806451612903225
+mlp_relu.milp.exact_radius,MILP,neuralsat,27,2,1,1,0,0,31,0.8709677419354839,0.06451612903225806,0.03225806451612903
+mlp_relu.milp.exact_radius,MILP,nnenum,24,2,5,0,0,0,31,0.7741935483870968,0.06451612903225806,0.16129032258064516
+mlp_relu.milp.exact_radius,MILP,pyrat,19,0,3,0,0,9,31,0.6129032258064516,0.0,0.0967741935483871
+polynomial.algebraic_boundary,Polynomial Net,abcrown,16,0,6,0,0,0,22,0.7272727272727273,0.0,0.2727272727272727
+polynomial.algebraic_boundary,Polynomial Net,marabou,0,0,0,22,0,0,22,0.0,0.0,0.0
+polynomial.algebraic_boundary,Polynomial Net,neuralsat,11,0,5,1,0,5,22,0.5,0.0,0.22727272727272727
+polynomial.algebraic_boundary,Polynomial Net,nnenum,0,0,0,22,0,0,22,0.0,0.0,0.0
+polynomial.algebraic_boundary,Polynomial Net,pyrat,0,0,22,0,0,0,22,0.0,0.0,1.0
+vnncomp.ingested,MNIST_fc,abcrown,41,0,47,2,0,0,90,0.45555555555555555,0.0,0.5222222222222223
+vnncomp.ingested,MNIST_fc,marabou,38,9,43,0,0,0,90,0.4222222222222222,0.1,0.4777777777777778
+vnncomp.ingested,MNIST_fc,neuralsat,35,12,43,0,0,0,90,0.3888888888888889,0.13333333333333333,0.4777777777777778
+vnncomp.ingested,MNIST_fc,nnenum,37,7,46,0,0,0,90,0.4111111111111111,0.07777777777777778,0.5111111111111111
+vnncomp.ingested,MNIST_fc,pyrat,47,2,36,2,0,3,90,0.5222222222222223,0.022222222222222223,0.4
+vnncomp.oval21,oval21,abcrown,15,1,14,0,0,0,30,0.5,0.03333333333333333,0.4666666666666667
+vnncomp.oval21,oval21,marabou,20,0,8,2,0,0,30,0.6666666666666666,0.0,0.26666666666666666
+vnncomp.oval21,oval21,neuralsat,18,1,9,0,0,2,30,0.6,0.03333333333333333,0.3
+vnncomp.oval21,oval21,nnenum,3,1,26,0,0,0,30,0.1,0.03333333333333333,0.8666666666666667
+vnncomp.oval21,oval21,pyrat,8,0,22,0,0,0,30,0.26666666666666666,0.0,0.7333333333333333

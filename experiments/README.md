@@ -12,6 +12,7 @@ own README or REPORT with the full results. Run everything from the repository r
 | [`activation_regions/`](activation_regions/REPORT.md) | Does the A_τ grid proxy track the exact ReLU activation-region count? | Spearman 0.705 against exact enumeration | `count_regions.py` |
 | [`realism_stats/`](realism_stats/REPORT.md) | Do constructed instances look like real verified-robust networks? | Real networks fall inside the constructed profile range (coverage 81–100% per component) | `profile_distribution_tests.py`, `realism_pt2.py` |
 | [`scale_generality/`](scale_generality/REPORT.md) | Does the paired-bias certificate scale and compose with an arbitrary backbone? | 49,152-dim input: ground truth in 0.01 s/instance, profile in 0.05 s | `run_celeba_scale.sh` (downloads CIFAR-10 / STL-10) |
+| [`paper_figures/`](paper_figures/README.md) | Figures 2 and 3 of the paper, and the same figures with the convex polynomial set replacing the screened one | `paper/` reproduces the published figures exactly | `make_figures.sh` |
 | [`gpu_timing/`](gpu_timing/GPU_TIMEOUT_PATTERNS.md) | Do CPU timeout patterns and soundness persist on GPU? | GPU rescales runtimes but keeps the hard core; no new soundness flips ([GPU_SOUNDNESS.md](gpu_timing/GPU_SOUNDNESS.md)) | results only (see below) |
 
 ## Shared inputs
