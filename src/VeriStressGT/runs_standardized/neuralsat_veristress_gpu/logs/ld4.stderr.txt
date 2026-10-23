@@ -1,0 +1,56 @@
+<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+Traceback (most recent call last):
+  File "./verifiers/neuralsat/src/abstractor/abstractor.py", line 201, in _check_module
+    lb, _ = self.net.compute_bounds(x=(x,), method=method, bound_upper=False)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 1235, in compute_bounds
+    return self._compute_bounds_main(C=C,
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 1326, in _compute_bounds_main
+    self.check_prior_bounds(final, C=C)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 835, in check_prior_bounds
+    self.check_prior_bounds(n)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 835, in check_prior_bounds
+    self.check_prior_bounds(n)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 848, in check_prior_bounds
+    self.compute_intermediate_bounds(node.inputs[i], prior_checked=True)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 878, in compute_intermediate_bounds
+    node.lower, node.upper = self.forward_general(node=node, concretize=True)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/forward_bound.py", line 41, in forward_general
+    linear = node.linear = node.bound_forward(self.dim_in, *inp)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/operators/linear.py", line 842, in bound_forward
+    return super().bound_forward(
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/operators/linear.py", line 690, in bound_forward
+    res = self.bound_forward_with_weight(dim_in, x, w)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/operators/linear.py", line 717, in bound_forward_with_weight
+    res_mul = self.bound_forward_both_perturbed(dim_in, x_unsqueeze, y_unsqueeze)
+  File "<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1967, in __getattr__
+    raise AttributeError(
+AttributeError: 'BoundMatMul' object has no attribute 'bound_forward_both_perturbed'
+Traceback (most recent call last):
+  File "./verifiers/neuralsat/src/abstractor/abstractor.py", line 201, in _check_module
+    lb, _ = self.net.compute_bounds(x=(x,), method=method, bound_upper=False)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 1235, in compute_bounds
+    return self._compute_bounds_main(C=C,
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 1326, in _compute_bounds_main
+    self.check_prior_bounds(final, C=C)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 835, in check_prior_bounds
+    self.check_prior_bounds(n)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 835, in check_prior_bounds
+    self.check_prior_bounds(n)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 848, in check_prior_bounds
+    self.compute_intermediate_bounds(node.inputs[i], prior_checked=True)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 878, in compute_intermediate_bounds
+    node.lower, node.upper = self.forward_general(node=node, concretize=True)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/forward_bound.py", line 41, in forward_general
+    linear = node.linear = node.bound_forward(self.dim_in, *inp)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/operators/linear.py", line 842, in bound_forward
+    return super().bound_forward(
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/operators/linear.py", line 690, in bound_forward
+    res = self.bound_forward_with_weight(dim_in, x, w)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/operators/linear.py", line 717, in bound_forward_with_weight
+    res_mul = self.bound_forward_both_perturbed(dim_in, x_unsqueeze, y_unsqueeze)
+  File "<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1967, in __getattr__
+    raise AttributeError(
+AttributeError: 'BoundMatMul' object has no attribute 'bound_forward_both_perturbed'

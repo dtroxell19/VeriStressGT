@@ -1,0 +1,140 @@
+Restricted license - for non-production use only - expires 2027-11-29
+
+ [!] GlobalSettings:
+	- use_restart                             : True
+	- use_mip_tightening                      : True
+	- use_attack                              : True
+	- attack_interval                         : 10
+	- use_mip_verify                          : True
+	- input_splitting_threshold               : 0.5
+	- hidden_splitting_threshold              : 0.01
+	- safety_num_input_perturbed              : 200
+	- skip_preprocess                         : False
+	- use_save_reasoning_step                 : False
+	- max_iterations                          : 1000000000.0
+	- skip_initial_worst_bound                : -1000000.0
+	- max_domains                             : 1000000000.0
+	- use_decompose                           : False
+	- restart_current_hidden_branches         : 2000
+	- restart_visited_hidden_branches         : 20000
+	- restart_current_input_branches          : 20000
+	- restart_visited_input_branches          : 200000
+	- restart_max_runtime                     : 60.0
+	- restart_max_runtime_percentage          : 0.4
+	- mip_tightening_patience                 : 10
+	- mip_tightening_timeout_per_neuron       : 15.0
+	- mip_tightening_topk                     : 64
+	- use_gpu_tightening                      : False
+	- gpu_tightening_current_hidden_branches  : 1000
+	- gpu_tightening_visited_hidden_branches  : 5000
+	- gpu_tightening_timeout                  : 10.0
+	- gpu_tightening_patience                 : 10
+	- gpu_tightening_topk                     : 500
+	- use_mip_attack                          : False
+	- mip_verify_threshold                    : 2
+	- share_alphas                            : False
+	- backward_batch_size                     : inf
+	- forward_max_dim                         : 10000
+	- forward_dynamic                         : False
+	- use_decompose_incomplete                : False
+	- init_abstraction_method                 : crown-optimized
+	- subverifier_decision_method             : smart
+	- verify_candidate_batch                  : 3
+	- verify_last_timeout                     : 200.0
+	- verify_interm_timeout                   : 20.0
+	- sequential_batch                        : 100
+	- use_sequential_abstract_forward         : False
+	- verify_extra_opts                       : {'sparse_intermediate_bounds': True}
+	- verify_splitting_strategy               : hidden
+	- use_extra_substitution                  : False
+	- verify_max_iteration                    : 4
+	- verify_candidate_num                    : 128
+	- verify_interpolate_factor               : 0.5
+
+ConvertModel(
+  (Conv_/backbone/backbone.0/Conv_output_0): Conv2d(3, 2, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (Relu_/backbone/backbone.1/Relu_output_0): ReLU()
+  (Conv_/backbone/backbone.2/Conv_output_0): Conv2d(2, 2, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (Relu_/backbone/backbone.3/Relu_output_0): ReLU()
+  (Conv_/paired_conv/Conv_output_0): Conv2d(2, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (Relu_/relu/Relu_output_0): ReLU()
+  (Flatten_/flatten/Flatten_output_0): Flatten(start_dim=1, end_dim=-1)
+  (Gemm_output): Linear(in_features=512, out_features=10, bias=True)
+)
+INFO     04:59:25     [!] Input shape: (1, 3, 4, 4)
+INFO     04:59:25     [!] Output shape: (1, 10)
+INFO     04:59:25     [!] VNNLIB: 48 inputs, 10 outputs
+INFO     04:59:27     [Failed] RandomAttack(seed=501, device=cpu)
+Attacking PGD F32 iterations=100000 restarts=20 timeout=17.682905912399292 cs.shape=torch.Size([9, 1, 10]) rhs.shape=torch.Size([9, 1])
+INFO     04:59:45     [Failed] PGDAttack(seed=909, device=cpu)
+INFO     04:59:45     [!] eps=0.100000, perturbed=48
+[!] Found unsupported layer: <class 'torch.nn.modules.conv.Conv2d'>
+INFO     04:59:45     Params of 1-th run: {'input_split': True, 'abstract_method': 'forward+backward', 'decision_method': 'naive', 'decision_topk': 1}
+INFO     04:59:45     [_setup_restart] _init_abstractor
+DEBUG    04:59:45     [select_params] Try self.input_split=True Settings.backward_batch_size=inf extra_opts={} mode='patches' method='forward+backward'
+DEBUG    04:59:45     [_init_module] Try bound_opts={'conv_mode': 'patches', 'verbosity': 0}
+INFO     04:59:45     [select_params] Success: self.input_split=True Settings.backward_batch_size=inf extra_opts={} mode='patches' method='forward+backward'
+INFO     04:59:45     Try batch size 1000
+INFO     04:59:45     Initial bounds (first 10): tensor([-0.1318, -0.1318, -0.1318, -0.1318, -0.1318, -0.1318, -0.1318, -0.1318,
+        -0.1318])
+INFO     04:59:45     [Input splitting]     Iteration: 1          Remaining: 18         Visited: 18         Bound: -0.127643       Time elapsed (s): 20.55      Iteration elapsed (s): 0.19       GPU Mem (%): 0.00      Batch: 1000      Restart: 1         
+INFO     04:59:45     [Input splitting]     Iteration: 2          Remaining: 36         Visited: 36         Bound: -0.123178       Time elapsed (s): 20.59      Iteration elapsed (s): 0.03       GPU Mem (%): 0.00      Batch: 1000      Restart: 1         
+INFO     04:59:45     [Input splitting]     Iteration: 3          Remaining: 72         Visited: 72         Bound: -0.127505       Time elapsed (s): 20.63      Iteration elapsed (s): 0.04       GPU Mem (%): 0.00      Batch: 1000      Restart: 1         
+INFO     04:59:45     [Input splitting]     Iteration: 4          Remaining: 144        Visited: 144        Bound: -0.106910       Time elapsed (s): 20.68      Iteration elapsed (s): 0.05       GPU Mem (%): 0.00      Batch: 1000      Restart: 1         
+INFO     04:59:45     [Input splitting]     Iteration: 5          Remaining: 288        Visited: 288        Bound: -0.102776       Time elapsed (s): 20.76      Iteration elapsed (s): 0.07       GPU Mem (%): 0.00      Batch: 1000      Restart: 1         
+INFO     04:59:45     [Input splitting]     Iteration: 6          Remaining: 576        Visited: 576        Bound: -0.104948       Time elapsed (s): 20.90      Iteration elapsed (s): 0.14       GPU Mem (%): 0.00      Batch: 1000      Restart: 1         
+INFO     04:59:46     [Input splitting]     Iteration: 7          Remaining: 1152       Visited: 1152       Bound: -0.096909       Time elapsed (s): 21.16      Iteration elapsed (s): 0.26       GPU Mem (%): 0.00      Batch: 1000      Restart: 1         
+DEBUG    04:59:46     Increase current_batch=1000 old_domains_length=1152 self.batch=10000
+INFO     04:59:46     [Input splitting]     Iteration: 8          Remaining: 2152       Visited: 2152       Bound: -0.104310       Time elapsed (s): 21.57      Iteration elapsed (s): 0.42       GPU Mem (%): 0.00      Batch: 10000     Restart: 1         
+INFO     04:59:47     [Input splitting]     Iteration: 9          Remaining: 4304       Visited: 4304       Bound: -0.098685       Time elapsed (s): 22.43      Iteration elapsed (s): 0.86       GPU Mem (%): 0.00      Batch: 10000     Restart: 1         
+INFO     04:59:49     [Input splitting]     Iteration: 10         Remaining: 8608       Visited: 8608       Bound: -0.097082       Time elapsed (s): 24.09      Iteration elapsed (s): 1.65       GPU Mem (%): 0.00      Batch: 10000     Restart: 1         
+INFO     04:59:52     [Input splitting]     Iteration: 11         Remaining: 17216      Visited: 17216      Bound: -0.093667       Time elapsed (s): 27.27      Iteration elapsed (s): 3.18       GPU Mem (%): 0.00      Batch: 10000     Restart: 1         
+DEBUG    04:59:55     Increase current_batch=10000 old_domains_length=17216 self.batch=100000
+INFO     04:59:55     [Input splitting]     Iteration: 12         Remaining: 27216      Visited: 27216      Bound: -0.086597       Time elapsed (s): 30.96      Iteration elapsed (s): 3.68       GPU Mem (%): 0.00      Batch: 100000    Restart: 1         
+DEBUG    04:59:55     [Restart] Number of remaining domains exceeded 20000 domains
+DEBUG    04:59:56     Restarting
+INFO     04:59:56     Params of 2-th run: {'input_split': True, 'abstract_method': 'backward', 'decision_method': 'smart', 'decision_topk': 1}
+INFO     04:59:56     [_setup_restart] _init_abstractor
+DEBUG    04:59:56     [select_params] Try self.input_split=True Settings.backward_batch_size=inf extra_opts={} mode='patches' method='backward'
+DEBUG    04:59:56     [_init_module] Try bound_opts={'conv_mode': 'patches', 'verbosity': 0}
+INFO     04:59:56     [select_params] Success: self.input_split=True Settings.backward_batch_size=inf extra_opts={} mode='patches' method='backward'
+INFO     04:59:56     Try batch size 1000
+INFO     04:59:56     Initial bounds (first 10): tensor([-0.0882, -0.0882, -0.0882, -0.0882, -0.0882, -0.0882, -0.0882, -0.0882,
+        -0.0882])
+INFO     04:59:56     [Input splitting]     Iteration: 13         Remaining: 18         Visited: 18         Bound: -0.084588       Time elapsed (s): 31.85      Iteration elapsed (s): 0.14       GPU Mem (%): 0.00      Batch: 1000      Restart: 2         
+INFO     04:59:56     [Input splitting]     Iteration: 14         Remaining: 36         Visited: 36         Bound: -0.080785       Time elapsed (s): 31.94      Iteration elapsed (s): 0.09       GPU Mem (%): 0.00      Batch: 1000      Restart: 2         
+INFO     04:59:57     [Input splitting]     Iteration: 15         Remaining: 72         Visited: 72         Bound: -0.082984       Time elapsed (s): 32.06      Iteration elapsed (s): 0.11       GPU Mem (%): 0.00      Batch: 1000      Restart: 2         
+INFO     04:59:57     [Input splitting]     Iteration: 16         Remaining: 144        Visited: 144        Bound: -0.073083       Time elapsed (s): 32.28      Iteration elapsed (s): 0.23       GPU Mem (%): 0.00      Batch: 1000      Restart: 2         
+INFO     04:59:57     [Input splitting]     Iteration: 17         Remaining: 288        Visited: 288        Bound: -0.068694       Time elapsed (s): 32.62      Iteration elapsed (s): 0.34       GPU Mem (%): 0.00      Batch: 1000      Restart: 2         
+INFO     04:59:58     [Input splitting]     Iteration: 18         Remaining: 576        Visited: 576        Bound: -0.065173       Time elapsed (s): 33.28      Iteration elapsed (s): 0.66       GPU Mem (%): 0.00      Batch: 1000      Restart: 2         
+INFO     04:59:59     [Input splitting]     Iteration: 19         Remaining: 1152       Visited: 1152       Bound: -0.060155       Time elapsed (s): 34.54      Iteration elapsed (s): 1.26       GPU Mem (%): 0.00      Batch: 1000      Restart: 2         
+DEBUG    05:00:01     Increase current_batch=1000 old_domains_length=1152 self.batch=10000
+INFO     05:00:01     [Input splitting]     Iteration: 20         Remaining: 2152       Visited: 2152       Bound: -0.058420       Time elapsed (s): 36.58      Iteration elapsed (s): 2.04       GPU Mem (%): 0.00      Batch: 10000     Restart: 2         
+INFO     05:00:06     [Input splitting]     Iteration: 21         Remaining: 4304       Visited: 4304       Bound: -0.055968       Time elapsed (s): 41.16      Iteration elapsed (s): 4.58       GPU Mem (%): 0.00      Batch: 10000     Restart: 2         
+INFO     05:00:14     [Input splitting]     Iteration: 22         Remaining: 8608       Visited: 8608       Bound: -0.050761       Time elapsed (s): 49.61      Iteration elapsed (s): 8.45       GPU Mem (%): 0.00      Batch: 10000     Restart: 2         
+INFO     05:00:30     [Input splitting]     Iteration: 23         Remaining: 17216      Visited: 17216      Bound: -0.044749       Time elapsed (s): 65.66      Iteration elapsed (s): 16.05      GPU Mem (%): 0.00      Batch: 10000     Restart: 2         
+DEBUG    05:00:49     Increase current_batch=10000 old_domains_length=17216 self.batch=100000
+INFO     05:00:49     [Input splitting]     Iteration: 24         Remaining: 27216      Visited: 27216      Bound: -0.043949       Time elapsed (s): 84.69      Iteration elapsed (s): 19.02      GPU Mem (%): 0.00      Batch: 100000    Restart: 2         
+DEBUG    05:00:49     [Restart] Number of remaining domains exceeded 20000 domains
+DEBUG    05:00:49     Restarting
+INFO     05:00:49     Params of 3-th run: {'input_split': True, 'abstract_method': 'crown-optimized', 'decision_method': 'smart', 'decision_topk': 1}
+INFO     05:00:49     [_setup_restart] _init_abstractor
+DEBUG    05:00:49     [select_params] Try self.input_split=True Settings.backward_batch_size=inf extra_opts={} mode='patches' method='crown-optimized'
+DEBUG    05:00:49     [_init_module] Try bound_opts={'conv_mode': 'patches', 'verbosity': 0}
+INFO     05:00:50     [select_params] Success: self.input_split=True Settings.backward_batch_size=inf extra_opts={} mode='patches' method='crown-optimized'
+INFO     05:00:50     Try batch size 1000
+INFO     05:00:50     Initial bounds (first 10): tensor([-0.0882, -0.0882, -0.0882, -0.0882, -0.0882, -0.0882, -0.0882, -0.0882,
+        -0.0882])
+INFO     05:01:07     Initial optimized bounds (first 10): tensor([-0.0107, -0.0107, -0.0107, -0.0107, -0.0107, -0.0107, -0.0107, -0.0107,
+        -0.0107])
+INFO     05:01:09     [Input splitting]     Iteration: 25         Remaining: 18         Visited: 18         Bound: -0.009195       Time elapsed (s): 104.45     Iteration elapsed (s): 1.59       GPU Mem (%): 0.00      Batch: 1000      Restart: 3         
+INFO     05:01:11     [Input splitting]     Iteration: 26         Remaining: 36         Visited: 36         Bound: -0.007741       Time elapsed (s): 106.32     Iteration elapsed (s): 1.87       GPU Mem (%): 0.00      Batch: 1000      Restart: 3         
+INFO     05:01:14     [Input splitting]     Iteration: 27         Remaining: 72         Visited: 72         Bound: -0.005006       Time elapsed (s): 109.27     Iteration elapsed (s): 2.95       GPU Mem (%): 0.00      Batch: 1000      Restart: 3         
+INFO     05:01:20     [Input splitting]     Iteration: 28         Remaining: 99         Visited: 144        Bound: -0.002484       Time elapsed (s): 115.02     Iteration elapsed (s): 5.75       GPU Mem (%): 0.00      Batch: 1000      Restart: 3         
+INFO     05:01:28     [Input splitting]     Iteration: 29         Remaining: 54         Visited: 243        Bound: -0.001097       Time elapsed (s): 122.99     Iteration elapsed (s): 7.96       GPU Mem (%): 0.00      Batch: 1000      Restart: 3         
+INFO     05:01:28     [Input splitting]     Iteration: 30         Remaining: 0          Visited: 297        Bound: 0.000001        Time elapsed (s): 123.24     Iteration elapsed (s): 0.25       GPU Mem (%): 0.00      Batch: 1000      Restart: 3         
+INFO     05:01:28     Verified: 9 	 Remain: 0
+INFO     05:01:28     [!] Iterations: 30
+INFO     05:01:28     [!] Result: unsat
+INFO     05:01:28     [!] Runtime: 123.4683
+unsat,123.4683

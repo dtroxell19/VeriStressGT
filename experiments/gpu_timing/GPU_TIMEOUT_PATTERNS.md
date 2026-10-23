@@ -1,7 +1,7 @@
 # CPU vs GPU: do the timeout patterns persist? (synthetic benchmark)
 
 Constructed benchmark (203 provably-robust instances). CPU runtimes from the paper's
-runs (`merged_records`); GPU runtimes from the CUDA rerun (`runs_server_1/*_gpu`).
+runs (`merged_records`); GPU runtimes from the CUDA rerun (`runs_standardized/*_veristress_gpu`).
 
 
 ## abcrown (GPU, CUDA)

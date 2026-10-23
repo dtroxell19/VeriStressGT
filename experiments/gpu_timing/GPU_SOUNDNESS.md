@@ -31,6 +31,6 @@ Moving abcrown and NeuralSAT to GPU produced **zero new soundness flips**: abcro
 robust instances to SAT, and NeuralSAT's only SAT (`milp7`, 1 / 203) is a pre-existing CPU result, not
 a GPU artifact. GPU execution did not make either verifier unsound on the constructed benchmark.
 
-*Data:* GPU runs of `src/VeriStressGT/benchmarks/sweep_all` with `configs/abcrown_gpu.yaml` (raw `results.jsonl` not committed).
+*Data:* `src/VeriStressGT/runs_standardized/{abcrown,neuralsat}_veristress_gpu/` (GPU runs of `sweep_all`; abcrown with `configs/abcrown_gpu.yaml`).
 *(Raw abcrown SAT count before the parser fix was 16; all 16 were runtime errors with no counterexample,
 now classified as errors.)*

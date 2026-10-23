@@ -1,0 +1,28 @@
+<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+Traceback (most recent call last):
+  File "./verifiers/neuralsat/src/helper/network/read_onnx.py", line 136, in _parse_onnx
+    output_pytorch = pytorch_model(dummy).detach().numpy()
+  File "<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "./verifiers/neuralsat/src/helper/network/onnx2pytorch/convert/model.py", line 233, in forward
+    activations[out_op_id] = op(*in_activations)
+  File "<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+TypeError: Linear.forward() takes 2 positional arguments but 3 were given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "./verifiers/neuralsat/src/helper/network/read_onnx.py", line 244, in parse_onnx
+    return _parse_onnx(path=path, input_shape=input_shape, output_shape=output_shape)
+  File "<@beartype(helper.network.read_onnx._parse_onnx) at 0x7fa15fa41360>", line 78, in _parse_onnx
+  File "./verifiers/neuralsat/src/helper/network/read_onnx.py", line 141, in _parse_onnx
+    raise OnnxConversionError
+helper.misc.error.OnnxConversionError

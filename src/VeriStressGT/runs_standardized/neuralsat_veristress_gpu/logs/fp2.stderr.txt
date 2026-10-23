@@ -1,0 +1,41 @@
+<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+<conda>/envs/VeriStressGT/lib/python3.10/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+
+  0%|          | 0/49 [00:00<?, ?it/s]
+100%|██████████| 49/49 [00:00<00:00, 4379.21it/s]
+Traceback (most recent call last):
+  File "./verifiers/neuralsat/src/main.py", line 101, in <module>
+    status = verifier.verify(objectives, timeout=timeout, force_split=args.force_split)
+  File "<@beartype(verifier.verifier.Verifier.verify) at 0x7f85eda257e0>", line 113, in verify
+  File "./verifiers/neuralsat/src/verifier/verifier.py", line 73, in verify
+    self.status = self._verify(
+  File "<@beartype(verifier.verifier.Verifier._verify) at 0x7f85eda25a20>", line 113, in _verify
+  File "./verifiers/neuralsat/src/verifier/verifier.py", line 124, in _verify
+    status = self._verify_with_restart(
+  File "<@beartype(verifier.verifier.Verifier._verify_with_restart) at 0x7f85eda25c60>", line 132, in _verify_with_restart
+  File "./verifiers/neuralsat/src/verifier/verifier.py", line 171, in _verify_with_restart
+    new_reference_bounds = self._setup_restart(nth_restart, objective)
+  File "<@beartype(verifier.utils._setup_restart) at 0x7f85eda0bd00>", line 51, in _setup_restart
+  File "./verifiers/neuralsat/src/verifier/utils.py", line 410, in _setup_restart
+    self._init_abstractor(abstract_method, objective)
+  File "<@beartype(verifier.utils._init_abstractor) at 0x7f85eda0ba30>", line 87, in _init_abstractor
+  File "./verifiers/neuralsat/src/verifier/utils.py", line 304, in _init_abstractor
+    self.abstractor.setup(objective, extra_opts=extra_opts, preprocess=preprocess)
+  File "<@beartype(abstractor.abstractor.NetworkAbstractor.setup) at 0x7f85eda09c60>", line 69, in setup
+  File "./verifiers/neuralsat/src/abstractor/abstractor.py", line 55, in setup
+    if self.select_params(objective, extra_opts=extra_opts):
+  File "<@beartype(abstractor.abstractor.NetworkAbstractor.select_params) at 0x7f85eda09d80>", line 50, in select_params
+  File "./verifiers/neuralsat/src/abstractor/abstractor.py", line 112, in select_params
+    self._init_module(mode=mode, objective=objective, extra_opts=extra_opts)
+  File "<@beartype(abstractor.abstractor.NetworkAbstractor._init_module) at 0x7f85eda09f30>", line 69, in _init_module
+  File "./verifiers/neuralsat/src/abstractor/abstractor.py", line 126, in _init_module
+    self.net = BoundedModule(
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 116, in __init__
+    self._convert(model, global_input)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 792, in _convert
+    nodesOP, nodesIn, nodesOut, template = self._convert_nodes(model, global_input)
+  File "./verifiers/neuralsat/src/abstractor/auto_LiRPA/bound_general.py", line 685, in _convert_nodes
+    raise NotImplementedError('There are unsupported operations')
+NotImplementedError: There are unsupported operations

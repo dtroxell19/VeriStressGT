@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[2]
-GPU_DIR = REPO / "experiments" / "runs_server_1"
+GPU_DIR = REPO / "src" / "VeriStressGT" / "runs_standardized"
 MERGED = REPO / "experiments" / "merged_records_constructed_and_real.json"
 OUT = REPO / "experiments" / "gpu_timing"
 VERIFIERS = ["abcrown", "neuralsat"]
@@ -55,10 +55,10 @@ def analyze():
               if r.get("benchmark") == "sweep_all"}
     lines = ["# CPU vs GPU: do the timeout patterns persist? (synthetic benchmark)\n",
              "Constructed benchmark (203 provably-robust instances). CPU runtimes from the paper's",
-             "runs (`merged_records`); GPU runtimes from the CUDA rerun (`runs_server_1/*_gpu`).\n"]
+             "runs (`merged_records`); GPU runtimes from the CUDA rerun (`runs_standardized/*_veristress_gpu`).\n"]
     summary = {}
     for v in VERIFIERS:
-        gpu_path = GPU_DIR / f"sweep_all_{v}_gpu" / "results.jsonl"
+        gpu_path = GPU_DIR / f"{v}_veristress_gpu" / "results.jsonl"
         if not gpu_path.exists():
             continue
         gpu = {r["instance_id"]: r for r in (json.loads(l) for l in gpu_path.open())}
