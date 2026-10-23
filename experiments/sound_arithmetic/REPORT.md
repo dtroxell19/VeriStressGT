@@ -36,7 +36,7 @@
 
 ## Cross-validation
 
-Independent sanity check against the fp32-vs-fp64 audit (`python -m VeriStressGT.analysis.soundness_audit`, which writes `soundness_audit.json`): every one of
+Independent sanity check against the fp32-vs-fp64 audit (`fp32_fp64_audit/soundness_audit.json`, from `python -m VeriStressGT.analysis.soundness_audit`): every one of
 the **172/172** certified lower bounds satisfies `certified_lb ≤ fp64 sampled min-margin` — i.e. each
 rigorous certificate is a valid *floor* below the empirically-observed minimum, never above it (a
 certificate that exceeded reality would signal a bug). The backend arithmetic itself is unit-tested

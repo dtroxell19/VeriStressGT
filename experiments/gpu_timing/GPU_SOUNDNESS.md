@@ -5,7 +5,7 @@ GPU-capable verifiers, **α,β-CROWN (abcrown)** and **NeuralSAT**, on all **203
 synthetic instances on GPU (CUDA), 600 s budget. Every instance is **provably robust**, so the
 correct verdict is **UNSAT**; a **SAT** verdict would be an unsound "counterexample" (a soundness
 flip). The ground truth itself is numerically sound — the float64 audit finds **0 / 225 sign flips**
-(`python -m VeriStressGT.analysis.soundness_audit`), so any SAT here would be the *verifier's* error, not ours.
+(`experiments/sound_arithmetic/fp32_fp64_audit/soundness_audit.json`), so any SAT here would be the *verifier's* error, not ours.
 
 ## The only direction that matters
 Ground truth is UNSAT for every instance, so the only possible soundness flip is
