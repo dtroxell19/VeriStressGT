@@ -1,0 +1,17 @@
+{
+  "benchmark": "./benchmarks/polynomial_convex_certified",
+  "manifest_construction": null,
+  "verifier": "nnenum",
+  "conda_env": "nnenum",
+  "timeout": 600.0,
+  "jobs": 32,
+  "max_memory_gb": null,
+  "git_commit": "dcc7fe87e6b9d3b0deeba2e5c5e424ab0f96d217",
+  "verifier_args": {
+    "nnenum_python": "python",
+    "nnenum_module": "nnenum.nnenum",
+    "nnenum_timeout": 300,
+    "nnenum_processes": 1,
+    "nnenum_settings": "auto"
+  }
+}

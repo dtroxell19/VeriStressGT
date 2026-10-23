@@ -1,0 +1,14 @@
+{
+  "benchmark": "./benchmarks/polynomial_nonconvex_screen",
+  "manifest_construction": null,
+  "verifier": "abcrown",
+  "conda_env": "alpha-beta-crown",
+  "timeout": 600.0,
+  "jobs": 1,
+  "max_memory_gb": null,
+  "git_commit": "54c8001d3df30f8acc7a8b5b6237b8409ffc9c58",
+  "verifier_args": {
+    "abcrown_config": "src/VeriStressGT/configs/abcrown_gpu.yaml",
+    "device": "cuda"
+  }
+}

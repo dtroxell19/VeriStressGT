@@ -84,12 +84,14 @@ These are examples; [generate your own](#generate-a-benchmark) for anything else
 | Benchmark | Instances | Contents |
 |---|---|---|
 | `sweep_all` | 203 | All constructor families across their difficulty knobs (spec: `configs/sweep_all.yaml`) |
-| `polynomial_stress_22` | 22 | Polynomial networks (spec: `configs/polynomial_stress_22.yaml`) |
+| `polynomial_stress_22` | 22 | Polynomial networks used in the paper, labelled robust by a numerical multi-start screen (spec: `configs/polynomial_stress_22.yaml`) |
+| `polynomial_convex_certified` | 22 | Convex polynomial networks with an analytic robustness certificate, no numerical search (spec: `configs/polynomial_convex_certified.yaml`) |
+| `polynomial_nonconvex_screen` | 12 | Nonconvex (odd-degree) polynomial networks; labels come from the numerical screen, so they are not certified (spec: `configs/polynomial_nonconvex_screen.yaml`) |
 | `gibp_realband` | 12 | Amplifier-type families pushed into the IBP-gap band of real verified-robust networks ([README](src/VeriStressGT/benchmarks/gibp_realband/README.md)) |
 | `soundness_gt` | 50 | 24 analytic-UNSAT + 26 witness-certified SAT instances for soundness evaluation |
 | `vnncomp_mnist_fc`, `oval21`, `cifar2020`, `vnncomp22_acasxu` | 90 / 30 / 203 / 186 | VNN-COMP 2022 comparison sets: specs, metadata and difficulty profiles; the ONNX models come from the VNN-COMP 2022 benchmark repository (each manifest records its source) |
 
-`src/VeriStressGT/runs_standardized/` holds standardized verifier runs (results and logs) on these benchmarks.
+`src/VeriStressGT/runs_standardized/` holds standardized verifier runs (results and logs) on these benchmarks, named `<verifier>_<benchmark>`. The paper's runs are CPU; `*_veristress_gpu` are GPU reruns of `sweep_all`, and `*_poly_convex` / `abcrown_poly_nonconvex` cover the two newer polynomial sets (the nonconvex run stopped after 5 of 12 instances).
 
 ## Available constructions
 

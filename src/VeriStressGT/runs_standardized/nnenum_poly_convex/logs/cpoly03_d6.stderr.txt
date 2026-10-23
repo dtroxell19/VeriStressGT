@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "./verifiers/nnenum/src/nnenum/nnenum.py", line 126, in main
+    network = load_onnx_network_optimized(onnx_filename)
+  File "./verifiers/nnenum/src/nnenum/onnx_network.py", line 313, in load_onnx_network_optimized
+    init = init_map[cur_node.input[1]]
+KeyError: '/Transpose_output_0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<conda>/envs/nnenum/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "<conda>/envs/nnenum/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "./verifiers/nnenum/src/nnenum/nnenum.py", line 186, in <module>
+    main()
+  File "./verifiers/nnenum/src/nnenum/nnenum.py", line 129, in main
+    network = load_onnx_network(onnx_filename)
+  File "./verifiers/nnenum/src/nnenum/onnx_network.py", line 764, in load_onnx_network
+    assert o in Settings.ONNX_WHITELIST, f"Onnx model contains node with op {o}, which may not be a linear operation. " + \
+AssertionError: Onnx model contains node with op Transpose, which may not be a linear operation. Updated Settings.WHITELIST if you want to override this.
+ERROR conda.cli.main_run:execute(125): `conda run env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python -m nnenum.nnenum ./benchmarks/polynomial_convex_certified/instances/cpoly03_d6/model.onnx ./benchmarks/polynomial_convex_certified/instances/cpoly03_d6/spec.vnnlib 300 ./runs/nnenum_poly_convex/work/cpoly03_d6/nnenum_result.txt 1 auto` failed. (See above for error)

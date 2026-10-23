@@ -1,0 +1,16 @@
+{
+  "benchmark": "./benchmarks/polynomial_convex_certified",
+  "manifest_construction": null,
+  "verifier": "neuralsat",
+  "conda_env": null,
+  "timeout": 600.0,
+  "jobs": 1,
+  "max_memory_gb": null,
+  "git_commit": "dcc7fe87e6b9d3b0deeba2e5c5e424ab0f96d217",
+  "verifier_args": {
+    "neuralsat_root": null,
+    "neuralsat_python": "python",
+    "neuralsat_force_split": "auto",
+    "device": "cuda"
+  }
+}
