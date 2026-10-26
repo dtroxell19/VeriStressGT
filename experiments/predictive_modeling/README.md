@@ -51,3 +51,16 @@ group-bootstrap CI; Brier, AP, calibration reported alongside.
 - `rerun_established_600.sh` + `src/ingest_established_600.py` — optional 600 s re-run of the
   established benchmarks (GPU host) and its ingest.
 - `data/manifests/frozen_analysis_manifest.json` — frozen, hashed inputs.
+
+## Note: G_IBP of the attention instances predates the IBP fix
+
+The frozen row table (and every result here) was built before the Difficulty Profile's IBP was
+fixed for products of two varying tensors. For the 35 attention instances in `sweep_all`
+(`ld*`, `fp*`) it therefore holds the old, too-tight G_IBP values (-0.26 to 0.15; corrected
+values 0.03 to 0.63, now in `sweep_all/difficulty_profiles.json`). `source_manifest.json` records
+the hash of the merged records file as it was then. The study was not re-run because the
+correction cannot move its conclusions measurably: none of those 175 rows is a timeout for any
+verifier (they are solved, error or missing), their G_IBP stays at the low end of the range, the
+G_IBP ranking over all 345 instances changes by Spearman 0.995, and the per-verifier G_IBP timeout
+AUC (paper Figure 3) is unchanged.
+

@@ -50,3 +50,12 @@ Or on a many-core host: `bash experiments/profile_sensitivity/run_sensitivity.sh
   verifier timeout outcomes.
 - `polynomial_stress_22` has no committed ONNX (network is reconstructed from generator args), so
   those instances are recompute-N/A; POLYNOMIAL is still covered in the dependence matrix + index.
+
+## Note: G_IBP of the attention instances predates the IBP fix
+
+The recompute sweeps profiled five attention instances (`ld9`, `ld10`, `ld11`, `fp9`, `fp10`), and
+the dependence matrix and Difficulty Index use the predictive-modeling frozen table; both were
+computed before the Difficulty Profile's IBP was fixed for products of two varying tensors, so the
+G_IBP values of attention instances are the old, too-tight ones. They were not re-run; see the
+matching note in `../predictive_modeling/README.md` for why the effect is negligible.
+
