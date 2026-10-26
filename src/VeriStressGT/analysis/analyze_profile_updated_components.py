@@ -944,6 +944,8 @@ def plot_construction_heatmap(records: List[Dict[str, Any]], verifiers: List[str
         "Fixed-Attn",
     ]
     order_rank = {name: i for i, name in enumerate(desired_order)}
+    # External benchmarks always come last, in the paper's order.
+    trailing = ["MNIST_fc", "oval21"]
 
     # Keep only constructions that actually appear, but impose the requested order
     # for the benchmark constructions. Any unexpected constructions are appended.
@@ -952,6 +954,8 @@ def plot_construction_heatmap(records: List[Dict[str, Any]], verifiers: List[str
         constructions_seen,
         key=lambda c: (
             order_rank.get(heatmap_labels.get(c, construction_short(c)), len(order_rank)),
+            trailing.index(heatmap_labels.get(c, construction_short(c)))
+            if heatmap_labels.get(c, construction_short(c)) in trailing else -1,
             constructions_seen.index(c),
         ),
     )

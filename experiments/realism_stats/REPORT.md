@@ -14,7 +14,7 @@ Constructed instances (n=225) vs real **verified-robust** VNN-COMP networks (mni
 
 ## Honest read
 
-We do **not** claim the distributions are identical — a proper test refutes that. Only **M̂_min** (min margin) is statistically equivalent (δ ≈ 0, MW p = 0.52); d_eff differs by a *small* amount; and G_IBP, U, A_τ differ by *large* effect sizes. The omnibus energy-distance permutation test on the joint 5-D profile rejects equality (statistic = 1.47, **p = 0.001**).
+We do **not** claim the distributions are identical — a proper test refutes that. Only **M̂_min** (min margin) is statistically equivalent (δ ≈ 0, MW p = 0.52); d_eff differs by a *small* amount; and G_IBP, U, A_τ differ by *large* effect sizes. The omnibus energy-distance permutation test on the joint 5-D profile rejects equality (statistic = 1.46, **p = 0.001**).
 
 What *is* true, and is the honest realism argument:
 - **Coverage / overlap.** Real verified-robust networks fall *inside* the constructed profile range on every component (81–100%), so the constructions **span the same profile space** real networks occupy — they are not off in an unreachable corner.

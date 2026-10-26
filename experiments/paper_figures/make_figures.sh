@@ -35,7 +35,7 @@ for variant in ${VARIANTS:-paper convex}; do
   work="$(mktemp -d)"
   echo "=== $variant: $poly ==="
   "$PY" src/VeriStressGT/analysis/analyze_profile_updated_components.py \
-    --benchmarks "$B/sweep_all" "$B/$poly" "$B/vnncomp_mnist_fc" "$B/oval21" \
+    --benchmarks "$B/sweep_all" "$B/$poly" "$B/oval21" "$B/vnncomp_mnist_fc" \
     --runs "${runs[@]}" --out-dir "$work/fig2" --skip-models > "$work/fig2.log"
   "$PY" src/VeriStressGT/analysis/make_targeted_timeout_heatmaps_with_auc.py \
     --merged-records "$work/fig2/merged_records.json" --out-dir "$work/fig3" --bins 5 > "$work/fig3.log"

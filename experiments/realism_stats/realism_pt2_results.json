@@ -35,7 +35,7 @@
       "component": "G_IBP",
       "key": "G_IBP",
       "syn": [
-        "-0.26",
+        "0.00",
         "1.09",
         "2.53e+05"
       ],
@@ -125,7 +125,7 @@
     }
   ],
   "omnibus_energy": {
-    "statistic": 1.6187,
+    "statistic": 1.62,
     "p_value": 0.001
   }
 }

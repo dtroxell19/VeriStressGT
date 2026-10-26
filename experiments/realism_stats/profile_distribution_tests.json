@@ -84,7 +84,7 @@
     }
   ],
   "omnibus_energy": {
-    "statistic": 1.4685,
+    "statistic": 1.4626,
     "p_value": 0.001,
     "n_con_complete": 225,
     "n_real_complete": 77
