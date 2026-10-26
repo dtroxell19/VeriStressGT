@@ -1248,6 +1248,16 @@ def _interval_matmul(x_lo, x_hi, W):
     return out_lo, out_hi
 
 
+def _interval_matmul_both(a_lo, a_hi, b_lo, b_hi):
+    """Sound interval bound of ``a @ b`` when both operands vary (e.g. attention scores Q K^T and
+    the weighted sum A V): bound each product a_ij * b_jk over its four corner combinations, then
+    sum over j."""
+    A_lo, A_hi = a_lo[..., :, :, None], a_hi[..., :, :, None]
+    B_lo, B_hi = b_lo[..., None, :, :], b_hi[..., None, :, :]
+    prods = np.stack([A_lo * B_lo, A_lo * B_hi, A_hi * B_lo, A_hi * B_hi])
+    return prods.min(axis=0).sum(axis=-2), prods.max(axis=0).sum(axis=-2)
+
+
 def _interval_mul(a_lo, a_hi, b_lo, b_hi):
     products = np.stack([a_lo * b_lo, a_lo * b_hi, a_hi * b_lo, a_hi * b_hi])
     return products.min(axis=0), products.max(axis=0)
@@ -1467,6 +1477,14 @@ def _interval_propagate(
 
             elif op in ("MatMul", "Gemm"):
                 x_lo, x_hi = _get_interval(intervals, node.input[0])
+                if op == "MatMul" and node.input[1] not in initializers:
+                    b_lo, b_hi = _get_interval(intervals, node.input[1])
+                    if not np.array_equal(b_lo, b_hi):
+                        # Both operands vary over the box: treating the second as a constant (its
+                        # lower bound) would give an unsound, too-tight interval.
+                        out_lo, out_hi = _interval_matmul_both(x_lo, x_hi, b_lo, b_hi)
+                        intervals[node.output[0]] = (out_lo.astype(np.float32), out_hi.astype(np.float32))
+                        continue
                 w = initializers.get(node.input[1], _get_interval(intervals, node.input[1])[0])
                 attrs = {a.name: a for a in node.attribute} if node.attribute else {}
                 transA = int(attrs["transA"].i) if "transA" in attrs else 0
