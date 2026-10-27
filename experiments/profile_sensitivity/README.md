@@ -51,11 +51,16 @@ Or on a many-core host: `bash experiments/profile_sensitivity/run_sensitivity.sh
 - `polynomial_stress_22` has no committed ONNX (network is reconstructed from generator args), so
   those instances are recompute-N/A; POLYNOMIAL is still covered in the dependence matrix + index.
 
-## Note: G_IBP of the attention instances predates the IBP fix
+## Note: G_IBP of the attention instances after the IBP fix
 
-The recompute sweeps profiled five attention instances (`ld9`, `ld10`, `ld11`, `fp9`, `fp10`), and
-the dependence matrix and Difficulty Index use the predictive-modeling frozen table; both were
-computed before the Difficulty Profile's IBP was fixed for products of two varying tensors, so the
-G_IBP values of attention instances are the old, too-tight ones. They were not re-run; see the
-matching note in `../predictive_modeling/README.md` for why the effect is negligible.
-
+The recompute sweeps profiled five attention instances (`ld9`, `ld10`, `ld11`, `fp9`, `fp10`), whose
+G_IBP originally used the Difficulty Profile's too-tight IBP for products of two varying tensors.
+The bound is deterministic per instance, so those G_IBP rows in `results/axis_{N,dist,eta,seed}.csv`
+were corrected in place (`src/fix_attention_gibp.py`): each row's sampled minimum margin was
+recovered from the published G_IBP and the old bound, and G_IBP recomputed with the fixed bound.
+Every other sampled value is the original. A fresh re-run of those instances agreed to < 1e-6
+relative on the rows whose samples it reproduced; the sweep driver is not bit-reproducible for the
+softmax-attention instances (float noise in M̂_min, d_eff and A_τ), which is why the published
+samples were kept. The analysis outputs were then regenerated, and the dependence matrix and
+Difficulty Index read the corrected predictive-modeling frozen table. Only third-significant-figure
+G_IBP numbers moved (see REPORT.md).

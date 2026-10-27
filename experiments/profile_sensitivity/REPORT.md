@@ -40,7 +40,7 @@ Normalized drift from the N=1600 estimate (median over instances), per component
 | component | drift @ N=50 | drift @ N=200 | drift @ N=800 | plateau N (within 5%) |
 |---|--:|--:|--:|--:|
 | M̂_min | 1.2e-4 | 5.5e-5 | 4.2e-6 | **50** |
-| G_IBP | 1.2e-7 | 5.1e-8 | 5.6e-9 | **50** |
+| G_IBP | 1.1e-7 | 5.1e-8 | 5.6e-9 | **50** |
 | d_eff | 0.011 | 0.003 | 0.001 | **50** |
 | A_τ | 0.442 | 0.269 | 0.082 | **~800–1600** |
 
@@ -74,10 +74,10 @@ and only a physically-absurd η=1e-3 (comparable to the quantities it stabilizes
 
 | η | d_eff | G_IBP |
 |---|--:|--:|
-| 1e-12 | 35.83 | 444.15 |
-| 1e-9 | 35.82 | 444.15 |
-| 1e-6 | 35.64 | 443.85 |
-| 1e-3 | 16.91 | 287.1 |
+| 1e-12 | 35.83 | 444.20 |
+| 1e-9 | 35.82 | 444.20 |
+| 1e-6 | 35.64 | 443.90 |
+| 1e-3 | 16.91 | 287.2 |
 
 Recommended η = 1e-9 (deep in the flat region, still large enough to avoid division blow-up). This is a
 feature, not a limitation: the component that *looks* like a tunable hyperparameter isn't one
@@ -126,14 +126,14 @@ Spearman ρ over the five components (`results/correlation/spearman_all.csv`; di
 
 |  | M̂_min | G_IBP | U | A_τ | d_eff |
 |---|--:|--:|--:|--:|--:|
-| **M̂_min** | 1.00 | −0.36 | −0.12 | −0.06 | −0.15 |
-| **G_IBP** | | 1.00 | 0.16 | 0.29 | **0.58** |
+| **M̂_min** | 1.00 | −0.37 | −0.12 | −0.06 | −0.15 |
+| **G_IBP** | | 1.00 | 0.12 | 0.30 | **0.57** |
 | **U** | | | 1.00 | −0.18 | −0.32 |
 | **A_τ** | | | | 1.00 | 0.46 |
 | **d_eff** | | | | | 1.00 |
 
 The components are moderately correlated but not redundant: the strongest coupling is G_IBP–d_eff
-(ρ=0.58) and A_τ–d_eff (0.46); M̂_min is largely independent of the rest (|ρ| ≤ 0.36). This is the
+(ρ=0.57) and A_τ–d_eff (0.46); M̂_min is largely independent of the rest (|ρ| ≤ 0.37). This is the
 dependence structure: related but distinct axes of hardness.
 
 ## 8. Unified Difficulty Index (a single measurement formula)
@@ -143,7 +143,7 @@ validated against the real per-instance verifier timeout rate:
 | index | construction | Spearman vs P(timeout) | Kendall | isotonic R² | decile lo→hi |
 |---|---|--:|--:|--:|--:|
 | **DI_pred** | mean logistic SD-weights (predictive) | 0.397 | 0.296 | 0.274 | 0.16 → 0.61 |
-| **DI_PCA** | first principal component (EVR 39%) | 0.420 | 0.327 | 0.349 | 0.33 → 0.60 |
+| **DI_PCA** | first principal component (EVR 39%) | 0.420 | 0.326 | 0.349 | 0.33 → 0.60 |
 
 Both track real timeout rates and **agree** (that agreement is the robustness check). The predictive
 weighting leans on G_IBP (2.16) and unstable-fraction (1.49); the PCA leans on d_eff/A_τ/G_IBP — two

@@ -52,15 +52,27 @@ group-bootstrap CI; Brier, AP, calibration reported alongside.
   established benchmarks (GPU host) and its ingest.
 - `data/manifests/frozen_analysis_manifest.json` — frozen, hashed inputs.
 
-## Note: G_IBP of the attention instances predates the IBP fix
+## Note: the IBP fix and the frozen table
 
-The frozen row table (and every result here) was built before the Difficulty Profile's IBP was
-fixed for products of two varying tensors. For the 35 attention instances in `sweep_all`
-(`ld*`, `fp*`) it therefore holds the old, too-tight G_IBP values (-0.26 to 0.15; corrected
-values 0.03 to 0.63, now in `sweep_all/difficulty_profiles.json`). `source_manifest.json` records
-the hash of the merged records file as it was then. The study was not re-run because the
-correction cannot move its conclusions measurably: none of those 175 rows is a timeout for any
-verifier (they are solved, error or missing), their G_IBP stays at the low end of the range, the
-G_IBP ranking over all 345 instances changes by Spearman 0.995, and the per-verifier G_IBP timeout
-AUC (paper Figure 3) is unchanged.
+The frozen row table was originally built before the Difficulty Profile's IBP was fixed for products
+of two varying tensors, so the 35 attention instances in `sweep_all` (`ld*`, `fp*`) had too-tight
+G_IBP values (-0.26 to 0.15). The row table now holds the corrected values (0.03 to 0.63, from
+`sweep_all/difficulty_profiles.json`; 175 rows, only `g_ibp` changed), and the manifests record the
+new hashes.
+
+The pooled gradient-boosting test was re-run on the corrected table: `results/actionable/`,
+`plots/actionable_htest.png`, the Spearman tables and correlation plots, the shallow trees and the
+runtime regression are current. Re-run on the original table, it reproduces the earlier outputs
+exactly, so the change is the fix alone: pooled ΔAUC +0.107 → +0.108 (null p95 +0.020 → +0.019),
+synthetic +0.043 → +0.044, all p = 0.001.
+
+The logistic CV results (`results/cv/`, `primary_results_table.*`, transfer, ablation, coefficients,
+predictions, permutation control and their plots) are the original run on the pre-fix table.
+Re-running the full CV on both tables in the same environment, the fix moves the per-verifier ΔAUC
+by at most 0.003 and leaves the permutation p-values unchanged. That re-run does not reproduce the
+committed CV numbers, with or without the fix: the size-only baseline changes too (abcrown combined
+AUC 0.768 → 0.739), most likely because the elastic-net logistic regression (`saga`) stops at
+`max_iter` before converging and its result depends on the scikit-learn version (the original
+version was not recorded; scikit-learn 1.9.0 gives e.g. combined ΔAUC abcrown +0.081, neuralsat
++0.037, nnenum +0.133, marabou +0.142, pyrat +0.073).
 
